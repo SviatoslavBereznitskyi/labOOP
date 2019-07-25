@@ -11,6 +11,21 @@
 |
 */
 
+use Telegram\Bot\Laravel\Facades\Telegram;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('hello', TelegramController::class.'@sendHello');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
