@@ -11,17 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TelegramUser extends Model
 {
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'id',
-        'first_name',
-        'last_name',
-        'username',
-        'language_code',
-        'is_bot',
-    ];
+    protected $guarded = [];
 
     /**
      * @param $name

@@ -38,7 +38,7 @@ return [
             'certificate_path'    => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
             'webhook_url'         => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             'commands'            => [
-                //Acme\Project\Commands\MyTelegramBot\BotCommand::class
+                //
             ],
         ],
 
@@ -116,7 +116,9 @@ return [
     |
     */
     'commands'                     => [
-        Telegram\Bot\Commands\HelpCommand::class,
+        \App\TelegramCommands\HelpCommand::class,
+        \App\TelegramCommands\TestCommand::class,
+        \App\TelegramCommands\KeyboardCommand::class,
     ],
 
     /*
