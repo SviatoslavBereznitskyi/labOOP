@@ -11,6 +11,31 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware(['auth'])
+    ->prefix('admin')
+    ->namespace('Admin')
+    ->name('admin.')
+    ->group(function (){
+        Route::get('/', DashboardController::class.'@index')->name('index');
+
+        Route::post('/settings', SettingController::class.'@store')->name('settings.store');
+//        Route::get('/settings', SettingController::class.'@index')->name('settings.index');
+        Route::post('/settings/webhook', TelegramController::class.'@setWebhook')->name('setting.webhook');
+    });
+
+Route::post(Telegram::getAccessToken(), TelegramController::class.'@commands')->name('telegram.commands');
+
+Auth::routes();
+
+Route::match(['post', 'get'],'register', function (){
+    Auth::logout();
+    return redirect('/');
+})->name('register');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
