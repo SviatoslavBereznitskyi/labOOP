@@ -49,21 +49,29 @@ class TelegramUser extends Model
     /**
      * @return string
      */
-    public function getFirstName(){
+    public function getFirstName()
+    {
         return (string)$this->first_name;
     }
 
     /**
      * @return string
      */
-    public function getLastName(){
+    public function getLastName()
+    {
         return (string)$this->last_name;
     }
 
     /**
      * @return string
      */
-    public function getUsername(){
+    public function getUsername()
+    {
         return (string)$this->username;
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
     }
 }

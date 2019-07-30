@@ -9,18 +9,6 @@ use Telegram;
 
 class TelegramController extends Controller
 {
-    public function sendHello()
-    {
-        $updates = Telegram::getUpdates();
-
-        dd($updates);
-
-        Telegram::sendMessage([
-            'chat_id' => '403811720',
-            'text' => 'Hello world!'
-        ]);
-        return;
-    }
 
    public function  commands(Request $request, TelegramUserRepository $telegramUserRepository)
    {
@@ -31,7 +19,7 @@ class TelegramController extends Controller
        }
        Telegram::commandsHandler(true);
        if(!key_exists('entities', $message)){
-          // $response = Telegram::getWebhookUpdates();
+
        }
 
    }
