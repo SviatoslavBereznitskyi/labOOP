@@ -52,14 +52,11 @@ class KeyboardCommand extends Command
                 'one_time_keyboard' => true
             ]);
 
-            $response = Telegram::sendMessage([
+            Telegram::sendMessage([
                 'chat_id' => $user->getKey(),
                 'text' => 'Select options',
                 'reply_markup' => $reply_markup
             ]);
-
-            $messageId = $response->getMessageId();
-            $this->replyWithMessage(['text'=> $messageId]);
         }catch (\Exception $e){
             $this->replyWithMessage(['text'=> $e->getMessage()]);
         }

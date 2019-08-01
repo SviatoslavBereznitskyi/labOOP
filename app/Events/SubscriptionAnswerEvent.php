@@ -19,7 +19,7 @@ class SubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        if(false === isset(Subscription::getAvailableServices()[$this->answer-1])){
+        if(false === isset(Subscription::getAvailableServices()[(int)$this->answer-1])){
             Telegram::sendMessage([
                 'chat_id' => $this->telegramUserId,
                 'text'=> Subscription::getMessageAvailableServices(),

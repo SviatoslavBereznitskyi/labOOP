@@ -38,7 +38,7 @@ class TelegramController extends Controller
        /** @var Message $lastMessage */
        $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
 
-       if($lastMessage->getKeyboardCommand()){
+       if($lastMessage->getKeyboardCommand() &&  !isset($message['entities'])){
 
            $eventName = Commands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
 
