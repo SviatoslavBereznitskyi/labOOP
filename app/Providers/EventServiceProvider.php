@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\SubscriptionEvent;
+use App\Events\UnsubscriptionEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -17,6 +19,21 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        SubscriptionEvent::class => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        UnsubscriptionEvent::class => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\UnsubscriptionAnswerEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\SubscriptionAnswerEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\SubscriptionKeywordsEvent' => [
+            'App\Handlers\GlobalEventHandler'
         ],
     ];
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null first_name
  * @property string|null last_name
  * @property string|null username
+ * @property string|null language_code
  */
 class TelegramUser extends Model
 {
@@ -73,5 +74,22 @@ class TelegramUser extends Model
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function lastMessage()
+    {
+        return $this->hasOne(Message::class);
+    }
+
+    public function getLocale()
+    {
+        return $this->language_code;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->language_code = $locale;
+
+        return $this;
     }
 }

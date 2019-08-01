@@ -17,10 +17,10 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('keywords');
-            $table->integer('frequency');
+            $table->json('keywords')->nullable();
+            $table->integer('frequency')->nullable();
             $table->bigInteger('telegram_user_id');
-
+            $table->string('service');
             $table->foreign('telegram_user_id')
                 ->references('id')
                 ->on('telegram_users')

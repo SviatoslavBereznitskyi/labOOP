@@ -33,5 +33,14 @@ class SubscriptionRepositoryEloquent extends BaseRepository implements Subscript
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    /**
+     * @param int $userId
+     * @param string $service
+     * @return Subscription|null
+     */
+    public function getByUserService(int $userId, string $service)
+    {
+        return Subscription::query()->byUser($userId)->byService($service)->first();
+    }
 }

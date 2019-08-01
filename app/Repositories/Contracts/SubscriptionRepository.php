@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Subscription;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -11,5 +12,10 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface SubscriptionRepository extends RepositoryInterface
 {
-    //
+    /**
+     * @param int $userId
+     * @param string $service
+     * @return Subscription|null
+     */
+    public function getByUserService(int $userId, string $service);
 }

@@ -16,7 +16,8 @@
         "laravelrus/sleepingowl": "dev-development",
         "prettus/l5-repository": "^2.6",
         "sammyk/laravel-facebook-sdk": "^3.5",
-        "thujohn/twitter": "^2.2"
+        "thujohn/twitter": "^2.2",
+      "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
