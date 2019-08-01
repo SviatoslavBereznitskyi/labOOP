@@ -7,6 +7,7 @@ namespace App\TelegramCommands;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\TelegramUserRepository;
 
+use App\Services\Telegram\Commands;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use Telegram\Bot\Keyboard\Keyboard;
@@ -29,11 +30,6 @@ class KeyboardCommand extends Command
      */
     public function handle()
     {
-        $keyboard = [
-            ['subscribe', 'unsubscribe'],
-        ];
-
-
         $this->replyWithChatAction(['action'=> Actions::TYPING]);
 
         try{
@@ -44,6 +40,10 @@ class KeyboardCommand extends Command
 
             /** @var TelegramUser $user */
             $user = $telegrsmUserREpository->find($userData['from']['id']);
+
+            $keyboard = Commands::getKeyboardCommandsByLang($user->getLocale());
+
+            $keyboard = array_chunk($keyboard, 3);
 
             sleep ( 1 );
             $reply_markup = Keyboard::make([

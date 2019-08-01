@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null first_name
  * @property string|null last_name
  * @property string|null username
+ * @property string|null language_code
  */
 class TelegramUser extends Model
 {
@@ -49,21 +50,46 @@ class TelegramUser extends Model
     /**
      * @return string
      */
-    public function getFirstName(){
+    public function getFirstName()
+    {
         return (string)$this->first_name;
     }
 
     /**
      * @return string
      */
-    public function getLastName(){
+    public function getLastName()
+    {
         return (string)$this->last_name;
     }
 
     /**
      * @return string
      */
-    public function getUsername(){
+    public function getUsername()
+    {
         return (string)$this->username;
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function lastMessage()
+    {
+        return $this->hasOne(Message::class);
+    }
+
+    public function getLocale()
+    {
+        return $this->language_code;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->language_code = $locale;
+
+        return $this;
     }
 }
