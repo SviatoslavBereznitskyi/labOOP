@@ -26,7 +26,7 @@ class TelegramController extends Controller
         $this->telegramService = $telegramService;
     }
 
-    public function  commands(Request $request, TelegramUserRepository $telegramUserRepository, MessageRepository $messageRepository, TelegramServiceInterface $telegramService )
+    public function  commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService )
    {
        Telegram::commandsHandler(true);
        $telegram = Telegram::getWebhookUpdates();
@@ -69,7 +69,11 @@ class TelegramController extends Controller
                return;
            }
 
-           $lastMessage->setKeyboardCommand($keyboardCommand)->setMessage($message)->save();
+           $command = [
+               'keyboard_command' => $keyboardCommand,
+           ];
+
+           $messageRepository->update($command, $lastMessage->getKey());
 
            event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $user->getKey()]));
        }

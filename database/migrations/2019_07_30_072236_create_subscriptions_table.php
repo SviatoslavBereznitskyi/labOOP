@@ -18,7 +18,7 @@ class CreateSubscriptionsTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->json('keywords')->nullable();
-            $table->integer('frequency')->nullable();
+            $table->integer('frequency')->default(60);
             $table->bigInteger('telegram_user_id');
             $table->string('service');
             $table->foreign('telegram_user_id')

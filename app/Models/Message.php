@@ -11,6 +11,9 @@ use Prettus\Repository\Traits\TransformableTrait;
  *
  * @property array message
  * @property string|null $keyboard_command
+ * @property string|null model_value
+ * @property integer|null model_id
+ * @property string|null model
  * @package namespace App\Models;
  */
 class Message extends Model implements Transformable
@@ -42,22 +45,19 @@ class Message extends Model implements Transformable
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getMessage()
+    public function getModel()
     {
-        return $this->message;
+        return $this->model;
     }
 
     /**
-     * @param $data
-     * @return $this
+     * @return int
      */
-    public function setMessage($data)
+    public function getModelId()
     {
-        $this->message = $data;
-
-        return $this;
+        return $this->model_id;
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Events;
 
 use App\Models\Message;
 use App\Models\Subscription;
-use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Telegram\Commands;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -15,26 +14,25 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Telegram;
 
-class SubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
+class ChangeFrequencyAnswerEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        if(false === isset(Subscription::getAvailableServices()[$this->answer-1])){
+        if(false === isset(Subscription::getAvailableServices()[(int)$this->answer-1])){
             Telegram::sendMessage([
                 'chat_id' => $this->telegramUserId,
                 'text'=> Subscription::getMessageAvailableServices(),
-                ]);
+            ]);
 
             return;
         }
 
-        $subscriptionData = [
-            'telegram_user_id' => $this->telegramUserId,
-            'service' => Subscription::getAvailableServices()[$this->answer-1],
-        ];
+        $this->lastMessage->setKeyboardCommand()->save();
 
-        $this->subscriptionService->updateOrCreate($subscriptionData);
-
+        Telegram::sendMessage([
+            'chat_id' => $this->telegramUserId,
+            'text' => 'insert frequency in minutes',
+        ]);
 
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer-1]);
@@ -42,13 +40,8 @@ class SubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
         $command = [
             'model' => Subscription::class,
             'model_id' => $subscription->getKey(),
-            'keyboard_command' => Commands::SUBSCRIBE_ANSWER_EVENT
+            'keyboard_command' => Commands::CHANGE_FREQUENCY_EVENT
         ];
-
         $this->messageService->update($command, $this->lastMessage->getKey());
-
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.input_keywords')]);
     }
 }

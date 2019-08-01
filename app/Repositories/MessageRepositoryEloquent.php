@@ -52,7 +52,6 @@ class MessageRepositoryEloquent extends BaseRepository implements MessageReposit
         /** @var Message $entity */
         $entity = $this->create([
             Message::TELEGRAM_USER_ID_FIELD => $userId,
-            Message::MESSAGE_FIELD => ''
         ]);
 
         return $entity;

@@ -18,17 +18,10 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.success1')]);
-
         $keywords = explode(' ', $this->answer);
 
-        /** @var TelegramUser $telegramUser */
-        $telegramUser = $this->telegramService->findOrCreateUser(['id' => $this->telegramUserId]);
-
-        /** @var Subscription $subscription */
-        $subscription = $telegramUser->subscriptions()->latest('updated_at')->first();
+        /** @var Subscription $model */
+        $subscription = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
 
         $keywords = array_merge($subscription->getKeywords(), $keywords);
 
@@ -39,5 +32,9 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
         $this->subscriptionService->update($subscriptionData, $subscription->getKey());
 
         $this->lastMessage->setKeyboardCommand()->save();
+
+        Telegram::sendMessage([
+            'chat_id' => $this->telegramUserId,
+            'text'=> trans('answers.saved_keywords')]);
     }
 }

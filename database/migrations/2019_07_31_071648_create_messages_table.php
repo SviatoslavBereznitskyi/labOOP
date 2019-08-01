@@ -17,8 +17,9 @@ class CreateMessagesTable extends Migration
 	{
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('message');
             $table->string('keyboard_command')->nullable();
+            $table->string('model')->nullable();
+            $table->integer('model_id')->nullable();
             $table->bigInteger('telegram_user_id');
 
             $table->foreign('telegram_user_id')
