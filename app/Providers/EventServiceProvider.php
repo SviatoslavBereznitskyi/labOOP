@@ -35,6 +35,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SubscriptionKeywordsEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
+        'App\Events\ChangeFrequencyEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\ChangeFrequencyAnswerEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\SetFrequencyEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
     ];
 
     /**

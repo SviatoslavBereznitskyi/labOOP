@@ -5,6 +5,8 @@ namespace App\Events;
 
 
 use App\Models\Message;
+use App\Models\Subscription;
+use Telegram;
 
 abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
 {
@@ -19,5 +21,13 @@ abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
         parent::__construct($telegramUserId);
         $this->answer = $answer;
         $this->lastMessage = $lastMessage;
+    }
+
+    protected function rejectWithServices()
+    {
+        Telegram::sendMessage([
+            'chat_id' => $this->telegramUserId,
+            'text'=> Subscription::getMessageAvailableServices(),
+        ]);
     }
 }

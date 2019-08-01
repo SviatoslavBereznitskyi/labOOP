@@ -16,9 +16,9 @@ class Subscription extends Model implements Transformable
 {
     use TransformableTrait;
 
-    const TWITTER_SERVICE = 'twitter';
-    const FACEBOOK_SERVICE = 'facebook';
-    const UPWORK_SERVICE = 'upwork';
+    const TWITTER_SERVICE = 'Twitter';
+    const FACEBOOK_SERVICE = 'Facebook';
+    const UPWORK_SERVICE = 'UpWork';
 
     protected $guarded = [];
 
@@ -33,6 +33,22 @@ class Subscription extends Model implements Transformable
             self::FACEBOOK_SERVICE,
             self::UPWORK_SERVICE,
         ];
+    }
+
+    /**
+     *
+     * @return array|\Illuminate\Contracts\Translation\Translator|string|null
+     */
+    public static function getMessageAvailableServices()
+    {
+        $text = trans('answers.input.select_category');
+
+        foreach (self::getAvailableServices() as $key => $item)
+        {
+            $text = $text . PHP_EOL . ($key+1) . '. ' . $item;
+        }
+
+        return $text;
     }
 
     /**

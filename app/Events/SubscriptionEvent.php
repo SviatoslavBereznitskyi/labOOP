@@ -3,6 +3,7 @@
 
 namespace App\Events;
 
+use App\Models\Subscription;
 use Telegram;
 
 class SubscriptionEvent extends GlobalKeyboardCommandEvent
@@ -11,6 +12,7 @@ class SubscriptionEvent extends GlobalKeyboardCommandEvent
     {
         Telegram::sendMessage([
             'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.input.key_words')]);
+            'text' => Subscription::getMessageAvailableServices(),
+        ]);
     }
 }
