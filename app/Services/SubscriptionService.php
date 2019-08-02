@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepository;
 use App\Services\Contracts\SubscriptionServiceInterface;
 
@@ -54,5 +55,19 @@ class SubscriptionService implements SubscriptionServiceInterface
     public function getByUserAndService(int $userId, string $service)
     {
         return $this->subscriptionRepository->getByUserService($userId, $service);
+    }
+
+    public function getKeywords(int $id)
+    {
+        /** @var Subscription $subscription */
+        $subscription = $this->subscriptionRepository->find($id);
+
+        $text = trans('answers.input.select_word');
+
+        foreach ($subscription->getKeywords() as $key => $item) {
+            $text = $text . PHP_EOL . ($key + 1) . '. ' . $item;
+        }
+
+        return $text;
     }
 }

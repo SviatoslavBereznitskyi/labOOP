@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Models\Message;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\MessageRepository;
@@ -26,56 +27,61 @@ class TelegramController extends Controller
         $this->telegramService = $telegramService;
     }
 
-    public function  commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService )
-   {
-       Telegram::commandsHandler(true);
-       $telegram = Telegram::getWebhookUpdates();
-       $message = $telegram['message'];
+    public function commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService)
+    {
+        Telegram::commandsHandler(true);
+        $telegram = Telegram::getWebhookUpdates();
+        $message = $telegram['message'];
 
-       /** @var TelegramUser $user */
-       $user = $this->telegramService->findOrCreateUser($message['from']);
+        /** @var TelegramUser $user */
+        $chatData = $message['chat'];
+        $chatData['language_code'] = isset($message['from']['language_code'])
+            ? $message['from']['language_code']
+            : App::getLocale();
 
-       /** @var Message $lastMessage */
-       $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
+        $user = $this->telegramService->findOrCreateUser($chatData);
 
-       if($lastMessage->getKeyboardCommand()){
+        /** @var Message $lastMessage */
+        $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
 
-           $eventName = Commands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
+        if ($lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
 
-           $answer = 'must be a text';
+            $eventName = Commands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
 
-           if(isset($message['text'])) {
-               $answer = $message['text'];
-           }
+            $answer = 'must be a text';
 
-           $parameters = [
-               'telegramUserId' => $user->getKey(),
-               'answer' => $answer,
-               'lastMessage' => $lastMessage,
-           ];
+            if (isset($message['text'])) {
+                $answer = $message['text'];
+            }
 
-           event($telegramService->getEventInstance($eventName, $parameters));
+            $parameters = [
+                'telegramUserId' => $user->getKey(),
+                'answer' => $answer,
+                'lastMessage' => $lastMessage,
+            ];
 
-           return;
-       }
+            event($telegramService->getEventInstance($eventName, $parameters));
 
-       if(key_exists('text', $message) && !key_exists('entities', $message)){
-           $keyboardCommand = Commands::findCommandByName($message['text'], $user->getLocale());
+            return;
+        }
 
-           if(!$keyboardCommand){
-               Telegram::sendMessage([
-                   'chat_id' => $user->getKey(),
-                   'text'=> 'not understand']);
-               return;
-           }
+        if (key_exists('text', $message) && !key_exists('entities', $message)) {
+            $keyboardCommand = Commands::findCommandByName($message['text'], $user->getLocale());
 
-           $command = [
-               'keyboard_command' => $keyboardCommand,
-           ];
+            if (!$keyboardCommand) {
+                Telegram::sendMessage([
+                    'chat_id' => $user->getKey(),
+                    'text' => 'not understand']);
+                return;
+            }
 
-           $messageRepository->update($command, $lastMessage->getKey());
+            $command = [
+                'keyboard_command' => $keyboardCommand,
+            ];
 
-           event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $user->getKey()]));
-       }
-   }
+            $messageRepository->update($command, $lastMessage->getKey());
+
+            event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $user->getKey()]));
+        }
+    }
 }

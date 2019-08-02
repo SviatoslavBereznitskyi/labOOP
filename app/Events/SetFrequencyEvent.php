@@ -35,6 +35,6 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
             'text' => $model->frequency,
         ]);
 
-        $this->lastMessage->setKeyboardCommand()->save();
+        $this->lastMessage->delete();
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Events;
 
 use App\Models\Subscription;
-use App\Models\TelegramUser;
-use App\Services\TelegramService;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,19 +12,26 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Telegram;
 
-class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
+class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $keywords = explode(' ', $this->answer);
+        $words = explode(' ', $this->answer);
 
         /** @var Subscription $model */
         $subscription = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
 
-        $keywords = array_merge($subscription->getKeywords(), $keywords);
+        $keywords = $subscription->getKeywords();
+
+        foreach ($words as $word)
+        {
+            if (isset($keywords[$word])) {
+                unset($keywords[$word]);
+            }
+        }
 
         $subscriptionData = [
-            'keywords' => $keywords,
+            'keywords' => array_values($keywords),
         ];
 
         $this->subscriptionService->update($subscriptionData, $subscription->getKey());
@@ -35,6 +40,6 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         Telegram::sendMessage([
             'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.saved_keywords')]);
+            'text'=> trans('answers.deleted_keywords')]);
     }
 }
