@@ -26,12 +26,12 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
         $keywords = array_merge($subscription->getKeywords(), $keywords);
 
         $subscriptionData = [
-            'keywords' => ($keywords),
+            'keywords' => $keywords,
         ];
 
         $this->subscriptionService->update($subscriptionData, $subscription->getKey());
 
-        $this->lastMessage->setKeyboardCommand()->save();
+        $this->lastMessage->delete();
 
         Telegram::sendMessage([
             'chat_id' => $this->telegramUserId,

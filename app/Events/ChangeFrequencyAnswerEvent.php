@@ -37,11 +37,6 @@ class ChangeFrequencyAnswerEvent extends AnswerKeyboardCommandEvent
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer-1]);
 
-        $command = [
-            'model' => Subscription::class,
-            'model_id' => $subscription->getKey(),
-            'keyboard_command' => Commands::CHANGE_FREQUENCY_EVENT
-        ];
-        $this->messageService->update($command, $this->lastMessage->getKey());
+        $this->commandService->setCommandMessage(get_class($this), $this->lastMessage->getKey(), $subscription);
     }
 }

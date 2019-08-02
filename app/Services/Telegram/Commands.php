@@ -12,6 +12,7 @@ use App\Events\SubscriptionEvent;
 use App\Events\SubscriptionKeywordsEvent;
 use App\Events\UnsubscriptionAnswerEvent;
 use App\Events\UnsubscriptionEvent;
+use App\Events\UnsubscriptionKeywordsEvent;
 
 class Commands
 {
@@ -23,6 +24,7 @@ class Commands
     const CHANGE_FREQUENCY_COMMAND      = ChangeFrequencyEvent::class;
     const CHANGE_FREQUENCY_EVENT        = ChangeFrequencyAnswerEvent::class;
     const SET_FREQUENCY_EVENT           = SetFrequencyEvent::class;
+    const UNSUBSCRIPTION_KEYWORDS_EVENT = UnsubscriptionKeywordsEvent::class;
 
     public static function getKeyboardCommandsByLang($lang)
     {
@@ -38,6 +40,7 @@ class Commands
         return [
             self::SUBSCRIBE_COMMAND => self::SUBSCRIBE_ANSWER_EVENT,
             self::UNSUBSCRIBE_COMMAND => self::UNSUBSCRIBE_ANSWER_EVENT,
+            self::UNSUBSCRIBE_ANSWER_EVENT => self::UNSUBSCRIPTION_KEYWORDS_EVENT,
             self::SUBSCRIBE_ANSWER_EVENT => self::SUBSCRIPTION_KEYWORDS_EVENT,
             self::CHANGE_FREQUENCY_COMMAND => self::CHANGE_FREQUENCY_EVENT,
             self::CHANGE_FREQUENCY_EVENT => self::SET_FREQUENCY_EVENT,

@@ -5,6 +5,7 @@ namespace App\Events;
 
 
 use App\Repositories\Contracts\MessageRepository;
+use App\Services\Contracts\CommandServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TelegramServiceInterface;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -31,7 +32,12 @@ abstract class GlobalKeyboardCommandEvent
     /**
      * @var MessageRepository
      */
-    protected $messageService;
+    protected $messageRepository;
+
+    /**
+     * @var CommandServiceInterface
+     */
+    protected $commandService;
 
     abstract function executeCommand();
 
@@ -44,6 +50,7 @@ abstract class GlobalKeyboardCommandEvent
         $this->telegramUserId = $telegramUserId;
         $this->subscriptionService = resolve(SubscriptionServiceInterface::class);
         $this->telegramService = resolve(TelegramServiceInterface::class);
-        $this->messageService = resolve(MessageRepository::class);
+        $this->messageRepository = resolve(MessageRepository::class);
+        $this->commandService = resolve(CommandServiceInterface::class);
     }
 }

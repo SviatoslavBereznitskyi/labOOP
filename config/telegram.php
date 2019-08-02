@@ -118,7 +118,6 @@ return [
     'commands'                     => [
         \App\TelegramCommands\HelpCommand::class,
         \App\TelegramCommands\TestCommand::class,
-        \App\TelegramCommands\KeyboardCommand::class,
         \App\TelegramCommands\SubscribeCommand::class,
     ],
 

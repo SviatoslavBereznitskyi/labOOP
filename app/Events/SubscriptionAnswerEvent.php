@@ -39,16 +39,6 @@ class SubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer-1]);
 
-        $command = [
-            'model' => Subscription::class,
-            'model_id' => $subscription->getKey(),
-            'keyboard_command' => Commands::SUBSCRIBE_ANSWER_EVENT
-        ];
-
-        $this->messageService->update($command, $this->lastMessage->getKey());
-
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.input_keywords')]);
+        $this->commandService->setCommandMessage(get_class($this), $this->lastMessage->getKey(), $subscription);
     }
 }
