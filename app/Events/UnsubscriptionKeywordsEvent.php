@@ -23,10 +23,10 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         $keywords = $subscription->getKeywords();
 
-        foreach ($words as $word)
+        foreach ($words as $key => $word)
         {
-            if (isset($keywords[$word])) {
-                unset($keywords[$word]);
+            if (isset($keywords[$key])) {
+                unset($keywords[$key]);
             }
         }
 

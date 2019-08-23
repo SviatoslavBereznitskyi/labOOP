@@ -21,7 +21,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'twitter/callback'
     ];
 
     public function __construct(Application $app, Encrypter $encrypter)

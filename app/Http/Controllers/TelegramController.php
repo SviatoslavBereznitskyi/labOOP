@@ -31,6 +31,9 @@ class TelegramController extends Controller
     {
         Telegram::commandsHandler(true);
         $telegram = Telegram::getWebhookUpdates();
+        if(!isset($telegram['message'])){
+            return;
+        }
         $message = $telegram['message'];
 
         /** @var TelegramUser $user */

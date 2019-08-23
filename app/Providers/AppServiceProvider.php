@@ -10,8 +10,10 @@ use App\Repositories\SubscriptionRepositoryEloquent;
 use App\Repositories\TelegramUserRepositoryEloquent;
 use App\Services\CommandService;
 use App\Services\Contracts\CommandServiceInterface;
+use App\Services\Contracts\MailingServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TelegramServiceInterface;
+use App\Services\MailingService;
 use App\Services\SubscriptionService;
 use App\Services\TelegramService;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
         $this->app->bind(SubscriptionServiceInterface::class, SubscriptionService::class);
         $this->app->bind(CommandServiceInterface::class, CommandService::class);
+        $this->app->bind(MailingServiceInterface::class, MailingService::class);
     }
 
     /**
