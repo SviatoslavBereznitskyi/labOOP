@@ -92,4 +92,9 @@ class TelegramUser extends Model
 
         return $this;
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(SentMessages::class);
+    }
 }

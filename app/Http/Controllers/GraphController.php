@@ -32,6 +32,7 @@ class GraphController extends Controller
 
     public function retrieveUserProfile()
     {
+
         try {
 
             $params = "first_name,last_name,age_range,gender";
@@ -102,11 +103,11 @@ class GraphController extends Controller
         try {
             $post = $this->api->post('/' . $page_id . '/feed', array('message' => $request->message), $this->getPageAccessToken($page_id));
 
-        $post = $post->getGraphNode()->asArray();
+            $post = $post->getGraphNode()->asArray();
 
-        dd($post);
+            dd($post);
 
-    } catch (FacebookSDKException $e) {
+        } catch (FacebookSDKException $e) {
             dd($e); // handle exception
         }
     }

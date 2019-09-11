@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Repositories\Contracts\MessageRepository;
+use App\Repositories\Contracts\SentMessagesRepository;
 use App\Repositories\Contracts\SubscriptionRepository;
 use App\Repositories\Contracts\TelegramUserRepository;
 use App\Repositories\MessageRepositoryEloquent;
+use App\Repositories\SentMessagesRepositoryEloquent;
 use App\Repositories\SubscriptionRepositoryEloquent;
 use App\Repositories\TelegramUserRepositoryEloquent;
 use App\Services\CommandService;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SubscriptionServiceInterface::class, SubscriptionService::class);
         $this->app->bind(CommandServiceInterface::class, CommandService::class);
         $this->app->bind(MailingServiceInterface::class, MailingService::class);
+        $this->app->bind(SentMessagesRepository::class, SentMessagesRepositoryEloquent::class);
     }
 
     /**
