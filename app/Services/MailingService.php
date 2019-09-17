@@ -47,8 +47,8 @@ class MailingService implements MailingServiceInterface
         foreach ($keywords as $keyword) {
             foreach ($this->lang as $lang) {
                 $query = [
-                    'q' => $keyword . ' lang:' . $lang,
-                    'maxResults' => '3',
+                    'q' => $keyword. ' lang:' . $lang,
+                    'maxResults' => '5',
                     'fromDate' => Carbon::now()->subMinutes(10),
                     'toDate' => Carbon::now(),
                 ];
@@ -57,12 +57,11 @@ class MailingService implements MailingServiceInterface
 
                 foreach ($twits->statuses as $status) {
                     if( $sentMessages->where('post_id', $status->id)->first() !== null){
-
                         continue;
                     }
                     $messages[] = [
                         'chat_id' => $user->getKey(),
-                        'text' => $status->text,
+                        'text' => $keyword . PHP_EOL . $status->text,
                     ];
                     $this->sentMessagesRepository->create([
                         'post_id' => $status->id,

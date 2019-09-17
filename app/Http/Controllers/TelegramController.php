@@ -37,21 +37,6 @@ class TelegramController extends Controller
         }
         $message = $telegram['message'];
 
-        $telegramService->processMessages($message['message_id'], $message['chat']['id']);
-
-        //$m = Telegram::forwardMessage(['chat_id' => $message['chat']['id'], 'from_chat_id' => $message['chat']['id'], 'message_id' => $message['message_id']]);
-        //dd($m);
-
-//        for ($i = $m->message_id - 1; $i > 6434; $i--) {
-//            try {
-//                $messageForwarded = $telegramService->forwardMessage($i,  403811720 , $message['chat']['id'] );
-//
-//                Telegram::deleteMessage(['message_id'=>$messageForwarded->id, 'chat_id'=>$messageForwarded->chat->id]);
-//                Telegram::forwardMessage(['chat_id' => 403811720, 'from_chat_id' => $message['chat']['id'], 'message_id' => $i]);
-//            } catch (Telegram\Bot\Exceptions\TelegramResponseException $exception) {
-//                continue;
-//            }
-//        }
         /** @var TelegramUser $user */
         $chatData = $message['chat'];
         $chatData['language_code'] = isset($message['from']['language_code'])
