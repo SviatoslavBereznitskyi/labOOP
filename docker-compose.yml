@@ -60,3 +60,9 @@ services:
       - .:/app:rw
     working_dir: /app
     command: npm install
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - "./docker/certbot/cert:/etc/letsencrypt/live"
+      - "./docker/certbot/conf:/etc/letsencrypt:cached"
+      - "./docker/certbot/www:/var/www/certbot:cached"
