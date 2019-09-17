@@ -29,7 +29,7 @@ class TelegramController extends Controller
 
     public function commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService)
     {
-        Telegram::commandsHandler(true);
+        //Telegram::commandsHandler(true);
         $telegram = Telegram::getWebhookUpdates();
 
         if (!isset($telegram['message'])) {
@@ -59,6 +59,13 @@ class TelegramController extends Controller
             : App::getLocale();
 
         $user = $this->telegramService->findOrCreateUser($chatData);
+
+        if(false == $user->isSubscribed()){
+            return;
+        }
+
+        Telegram::commandsHandler(true);
+
 
         /** @var Message $lastMessage */
         $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
