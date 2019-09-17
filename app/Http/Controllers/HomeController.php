@@ -25,18 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $MadelineProto = new \danog\MadelineProto\API('session.madeline');
-        //$MadelineProto->start();
+        $madelineProto = new \danog\MadelineProto\API('session.madeline', config('mdproto'));
 
-        $messages_Messages = $MadelineProto->messages->getHistory([
-            'peer' => 'https://t.me/joinchat/AAAAAFY7Rrgkw2Ro8Uo44w',
+
+        $messages_Messages = $madelineProto->messages->getHistory([
             'limit' => 25,
         ]);
+        dd($messages_Messages);
         return view('home');
     }
 
     public function auth()
     {
+
         $MadelineProto = new API('session.madeline', config('mdproto'));
         $MadelineProto->phone_login('+380984721648');
         $authorization =  $MadelineProto->complete_phone_login(65237);

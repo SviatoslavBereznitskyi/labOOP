@@ -47,34 +47,4 @@ class TelegramService implements TelegramServiceInterface
 
         return $user;
     }
-
-    /**
-     * @param $messageId
-     * @param $chatId
-     */
-    public function processMessages($messageId, $chatId)
-    {
-        $m =$this->getMessage($messageId, $chatId, 403811720);
-    }
-
-    protected function getMessage($messageId, $fromChatId, $userId)
-    {
-        $message = Telegram::forwardMessage([
-            'chat_id' => $userId,
-            'from_chat_id' => $fromChatId,
-            'message_id' => $messageId
-        ]);
-
-        Telegram::deleteMessage([
-            'chat_id'=>$userId,
-            'message_id'=>$message->message_id,
-        ]);
-
-        return $message;
-    }
-
-    public function forwardMessage($messageId, $fromChatId, $userId)
-    {
-        return Telegram::forwardMessage(['chat_id' => $userId, 'from_chat_id' => $fromChatId, 'message_id' => $messageId]);
-    }
 }
