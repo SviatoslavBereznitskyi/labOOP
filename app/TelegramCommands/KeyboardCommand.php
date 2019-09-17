@@ -35,11 +35,11 @@ class KeyboardCommand extends Command
         try{
             $userData = Telegram::getWebhookUpdates()['message'];
 
-            /** @var TelegramUserRepository $telegrsmUserREpository */
-            $telegrsmUserREpository = resolve(TelegramUserRepository::class);
+            /** @var TelegramUserRepository $telegramUserRepository */
+            $telegramUserRepository = resolve(TelegramUserRepository::class);
 
             /** @var TelegramUser $user */
-            $user = $telegrsmUserREpository->find($userData['from']['id']);
+            $user = $telegramUserRepository->find($userData['chat']['id']);
 
             $keyboard = Commands::getKeyboardCommandsByLang($user->getLocale());
 

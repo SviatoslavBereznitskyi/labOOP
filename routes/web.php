@@ -22,9 +22,7 @@ Route::middleware(['auth'])
     ->name('admin.')
     ->group(function () {
         Route::get('/', DashboardController::class . '@index')->name('index');
-
         Route::post('/settings', SettingController::class . '@store')->name('settings.store');
-//        Route::get('/settings', SettingController::class.'@index')->name('settings.index');
         Route::post('/settings/webhook', TelegramController::class . '@setWebhook')->name('setting.webhook');
     });
 
@@ -55,6 +53,21 @@ Route::get('twitter/test', TwitterController::class.'@test');
 Route::get('twitter/callback', TwitterController::class.'@callback')->name('twitter.callback');
 Route::get('/homeTimeline', function()
 {
-    return Twitter::getHomeTimeline(['count' => 20, 'format' => 'json']);
+    $fb = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
+    try {
+        $response = $fb->get('/search/posts/?q=фвфів', 'user-access-token');
+    } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        dd($e->getMessage());
+    }
+
+    $userNode = $response->getGraphUser();
+    printf('Hello, %s!', $userNode->getName());
 });
+
+Route::get('/twitter/get', function()
+{
+    Artisan::call('send:messages');
+    return 'success';
+});
+
 
