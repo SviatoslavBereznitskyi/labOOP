@@ -29,13 +29,29 @@ class TelegramController extends Controller
 
     public function commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService)
     {
-        Telegram::commandsHandler(true);
         $telegram = Telegram::getWebhookUpdates();
-        if(!isset($telegram['message'])){
+
+        if (!isset($telegram['message'])) {
             return;
         }
+
         $message = $telegram['message'];
 
+        $telegramService->processMessages($message['message_id'], $message['chat']['id']);
+
+        //$m = Telegram::forwardMessage(['chat_id' => $message['chat']['id'], 'from_chat_id' => $message['chat']['id'], 'message_id' => $message['message_id']]);
+        //dd($m);
+
+//        for ($i = $m->message_id - 1; $i > 6434; $i--) {
+//            try {
+//                $messageForwarded = $telegramService->forwardMessage($i,  403811720 , $message['chat']['id'] );
+//
+//                Telegram::deleteMessage(['message_id'=>$messageForwarded->id, 'chat_id'=>$messageForwarded->chat->id]);
+//                Telegram::forwardMessage(['chat_id' => 403811720, 'from_chat_id' => $message['chat']['id'], 'message_id' => $i]);
+//            } catch (Telegram\Bot\Exceptions\TelegramResponseException $exception) {
+//                continue;
+//            }
+//        }
         /** @var TelegramUser $user */
         $chatData = $message['chat'];
         $chatData['language_code'] = isset($message['from']['language_code'])
@@ -43,6 +59,12 @@ class TelegramController extends Controller
             : App::getLocale();
 
         $user = $this->telegramService->findOrCreateUser($chatData);
+
+        if(false == $user->isSubscribed()){
+            return;
+        }
+
+        Telegram::commandsHandler(true);
 
         /** @var Message $lastMessage */
         $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
@@ -56,7 +78,6 @@ class TelegramController extends Controller
             if (isset($message['text'])) {
                 $answer = $message['text'];
             }
-
             $parameters = [
                 'telegramUserId' => $user->getKey(),
                 'answer' => $answer,

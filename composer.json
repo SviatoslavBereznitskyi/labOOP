@@ -21,7 +21,12 @@
         "prettus/l5-repository": "^2.6",
         "sammyk/laravel-facebook-sdk": "^3.5",
         "thujohn/twitter": "^2.2",
-        "upwork/php-upwork": "^1.3"
+        "upwork/php-upwork": "^1.3",
+        "danog/madelineproto":"^4",
+        "amphp/dns": "dev-master#aa1892bd as 0.9",
+        "amphp/socket": "0.10.12 as 1",
+        "amphp/websocket": "dev-master#db2da8c5b3ed22eae37da5ffa10ab3ea8de19342 as 1",
+        "amphp/websocket-client": "dev-master#aff808025637bd705672338b4904ad03a4dbdc04 as 1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
@@ -69,5 +74,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/danog/phpseclib"
+        }
+    ]
 }

@@ -23,6 +23,7 @@ class CreateTelegramUsersTable extends Migration
             $table->string('title')->nullable();
             $table->boolean('all_members_are_administrators')->nullable();
             $table->string('language_code', 10);
+            $table->boolean('subscription')->default(true);
             $table->timestamps();
         });
     }

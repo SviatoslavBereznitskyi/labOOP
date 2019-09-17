@@ -22,9 +22,7 @@ Route::middleware(['auth'])
     ->name('admin.')
     ->group(function () {
         Route::get('/', DashboardController::class . '@index')->name('index');
-
         Route::post('/settings', SettingController::class . '@store')->name('settings.store');
-//        Route::get('/settings', SettingController::class.'@index')->name('settings.index');
         Route::post('/settings/webhook', TelegramController::class . '@setWebhook')->name('setting.webhook');
     });
 
