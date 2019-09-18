@@ -18,10 +18,8 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
         if (false === isset(Subscription::getAvailableServices()[(int)$this->answer - 1])) {
-            Telegram::sendMessage([
-                'chat_id' => $this->telegramUserId,
-                'text' => Subscription::getMessageAvailableServices(),
-            ]);
+
+            $this->sendMessage(Subscription::getMessageAvailableServices());
 
             return;
         }
@@ -30,20 +28,18 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer - 1]);
 
         if (!$subscription) {
-            Telegram::sendMessage([
-                'chat_id' => $this->telegramUserId,
-                'text' => trans('answers.no_words')]);
+
+            $this->sendMessage(trans('answers.no_words'));
+
             $this->lastMessage->delete();
+
             return;
         }
 
         $text = $this->subscriptionService->getKeywords($subscription->getKey());
 
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text' => $text]);
+        $this->sendMessage($text);
 
         $this->commandService->setCommandMessage(get_class($this), $this->lastMessage->getKey(), $subscription);
-
     }
 }

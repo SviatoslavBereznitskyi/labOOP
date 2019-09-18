@@ -16,9 +16,6 @@ class ChangeFrequencyEvent extends GlobalKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text' => Subscription::getMessageAvailableServices(),
-        ]);
+        $this->sendMessage(Subscription::getMessageAvailableServices());
     }
 }

@@ -12,6 +12,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Telegram;
 
+/**
+ * Class UnsubscriptionKeywordsEvent
+ *
+ * @package App\Events
+ */
 class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
@@ -38,8 +43,6 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         $this->lastMessage->delete();
 
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.deleted_keywords')]);
+        $this->sendMessage(trans('answers.deleted_keywords'));
     }
 }

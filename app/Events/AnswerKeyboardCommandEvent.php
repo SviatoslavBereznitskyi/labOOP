@@ -25,9 +25,6 @@ abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
 
     protected function rejectWithServices()
     {
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> Subscription::getMessageAvailableServices(),
-        ]);
+        $this->sendMessage(Subscription::getMessageAvailableServices());
     }
 }

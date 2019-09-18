@@ -11,6 +11,7 @@ use App\Services\Contracts\TelegramServiceInterface;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 abstract class GlobalKeyboardCommandEvent
 {
@@ -52,5 +53,16 @@ abstract class GlobalKeyboardCommandEvent
         $this->telegramService = resolve(TelegramServiceInterface::class);
         $this->messageRepository = resolve(MessageRepository::class);
         $this->commandService = resolve(CommandServiceInterface::class);
+    }
+
+    /**
+     * @param $message
+     */
+    public function sendMessage($message)
+    {
+        Telegram::sendMessage([
+            'chat_id' => $this->telegramUserId,
+            'text'    => $message,
+        ]);
     }
 }

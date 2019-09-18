@@ -1,18 +1,18 @@
 <?php
 
-
 namespace App\Events;
 
 use App\Models\Subscription;
-use Telegram;
 
+/**
+ * Class SubscriptionEvent
+ *
+ * @package App\Events
+ */
 class SubscriptionEvent extends GlobalKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text' => Subscription::getMessageAvailableServices(),
-        ]);
+        $this->sendMessage(Subscription::getMessageAvailableServices());
     }
 }
