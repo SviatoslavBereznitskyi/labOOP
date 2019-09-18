@@ -25,17 +25,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $madelineProto = new \danog\MadelineProto\API('session.madeline', config('mdproto'));
+        $madelineProto = new \danog\MadelineProto\API('session.madeline');
 
-        $messages_Messages = $madelineProto->get_dialogs([
-            'offset_id'=>'',
-            'offset_date'=>'',
-            'add_offset'=>'',
-            'limit'=>'',
-            'max_id'=>'',
-            'min_id'=>'',
+
+        $messages = $madelineProto->messages->getHistory([
+            /* Название канала, без @ */
+            'peer' => 'chatname',
+            'offset_id' => 0,
+            'offset_date' => 0,
+            'add_offset' => 0,
+            'limit' => 20,
+            'max_id' => 9999999,
+            /* ID сообщения, с которого начинаем поиск */
+            'min_id' => 12000,
         ]);
-        dd($messages_Messages);
+
+
+        dd($messages);
         return view('home');
     }
 
