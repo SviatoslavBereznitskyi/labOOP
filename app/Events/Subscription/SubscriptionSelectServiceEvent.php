@@ -15,7 +15,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Telegram;
 
-class SubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
+class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {

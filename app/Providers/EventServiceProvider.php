@@ -26,10 +26,10 @@ class EventServiceProvider extends ServiceProvider
         UnsubscriptionEvent::class => [
             'App\Handlers\GlobalEventHandler'
         ],
-        'App\Events\UnsubscriptionAnswerEvent' => [
+        'App\Events\UnsubscriptionSelectServiceEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
-        'App\Events\SubscriptionAnswerEvent' => [
+        'App\Events\SubscriptionSelectServiceEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
         'App\Events\SubscriptionKeywordsEvent' => [

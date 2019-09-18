@@ -37,15 +37,15 @@ class TelegramController extends Controller
         }
         $message = $telegram['message'];
 
-        /** @var TelegramUser $user */
+        /** @var TelegramUser $telegramUser */
         $chatData = $message['chat'];
         $chatData['language_code'] = isset($message['from']['language_code'])
             ? $message['from']['language_code']
             : App::getLocale();
 
-        $user = $this->telegramService->findOrCreateUser($chatData);
+        $telegramUser = $this->telegramService->findOrCreateUser($chatData);
 
-        if(false == $user->isSubscribed()){
+        if(false == $telegramUser->isSubscribed()){
             return;
         }
 
@@ -53,7 +53,7 @@ class TelegramController extends Controller
 
 
         /** @var Message $lastMessage */
-        $lastMessage = $messageRepository->findByUserOrCreate($user->getKey());
+        $lastMessage = $messageRepository->findByUserOrCreate($telegramUser->getKey());
 
         if ($lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
 
@@ -65,7 +65,7 @@ class TelegramController extends Controller
                 $answer = $message['text'];
             }
             $parameters = [
-                'telegramUserId' => $user->getKey(),
+                'telegramUserId' => $telegramUser->getKey(),
                 'answer' => $answer,
                 'lastMessage' => $lastMessage,
             ];
@@ -76,11 +76,11 @@ class TelegramController extends Controller
         }
 
         if (key_exists('text', $message) && !key_exists('entities', $message)) {
-            $keyboardCommand = Commands::findCommandByName($message['text'], $user->getLocale());
+            $keyboardCommand = Commands::findCommandByName($message['text'], $telegramUser->getLocale());
 
             if (!$keyboardCommand) {
                 Telegram::sendMessage([
-                    'chat_id' => $user->getKey(),
+                    'chat_id' => $telegramUser->getKey(),
                     'text' => 'not understand']);
                 return;
             }
@@ -91,7 +91,7 @@ class TelegramController extends Controller
 
             $messageRepository->update($command, $lastMessage->getKey());
 
-            event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $user->getKey()]));
+            event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $telegramUser->getKey()]));
         }
     }
 }
