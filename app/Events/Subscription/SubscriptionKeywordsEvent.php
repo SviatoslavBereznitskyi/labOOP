@@ -33,8 +33,6 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         $this->lastMessage->delete();
 
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text'=> trans('answers.saved_keywords')]);
+        $this->sendMessage(trans('answers.saved_keywords'));
     }
 }

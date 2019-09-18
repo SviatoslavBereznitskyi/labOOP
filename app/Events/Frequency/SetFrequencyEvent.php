@@ -26,14 +26,11 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 
             return;
         }
-
         $model->frequency = $this->answer;
+
         $model->save();
 
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text' => $model->frequency,
-        ]);
+        $this->sendMessage($model->frequency);
 
         $this->lastMessage->delete();
     }

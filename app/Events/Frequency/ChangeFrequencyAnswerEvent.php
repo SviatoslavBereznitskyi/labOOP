@@ -19,20 +19,15 @@ class ChangeFrequencyAnswerEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
         if(false === isset(Subscription::getAvailableServices()[(int)$this->answer-1])){
-            Telegram::sendMessage([
-                'chat_id' => $this->telegramUserId,
-                'text'=> Subscription::getMessageAvailableServices(),
-            ]);
+
+            $this->sendMessage(Subscription::getMessageAvailableServices());
 
             return;
         }
 
         $this->lastMessage->setKeyboardCommand()->save();
 
-        Telegram::sendMessage([
-            'chat_id' => $this->telegramUserId,
-            'text' => 'insert frequency in minutes',
-        ]);
+        $this->sendMessage('insert frequency in minutes');
 
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer-1]);
