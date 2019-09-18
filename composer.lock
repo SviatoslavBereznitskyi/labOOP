@@ -1547,16 +1547,16 @@
         },
         {
             "name": "danog/madelineproto",
-            "version": "4.2.11",
+            "version": "4.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danog/MadelineProto.git",
-                "reference": "f6573be3321798765757b9ccc80ba4810d605ad0"
+                "reference": "1f33dc9e33a1d3282c98d4c17a2c5244e0bff117"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/danog/MadelineProto/zipball/f6573be3321798765757b9ccc80ba4810d605ad0",
-                "reference": "f6573be3321798765757b9ccc80ba4810d605ad0",
+                "url": "https://api.github.com/repos/danog/MadelineProto/zipball/1f33dc9e33a1d3282c98d4c17a2c5244e0bff117",
+                "reference": "1f33dc9e33a1d3282c98d4c17a2c5244e0bff117",
                 "shasum": ""
             },
             "require": {
@@ -1631,7 +1631,7 @@
                 "telegram",
                 "video"
             ],
-            "time": "2019-09-15T16:19:51+00:00"
+            "time": "2019-09-17T21:54:42+00:00"
         },
         {
             "name": "danog/magicalserializer",
@@ -3268,6 +3268,68 @@
             "time": "2019-09-03T15:27:17+00:00"
         },
         {
+            "name": "laravel/telescope",
+            "version": "v2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/telescope.git",
+                "reference": "d9c5c53d3a0c60dcd4ef3777884d0cf368eb3e6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/d9c5c53d3a0c60dcd4ef3777884d0cf368eb3e6f",
+                "reference": "d9c5c53d3a0c60dcd4ef3777884d0cf368eb3e6f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": "~5.8.0|^6.0|^7.0",
+                "moontoast/math": "^1.1",
+                "php": "^7.1.3",
+                "symfony/var-dumper": "^4.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.8|^4.0|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Telescope\\TelescopeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Telescope\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Mohamed Said",
+                    "email": "mohamed@laravel.com"
+                }
+            ],
+            "description": "An elegant debug assistant for the Laravel framework.",
+            "keywords": [
+                "debugging",
+                "laravel",
+                "monitoring"
+            ],
+            "time": "2019-08-30T11:58:27+00:00"
+        },
+        {
             "name": "laravel/tinker",
             "version": "v1.0.10",
             "source": {
@@ -3404,12 +3466,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LaravelRUS/SleepingOwlAdmin.git",
-                "reference": "a9c3743c8c951734bfcaba2edd2c6f3fcccd7821"
+                "reference": "e25ad038835a0cd3129d99e6def7ba2b6493d879"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LaravelRUS/SleepingOwlAdmin/zipball/a9c3743c8c951734bfcaba2edd2c6f3fcccd7821",
-                "reference": "a9c3743c8c951734bfcaba2edd2c6f3fcccd7821",
+                "url": "https://api.github.com/repos/LaravelRUS/SleepingOwlAdmin/zipball/e25ad038835a0cd3129d99e6def7ba2b6493d879",
+                "reference": "e25ad038835a0cd3129d99e6def7ba2b6493d879",
                 "shasum": ""
             },
             "require": {
@@ -3478,7 +3540,7 @@
                 "laravel",
                 "panel"
             ],
-            "time": "2019-09-06T14:32:26+00:00"
+            "time": "2019-09-17T22:01:21+00:00"
         },
         {
             "name": "league/event",
