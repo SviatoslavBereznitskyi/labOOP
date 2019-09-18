@@ -7,10 +7,10 @@ namespace App\Services\Telegram;
 use App\Events\ChangeFrequencyAnswerEvent;
 use App\Events\ChangeFrequencyEvent;
 use App\Events\SetFrequencyEvent;
-use App\Events\SubscriptionAnswerEvent;
+use App\Events\SubscriptionSelectServiceEvent;
 use App\Events\SubscriptionEvent;
 use App\Events\SubscriptionKeywordsEvent;
-use App\Events\UnsubscriptionAnswerEvent;
+use App\Events\UnsubscriptionSelectServiceEvent;
 use App\Events\UnsubscriptionEvent;
 use App\Events\UnsubscriptionKeywordsEvent;
 
@@ -18,8 +18,8 @@ class Commands
 {
     const SUBSCRIBE_COMMAND             = SubscriptionEvent::class;
     const UNSUBSCRIBE_COMMAND           = UnsubscriptionEvent::class;
-    const SUBSCRIBE_ANSWER_EVENT        = SubscriptionAnswerEvent::class;
-    const UNSUBSCRIBE_ANSWER_EVENT      = UnsubscriptionAnswerEvent::class;
+    const SUBSCRIBE_ANSWER_EVENT        = SubscriptionSelectServiceEvent::class;
+    const UNSUBSCRIBE_ANSWER_EVENT      = UnsubscriptionSelectServiceEvent::class;
     const SUBSCRIPTION_KEYWORDS_EVENT   = SubscriptionKeywordsEvent::class;
     const CHANGE_FREQUENCY_COMMAND      = ChangeFrequencyEvent::class;
     const CHANGE_FREQUENCY_EVENT        = ChangeFrequencyAnswerEvent::class;

@@ -13,7 +13,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Telegram;
 
-class UnsubscriptionAnswerEvent extends AnswerKeyboardCommandEvent
+class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {

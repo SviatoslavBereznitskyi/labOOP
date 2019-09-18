@@ -27,9 +27,13 @@ class HomeController extends Controller
     {
         $madelineProto = new \danog\MadelineProto\API('session.madeline', config('mdproto'));
 
-
-        $messages_Messages = $madelineProto->messages->getHistory([
-            'limit' => 25,
+        $messages_Messages = $madelineProto->get_dialogs([
+            'offset_id'=>'',
+            'offset_date'=>'',
+            'add_offset'=>'',
+            'limit'=>'',
+            'max_id'=>'',
+            'min_id'=>'',
         ]);
         dd($messages_Messages);
         return view('home');
@@ -37,7 +41,6 @@ class HomeController extends Controller
 
     public function auth()
     {
-
         $MadelineProto = new API('session.madeline', config('mdproto'));
         $MadelineProto->phone_login('+380984721648');
         $authorization =  $MadelineProto->complete_phone_login(65237);
