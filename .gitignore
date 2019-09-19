@@ -17,3 +17,5 @@ npm-debug.log
 yarn-error.log
 /storage/db/
 ngrok
+session.madeline
+session.madeline.lock
