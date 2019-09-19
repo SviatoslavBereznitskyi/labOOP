@@ -25,16 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd(env('TWITTER_CONSUMER_KEY'));
-        $MadelineProto = new API('session.madeline', config('mdproto'));
-        $MadelineProto->phone_login('+380984721648');
-        $authorization =  $MadelineProto->complete_phone_login(14097);
-        return view('home');
-    }
-
-    public function auth()
-    {
-
         return view('home');
     }
 }

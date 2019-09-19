@@ -20,10 +20,8 @@ class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
         if(false === isset(Subscription::getAvailableServices()[(int)$this->answer-1])){
-            Telegram::sendMessage([
-                'chat_id' => $this->telegramUserId,
-                'text'=> Subscription::getMessageAvailableServices(),
-                ]);
+
+            $this->sendMessage(Subscription::getMessageAvailableServices());
 
             return;
         }
@@ -38,6 +36,8 @@ class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer-1]);
+
+        $this->sendMessage(trans('answers.enter_key_words'));
 
         $this->commandService->setCommandMessage(get_class($this), $this->lastMessage->getKey(), $subscription);
     }

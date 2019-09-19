@@ -16,9 +16,10 @@ class Subscription extends Model implements Transformable
 {
     use TransformableTrait;
 
-    const TWITTER_SERVICE = 'Twitter';
+    const TWITTER_SERVICE  = 'Twitter';
     const FACEBOOK_SERVICE = 'Facebook';
-    const UPWORK_SERVICE = 'UpWork';
+    const UPWORK_SERVICE   = 'UpWork';
+    const TELEGRAM_SERVICE = 'Telegram';
 
     protected $guarded = [];
 
@@ -32,6 +33,7 @@ class Subscription extends Model implements Transformable
             self::TWITTER_SERVICE,
             self::FACEBOOK_SERVICE,
             self::UPWORK_SERVICE,
+            self::TELEGRAM_SERVICE,
         ];
     }
 
