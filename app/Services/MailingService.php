@@ -33,7 +33,7 @@ class MailingService implements MailingServiceInterface
     }
 
     /**
-     * @param int $userId
+     * @param int $user
      * @return array
      */
     private function getPostTwitter(TelegramUser $user)
@@ -76,7 +76,7 @@ class MailingService implements MailingServiceInterface
     }
 
     /**
-     * @param int $userId
+     * @param int $user
      * @return array
      */
     private function getPostUpwork(TelegramUser $user)
@@ -104,8 +104,22 @@ class MailingService implements MailingServiceInterface
         return $messages;
     }
 
+
     /**
-     * @param int $userId
+     * @param int $user
+     * @return array
+     */
+    private function getPostTelegram(TelegramUser $user)
+    {
+        $keywords = $this->getKeywords(Subscription::TELEGRAM_SERVICE, $user);
+
+        $messages = [];
+
+        return $messages;
+    }
+
+    /**
+     * @param int $user
      * @return array
      */
     private function getPostFacebook(TelegramUser $user)
@@ -125,6 +139,7 @@ class MailingService implements MailingServiceInterface
 
         $upwokrPostMessages=[];
         $twitterPostMessages = $this->getPostTwitter($user);
+        $telegramPostMessages =  $this->getPostTelegram($user);
        //$upwokrPostMessages = $this->getPostUpwork($user);
         $facebookPostMessages = $this->getPostFacebook($user);
 
