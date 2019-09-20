@@ -17,7 +17,7 @@ class Login extends Command
     /**
      * @var string
      */
-    protected $signature = 'bot:login {token?}';
+    protected $signature = 'bot:login {--P|phone=} {token?}';
 
     /**
      * @var string
@@ -32,8 +32,18 @@ class Login extends Command
     {
         $madeline = $this->getMadelineInstance();
 
+        $phone = $this->option('phone');
         $token = $this->argument('token');
 
+        if (null !== $phone) {
+            $this->userLogin($madeline, $phone);
+        } else {
+            $this->botLogin($madeline, $token);
+        }
+    }
+
+    protected function botLogin($madeline, $token)
+    {
         if (null === $token) {
             $token = getenv('TELEGRAM_BOT_TOKEN');
             if (null === $token) {
@@ -42,5 +52,14 @@ class Login extends Command
         }
 
         $madeline->bot_login($token);
+    }
+
+    protected function userLogin($madeline, $phone)
+    {
+        $madeline->phone_login($phone);
+
+        $code = readline('Enter the code: ');
+
+        $madeline->complete_phone_login($code);
     }
 }

@@ -19,7 +19,7 @@ class Retrieve extends Command
     /**
      * @var string
      */
-    protected $signature = 'bot:history';
+    protected $signature = 'bot:history {peer?}';
 
     /**
      * @var string
@@ -36,8 +36,24 @@ class Retrieve extends Command
 
         $dialogs = $madeline->get_dialogs();
 
-        foreach ($dialogs as $peer) {
-            $madeline->messages->sendMessage(['peer' => $peer, 'message' => 'message']);
+        $peer = $this->argument('peer');
+
+        if(null === $peer){
+            $peer = readline('Enter peer: ');
+        }
+
+        $messages = $madeline->messages->getHistory([
+            'peer' => $peer,
+            'offset_id' => 0,
+            'offset_date' => 0,
+            'add_offset' => 0,
+            'limit' => 15,
+            'max_id' => 0,
+            'min_id' => 0,
+            ]);
+
+        foreach ($messages['messages'] as $message){
+            dump($message['message']);
         }
     }
 }
