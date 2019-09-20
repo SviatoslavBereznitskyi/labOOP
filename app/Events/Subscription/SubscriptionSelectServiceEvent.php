@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Message;
 use App\Models\Subscription;
 use App\Services\Contracts\SubscriptionServiceInterface;
@@ -21,7 +22,7 @@ class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
     {
         if(false === isset(Subscription::getAvailableServices()[(int)$this->answer-1])){
 
-            $this->sendMessage(Subscription::getMessageAvailableServices());
+            $this->sendMessage(Subscription::getMessageAvailableServices(), KeyboardHelper::networkKeyboard());
 
             return;
         }

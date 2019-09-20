@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Telegram;
-
 
 use App\Events\ChangeFrequencyAnswerEvent;
 use App\Events\ChangeFrequencyEvent;
@@ -14,6 +12,11 @@ use App\Events\UnsubscriptionSelectServiceEvent;
 use App\Events\UnsubscriptionEvent;
 use App\Events\UnsubscriptionKeywordsEvent;
 
+/**
+ * Class Commands
+ *
+ * @package App\Services\Telegram
+ */
 class Commands
 {
     const SUBSCRIBE_COMMAND             = SubscriptionEvent::class;
@@ -28,11 +31,11 @@ class Commands
     const CHANGE_FREQUENCY_EVENT        = ChangeFrequencyAnswerEvent::class;
     const SET_FREQUENCY_EVENT           = SetFrequencyEvent::class;
 
-    public static function getKeyboardCommandsByLang($lang)
+    public static function getCommandsByLang($lang)
     {
         return [
-            self::SUBSCRIBE_COMMAND => trans('commands.' . self::SUBSCRIBE_COMMAND, [], $lang ),
-            self::UNSUBSCRIBE_COMMAND => trans('commands.' . self::UNSUBSCRIBE_COMMAND, [], $lang ),
+            self::SUBSCRIBE_COMMAND        => trans('commands.' . self::SUBSCRIBE_COMMAND, [], $lang ),
+            self::UNSUBSCRIBE_COMMAND      => trans('commands.' . self::UNSUBSCRIBE_COMMAND, [], $lang ),
             self::CHANGE_FREQUENCY_COMMAND => trans('commands.' . self::CHANGE_FREQUENCY_COMMAND, [], $lang ),
         ];
     }
@@ -40,14 +43,14 @@ class Commands
     public static function getAnswersEvents()
     {
         return [
-            self::SUBSCRIBE_COMMAND => self::SUBSCRIBE_ANSWER_EVENT,
-            self::SUBSCRIBE_ANSWER_EVENT => self::SUBSCRIPTION_KEYWORDS_EVENT,
+            self::SUBSCRIBE_COMMAND        => self::SUBSCRIBE_ANSWER_EVENT,
+            self::SUBSCRIBE_ANSWER_EVENT   => self::SUBSCRIPTION_KEYWORDS_EVENT,
 
-            self::UNSUBSCRIBE_COMMAND => self::UNSUBSCRIBE_ANSWER_EVENT,
+            self::UNSUBSCRIBE_COMMAND      => self::UNSUBSCRIBE_ANSWER_EVENT,
             self::UNSUBSCRIBE_ANSWER_EVENT => self::UNSUBSCRIPTION_KEYWORDS_EVENT,
 
             self::CHANGE_FREQUENCY_COMMAND => self::CHANGE_FREQUENCY_EVENT,
-            self::CHANGE_FREQUENCY_EVENT => self::SET_FREQUENCY_EVENT,
+            self::CHANGE_FREQUENCY_EVENT   => self::SET_FREQUENCY_EVENT,
         ];
     }
 
@@ -58,7 +61,7 @@ class Commands
      */
     public static function findCommandByName($name, $locale = 'en')
     {
-        $commands = self::getKeyboardCommandsByLang($locale);
+        $commands = self::getCommandsByLang($locale);
 
         return array_search($name, $commands);
     }

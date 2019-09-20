@@ -1,0 +1,27 @@
+[20-Sep-2019 09:14:47 UTC] Enabled PHP logging
+[20-Sep-2019 09:14:49 UTC] Enabled PHP logging
+Logger:         	MadelineProto
+Logger:         	Copyright (C) 2016-2019 Daniil Gentili
+Logger:         	Licensed under AGPLv3
+Logger:         	https://github.com/danog/MadelineProto
+API:            	Shutting down MadelineProto (normally or due to an exception, idk)
+[20-Sep-2019 09:24:16 UTC] Enabled PHP logging
+[20-Sep-2019 09:24:17 UTC] Enabled PHP logging
+Logger:         	MadelineProto
+Logger:         	Copyright (C) 2016-2019 Daniil Gentili
+Logger:         	Licensed under AGPLv3
+Logger:         	https://github.com/danog/MadelineProto
+API:            	Waiting for shared lock of serialization lockfile...
+API:            	Shared lock acquired, deserializing...
+API:            	Shutting down MadelineProto (normally or due to an exception, idk)
+API:            	Shutting down MadelineProto (normally or due to an exception, idk)
+[20-Sep-2019 09:27:46 UTC] Enabled PHP logging
+[20-Sep-2019 09:27:46 UTC] Enabled PHP logging
+Logger:         	MadelineProto
+Logger:         	Copyright (C) 2016-2019 Daniil Gentili
+Logger:         	Licensed under AGPLv3
+Logger:         	https://github.com/danog/MadelineProto
+API:            	Waiting for shared lock of serialization lockfile...
+API:            	Shared lock acquired, deserializing...
+API:            	Shutting down MadelineProto (normally or due to an exception, idk)
+API:            	Shutting down MadelineProto (normally or due to an exception, idk)
