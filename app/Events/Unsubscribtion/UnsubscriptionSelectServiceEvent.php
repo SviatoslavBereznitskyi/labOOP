@@ -2,22 +2,24 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
-use App\Services\Telegram\Commands;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Telegram;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
+/**
+ * Class UnsubscriptionSelectServiceEvent
+ *
+ * @package App\Events
+ */
 class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        if (false === isset(Subscription::getAvailableServices()[(int)$this->answer - 1])) {
+        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
+
+        $services = Subscription::getAvailableServices();
+
+        if (false === in_array($this->answer, $services)) {
 
             $this->sendMessage(Subscription::getMessageAvailableServices());
 
@@ -25,7 +27,7 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
         }
 
         $subscription = $this->subscriptionService
-            ->getByUserAndService($this->telegramUserId, Subscription::getAvailableServices()[$this->answer - 1]);
+            ->getByUserAndService($this->telegramUserId, $this->answer);
 
         if (!$subscription) {
 
@@ -36,9 +38,12 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
-        $text = $this->subscriptionService->getKeywords($subscription->getKey());
+        $items = $this->subscriptionService->getKeywordsForKeyboard($subscription->getKey());
 
-        $this->sendMessage($text);
+        $this->sendMessage(
+            trans('answers.choose_words_in_menu_for_delete', [], $language),
+            KeyboardHelper::itemKeyboard($items, $language)
+        );
 
         $this->commandService->setCommandMessage(get_class($this), $this->lastMessage->getKey(), $subscription);
     }

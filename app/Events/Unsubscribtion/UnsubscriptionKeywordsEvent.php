@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
+use App\Services\Telegram\Commands;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -19,30 +21,47 @@ use Telegram;
  */
 class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
+
+    /**
+     * @throws \Exception
+     */
     public function executeCommand()
     {
-        $words = explode(' ', $this->answer);
-
-        /** @var Subscription $model */
+        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
         $subscription = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
 
-        $keywords = $subscription->getKeywords();
+        if ($this->answer !== trans(Commands::DONE, [], $language)) {
 
-        foreach ($words as $key => $word)
-        {
-            if (isset($keywords[$key])) {
+            $answer = 'answers.deleted_keyword';
+
+            $keywords = $subscription->getKeywords();
+
+            if (in_array($this->answer, $keywords)) {
+                $key = array_search($this->answer, $keywords);
                 unset($keywords[$key]);
             }
+
+            $subscriptionData = [
+                'keywords' => array_values($keywords),
+            ];
+
+            $this->subscriptionService->update($subscriptionData, $subscription->getKey());
+
+            $items = $this->subscriptionService->getKeywordsForKeyboard($subscription->getKey());
+
+            if ($this->answer === trans(Commands::DELETE_ALL, [], $language)) {
+                $this->subscriptionService->update(['keywords' => []], $subscription->getKey());
+
+                $items = [];
+                $answer = 'answers.deleted_keywords';
+            }
+
+            $this->sendMessage(trans($answer, [], $language), KeyboardHelper::itemKeyboard($items, $language));
+
+            return;
         }
 
-        $subscriptionData = [
-            'keywords' => array_values($keywords),
-        ];
-
-        $this->subscriptionService->update($subscriptionData, $subscription->getKey());
-
+        $this->sendMessage(trans(Commands::DONE, [], $language), KeyboardHelper::commandsKeyboard());
         $this->lastMessage->delete();
-
-        $this->sendMessage(trans('answers.deleted_keywords'));
     }
 }

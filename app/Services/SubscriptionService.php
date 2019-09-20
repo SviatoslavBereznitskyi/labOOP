@@ -57,6 +57,11 @@ class SubscriptionService implements SubscriptionServiceInterface
         return $this->subscriptionRepository->getByUserService($userId, $service);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return array|\Illuminate\Contracts\Translation\Translator|string|null
+     */
     public function getKeywords(int $id)
     {
         /** @var Subscription $subscription */
@@ -69,5 +74,25 @@ class SubscriptionService implements SubscriptionServiceInterface
         }
 
         return $text;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return array
+     */
+    public function getKeywordsForKeyboard(int $id)
+    {
+        /** @var Subscription $subscription */
+        $subscription = $this->subscriptionRepository->find($id);
+
+        $text = trans('answers.input.select_word');
+
+        $array = [];
+        foreach ($subscription->getKeywords() as $key => $item) {
+            $array[] = $item;
+        }
+
+        return $array;
     }
 }

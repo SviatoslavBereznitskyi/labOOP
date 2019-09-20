@@ -1,18 +1,20 @@
 <?php
 
-
 namespace App\TelegramCommands;
 
-
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\TelegramUserRepository;
 
-use App\Services\Telegram\Commands;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
-use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
+/**
+ * Class KeyboardCommand
+ *
+ * @package App\TelegramCommands
+ */
 class KeyboardCommand extends Command
 {
     /**
@@ -23,12 +25,12 @@ class KeyboardCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = 'Help command, Get a list of commands';
+    protected $description = 'answers.keyboard_command';
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->replyWithChatAction(['action'=> Actions::TYPING]);
 
@@ -41,16 +43,13 @@ class KeyboardCommand extends Command
             /** @var TelegramUser $user */
             $user = $telegramUserRepository->find($userData['chat']['id']);
 
-            $keyboard = Commands::getKeyboardCommandsByLang($user->getLocale());
-
-            $keyboard = array_chunk($keyboard, 3);
-
-            sleep ( 1 );
-            $reply_markup = Keyboard::make([
-                'keyboard' => $keyboard,
-                'resize_keyboard' => true,
-                'one_time_keyboard' => true
-            ]);
+            $reply_markup = KeyboardHelper::commandsKeyboard(
+                $user->getLocale(),
+                [
+                    'resize_keyboard' => true,
+                    'one_time_keyboard' => true
+                ]
+            );
 
             $response = Telegram::sendMessage([
                 'chat_id' => $user->getKey(),
