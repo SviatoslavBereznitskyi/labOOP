@@ -217,12 +217,8 @@ class MailingService implements MailingServiceInterface
      */
     private function sendMessagesToUser(TelegramUser $user)
     {
-
-        // $upwokrPostMessages = [];
-
         $telegramPostMessages = $this->getPostTelegram($user);
         $twitterPostMessages = $this->getPostTwitter($user);
-        //  $facebookPostMessages = $this->getPostFacebook($user);
 
         $messages = array_merge($telegramPostMessages, $twitterPostMessages);
 
