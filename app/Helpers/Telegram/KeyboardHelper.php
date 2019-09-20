@@ -17,16 +17,20 @@ class KeyboardHelper
     /**
      * @return Keyboard
      */
-    public static function networkKeyboard()
+    public static function networkKeyboard($services = null)
     {
-        $keyboard = Subscription::getAvailableServices();
+        if (null === $services) {
+            $keyboard = Subscription::getAvailableServices();
+        } else {
+            $keyboard = $services;
+        }
 
         $keyboard = array_chunk($keyboard, 3);
 
         return Keyboard::make([
             'keyboard' => $keyboard,
             'resize_keyboard' => true,
-            'one_time_keyboard' => false
+            'one_time_keyboard' => true
         ]);
     }
 

@@ -53,6 +53,8 @@ class Subscription extends Model implements Transformable
         return $text;
     }
 
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
