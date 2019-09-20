@@ -25,7 +25,7 @@ class KeyboardCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = 'Show keyboard';
+    protected $description = 'answers.keyboard_command';
 
     /**
      * @return void

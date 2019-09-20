@@ -5,6 +5,7 @@ namespace App\Helpers\Telegram;
 use App\Models\Subscription;
 use App\Services\Telegram\Commands;
 use Telegram\Bot\Keyboard\Keyboard;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /**
  * Class KeyboardHelper
@@ -37,9 +38,10 @@ class KeyboardHelper
     /**
      * @return Keyboard
      */
-    public static function commandsKeyboard($lang, $params = []): Keyboard
+    public static function commandsKeyboard($lang = null, $params = []): Keyboard
     {
-        $keyboard = Commands::getCommandsByLang($lang);
+        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
+        $keyboard = Commands::getCommandsByLang($language);
 
         $keyboard = array_chunk($keyboard, 3);
 
@@ -50,6 +52,27 @@ class KeyboardHelper
             'keyboard'          => $keyboard,
             'resize_keyboard'   => $resizeKeyboard,
             'one_time_keyboard' => $oneTimeKeyboard,
+        ]);
+    }
+
+    /**
+     * @param $items
+     *
+     * @return Keyboard
+     */
+    public static function itemKeyboard($items, $language): Keyboard
+    {
+        $keyboard   = $items;
+        $keyboard   = array_chunk($keyboard, 5);
+        $keyboard[] = [
+            trans(Commands::DELETE_ALL, [], $language),
+            trans(Commands::DONE, [], $language),
+        ];
+
+        return Keyboard::make([
+            'keyboard'          => $keyboard,
+            'resize_keyboard'   => true,
+            'one_time_keyboard' => false,
         ]);
     }
 

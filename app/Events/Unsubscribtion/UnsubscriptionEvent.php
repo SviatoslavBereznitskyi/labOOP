@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
 
 /**
@@ -11,8 +12,12 @@ use App\Models\Subscription;
  */
 class UnsubscriptionEvent extends GlobalKeyboardCommandEvent
 {
+
+    /**
+     * @return void
+     */
     public function executeCommand()
     {
-        $this->sendMessage(Subscription::getMessageAvailableServices());
+        $this->sendMessage(Subscription::getMessageAvailableServices(), KeyboardHelper::networkKeyboard());
     }
 }

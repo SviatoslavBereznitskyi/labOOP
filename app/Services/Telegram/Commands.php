@@ -19,6 +19,14 @@ use App\Events\UnsubscriptionKeywordsEvent;
  */
 class Commands
 {
+
+    /**
+     * KeyboardCommands
+     */
+    const DONE       = 'answers.done';
+    const DELETE_ALL = 'answers.delete_all';
+
+
     const SUBSCRIBE_COMMAND             = SubscriptionEvent::class;
     const SUBSCRIPTION_KEYWORDS_EVENT   = SubscriptionKeywordsEvent::class;
     const SUBSCRIBE_ANSWER_EVENT        = SubscriptionSelectServiceEvent::class;

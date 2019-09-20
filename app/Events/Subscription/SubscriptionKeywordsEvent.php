@@ -31,6 +31,6 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         $this->lastMessage->delete();
 
-        $this->sendMessage(trans('answers.saved_keywords'), KeyboardHelper::commandsKeyboard($language));
+        $this->sendMessage(trans('answers.saved_keywords', [], $language), KeyboardHelper::commandsKeyboard($language));
     }
 }
