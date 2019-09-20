@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Console\Commands\Bot\TelegramTrait;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\TelegramUserRepository;
 use App\Services\Contracts\TelegramServiceInterface;
@@ -11,10 +12,15 @@ use Telegram;
 
 class TelegramService implements TelegramServiceInterface
 {
+    use TelegramTrait;
     /**
      * @var TelegramUserRepository
      */
     private $telegramUserRepository;
+    /**
+     * @var \danog\MadelineProto\API
+     */
+    private $madeline;
 
     public function __construct(TelegramUserRepository $telegramUserRepository)
     {
@@ -47,4 +53,16 @@ class TelegramService implements TelegramServiceInterface
 
         return $user;
     }
+
+    public function getSearch(array $query)
+    {
+        if(null === $this->madeline){
+            $this->madeline = $this->getMadelineInstance();
+        }
+
+        $messages = $this->madeline->messages->searchGlobal($query);
+        return $messages;
+    }
+
+
 }

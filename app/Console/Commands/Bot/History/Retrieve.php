@@ -55,5 +55,15 @@ class Retrieve extends Command
         foreach ($messages['messages'] as $message){
             dump($message['message']);
         }
+
+        $messages = $madeline->messages->searchGlobal(
+            [
+                'q' => 'string',
+                'offset_rate' => 0,
+                'offset_id' => 0,
+                'limit' => 100,
+                ]
+        );
+        dump($messages);
     }
 }

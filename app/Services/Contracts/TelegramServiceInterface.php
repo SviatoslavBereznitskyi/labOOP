@@ -9,4 +9,6 @@ interface TelegramServiceInterface
     public function getEventInstance($name, array $parameters = []);
 
     public function findOrCreateUser(array $parameters = []);
+
+    public function getSearch(array $query);
 }

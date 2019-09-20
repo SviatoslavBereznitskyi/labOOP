@@ -39,6 +39,7 @@ class SendMessages extends Command
      */
     public function handle()
     {
+
         /** @var MailingService $mailingService */
         $mailingService = resolve(MailingServiceInterface::class);
 

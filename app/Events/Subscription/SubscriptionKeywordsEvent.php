@@ -18,7 +18,7 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $keywords = explode(' ', $this->answer);
+        $keywords = explode(',', $this->answer);
 
         /** @var Subscription $model */
         $subscription = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
