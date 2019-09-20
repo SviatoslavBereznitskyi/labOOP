@@ -9,6 +9,7 @@ use App\Models\TelegramUser;
 use App\Repositories\Contracts\SentMessagesRepository;
 use App\Repositories\Contracts\TelegramUserRepository;
 use App\Services\Contracts\MailingServiceInterface;
+use App\Services\Contracts\TelegramServiceInterface;
 use Carbon\Carbon;
 use Telegram;
 use Twitter;
@@ -25,11 +26,19 @@ class MailingService implements MailingServiceInterface
      * @var SentMessagesRepository
      */
     private $sentMessagesRepository;
+    /**
+     * @var TelegramServiceInterface
+     */
+    private $telegramService;
 
-    public function __construct(TelegramUserRepository $telegramUserRepository, SentMessagesRepository $sentMessagesRepository)
+    public function __construct(
+        TelegramUserRepository $telegramUserRepository,
+        SentMessagesRepository $sentMessagesRepository,
+        TelegramServiceInterface $telegramService)
     {
         $this->telegramUserRepository = $telegramUserRepository;
         $this->sentMessagesRepository = $sentMessagesRepository;
+        $this->telegramService = $telegramService;
     }
 
     /**
@@ -42,26 +51,25 @@ class MailingService implements MailingServiceInterface
         $messages = [];
         $sentMessages = $user->sentMessages()
             ->where('service', Subscription::TWITTER_SERVICE)
-            ->whereDate('created_at', Carbon::now())
             ->get();
         foreach ($keywords as $keyword) {
             foreach ($this->lang as $lang) {
                 $query = [
-                    'q' => $keyword. ' lang:' . $lang,
+                    'q' => $keyword . ' lang:' . $lang,
                     'maxResults' => '5',
-                    'fromDate' => Carbon::now()->subMinutes(10),
+                    'fromDate' => Carbon::now()->subMinutes(350),
                     'toDate' => Carbon::now(),
                 ];
 
                 $twits = Twitter::getSearch($query);
 
                 foreach ($twits->statuses as $status) {
-                    if( $sentMessages->where('post_id', $status->id)->first() !== null){
+                    if ($sentMessages->where('post_id', $status->id)->first() !== null) {
                         continue;
                     }
                     $messages[] = [
                         'chat_id' => $user->getKey(),
-                        'text' => $keyword . PHP_EOL . $status->text,
+                        'text' => $keyword . PHP_EOL . utf8_encode($status->text),
                     ];
                     $this->sentMessagesRepository->create([
                         'post_id' => $status->id,
@@ -84,7 +92,6 @@ class MailingService implements MailingServiceInterface
         $keywords = $this->getKeywords(Subscription::UPWORK_SERVICE, $user);
         $sentMessages = $user->sentMessages()
             ->where('service', Subscription::UPWORK_SERVICE)
-            ->where('created_at', Carbon::now())
             ->get();
 
         $config = config('upwork');
@@ -111,11 +118,85 @@ class MailingService implements MailingServiceInterface
      */
     private function getPostTelegram(TelegramUser $user)
     {
+        $botId = Telegram::bot()->getMe()->id;
+
         $keywords = $this->getKeywords(Subscription::TELEGRAM_SERVICE, $user);
+
+        $sentMessages = $user->sentMessages()
+            ->where('service', Subscription::TELEGRAM_SERVICE)
+            ->get();
 
         $messages = [];
 
+        foreach ($keywords as $keyword) {
+            $result = $this->telegramService->getSearch([
+                'q' => $keyword,
+                'offset_rate' => 0,
+                'offset_id' => 0,
+                'limit' => 99,
+            ]);
+
+            $searchMessages = $result['messages'];
+            $users = $result['users'];
+
+            $this->transformMessages($users, $botId, $searchMessages);
+
+            foreach ($users as $tgUser) {
+                foreach ($tgUser['messages'] as $message) {
+
+                    if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
+                        continue;
+                    }
+
+                    $messages[] = [
+                        'chat_id' => $user->getKey(),
+                        'text' => $this->parseTgUser($tgUser) . PHP_EOL
+                            . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
+                            . substr(utf8_encode($message['message']), 0, 500),
+                    ];
+
+                    $this->sentMessagesRepository->create([
+                        'post_id' => $message['id'],
+                        'telegram_user_id' => $user->getKey(),
+                        'service' => Subscription::TELEGRAM_SERVICE,
+                    ]);
+                }
+            }
+        }
+
         return $messages;
+    }
+
+    /**
+     * @param array $users
+     * @param $botId
+     * @param $searchMessages
+     */
+    private function transformMessages(array &$users, $botId, $searchMessages)
+    {
+        array_walk($users, function (&$user) use ($botId, $searchMessages) {
+
+            $user['messages'] = [];
+            if ($botId !== $user['id']) {
+                $user['messages'] = array_filter($searchMessages, function ($message) use ($user) {
+                    //  dump($message);
+                    if (array_key_exists('from_id', $message)) {
+                        return $message['from_id'] == $user['id'];
+                    }
+                    return false;
+                });
+            }
+        });
+    }
+
+    private function parseTgUser(array $user)
+    {
+        $firstName = key_exists('first_name', $user) ? $user['first_name'] : ' ';
+        $username = key_exists('username', $user) ? $user['username'] : ' ';
+        $lastName = key_exists('last_name', $user) ? $user['last_name'] : ' ';
+        $phone = key_exists('phone', $user) ? $user['phone'] : ' ';
+
+        return "$firstName $lastName\n@$username\n$phone";
     }
 
     /**
@@ -136,14 +217,11 @@ class MailingService implements MailingServiceInterface
      */
     private function sendMessagesToUser(TelegramUser $user)
     {
-
-        $upwokrPostMessages=[];
+        $telegramPostMessages = $this->getPostTelegram($user);
         $twitterPostMessages = $this->getPostTwitter($user);
-        $telegramPostMessages =  $this->getPostTelegram($user);
-       //$upwokrPostMessages = $this->getPostUpwork($user);
-        $facebookPostMessages = $this->getPostFacebook($user);
 
-        $messages = array_merge($facebookPostMessages, $twitterPostMessages, $upwokrPostMessages);
+        $messages = array_merge($telegramPostMessages, $twitterPostMessages);
+
 
         foreach ($messages as $message) {
             Telegram::sendMessage($message);

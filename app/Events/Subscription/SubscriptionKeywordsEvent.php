@@ -15,7 +15,7 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $keywords = explode(' ', $this->answer);
+        $keywords = explode(',', $this->answer);
         $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
 
         /** @var Subscription $model */
