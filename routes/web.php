@@ -16,6 +16,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes(['register' => false]);
+
 Route::middleware(['auth'])
     ->prefix('admin')
     ->namespace('Admin')
@@ -27,46 +29,9 @@ Route::middleware(['auth'])
 
 Route::post(Telegram::getAccessToken(), TelegramController::class . '@commands')->name('telegram.commands');
 
-Auth::routes();
 
-Route::match(['post', 'get'], 'register', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('register');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/login/facebook', 'Auth\LoginController@redirectToFacebookProvider');
-
-Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderFacebookCallback');
-
-Route::group(['middleware' => [
-    'auth'
-]], function () {
-    Route::get('/user', 'GraphController@retrieveUserProfile');
-    Route::post('/user', 'GraphController@publishToProfile');
-    Route::post('/page', 'GraphController@publishToPage');
-});
-
-Route::get('twitter/test', TwitterController::class.'@test');
-Route::get('twitter/callback', TwitterController::class.'@callback')->name('twitter.callback');
-Route::get('/homeTimeline', function()
-{
-    $fb = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
-    try {
-        $response = $fb->get('/search/posts/?q=фвфів', 'user-access-token');
-    } catch(\Facebook\Exceptions\FacebookSDKException $e) {
-        dd($e->getMessage());
-    }
-
-    $userNode = $response->getGraphUser();
-    printf('Hello, %s!', $userNode->getName());
-});
-
-Route::get('/twitter/get', function()
-{
-    Artisan::call('send:messages');
-    return 'success';
-});
 
 
