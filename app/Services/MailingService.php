@@ -76,14 +76,13 @@ class MailingService implements MailingServiceInterface
                         continue;
                     }
                     $messages[] = [
-                        'chat_id' => $user->getKey(),
-                        'text' => $keyword . PHP_EOL . ($status->text),
-                    ];
-                    $this->sentMessagesRepository->create([
-                        'post_id' => $status->id,
-                        'telegram_user_id' => $user->getKey(),
+                        'message_id' => $status->id,
                         'service' => Subscription::TWITTER_SERVICE,
-                    ]);
+                        'message' => [
+                            'chat_id' => $user->getKey(),
+                            'text' => $keyword . PHP_EOL . ($status->text),
+                        ]
+                    ];
                 }
             }
         }
@@ -151,23 +150,21 @@ class MailingService implements MailingServiceInterface
 
             foreach ($users as $tgUser) {
                 foreach ($tgUser['messages'] as $message) {
-
                     if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
                         continue;
                     }
 
                     $messages[] = [
-                        'chat_id' => $user->getKey(),
-                        'text' => $this->parseTgUser($tgUser) . PHP_EOL
-                            . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
-                            . substr($message['message'], 0, 500),
-                    ];
-
-                    $this->sentMessagesRepository->create([
-                        'post_id' => $message['id'],
-                        'telegram_user_id' => $user->getKey(),
+                        'message_id' => $message['id'],
                         'service' => Subscription::TELEGRAM_SERVICE,
-                    ]);
+                        'message' => [
+                            'chat_id' => $user->getKey(),
+                            'text' => $this->parseTgUser($tgUser) . PHP_EOL
+                                . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
+                                . substr($message['message'], 0, 500),
+                        ],
+
+                    ];
                 }
             }
         }
@@ -229,12 +226,17 @@ class MailingService implements MailingServiceInterface
         $telegramPostMessages = $this->getPostTelegram($user, $frequency);
         $twitterPostMessages = $this->getPostTwitter($user, $frequency);
 
-
         $messages = array_merge($telegramPostMessages, $twitterPostMessages);
 
+        foreach ($messages as $key => $message) {
 
-        foreach ($messages as $message) {
-            Telegram::sendMessage($message);
+            $this->sentMessagesRepository->create([
+                'post_id' => $message['message_id'],
+                'telegram_user_id' => $user->getKey(),
+                'service' => $message['service'],
+            ]);
+
+            Telegram::sendMessage($message['message']);
         }
     }
 
