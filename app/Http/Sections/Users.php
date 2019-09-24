@@ -4,6 +4,9 @@ namespace App\Http\Sections;
 
 use AdminColumn;
 use AdminDisplay;
+use AdminForm;
+use AdminFormElement;
+use App\Models\Accessory;
 use App\Models\User;
 use SleepingOwl\Admin\Contracts\Display\DisplayInterface;
 use SleepingOwl\Admin\Contracts\Form\FormInterface;
@@ -66,7 +69,15 @@ class Users extends Section
      */
     public function onEdit($id)
     {
-        // remove if unused
+        $form = AdminForm::panel();
+        $form->addBody([
+            AdminFormElement::text('name', trans('user.name'))->required(),
+            AdminFormElement::text('email', trans('user.email'))->required(),
+            AdminFormElement::password('password', trans('user.password'))->allowEmptyValue(),
+
+        ]);
+
+        return $form;
     }
 
     /**

@@ -9,11 +9,6 @@ use Telegram;
 
 class SettingController extends Controller
 {
-    public function index()
-    {
-        return view('admin.settings', Settings::getSettings()->toArray());
-    }
-
     public function store(SettingRequest $request)
     {
         Settings::query()->whereNotNull('key')->delete();
