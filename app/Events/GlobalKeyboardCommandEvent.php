@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Events;
 
-
-use App\Repositories\Contracts\MessageRepository;
+use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\CommandServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
 use App\Services\Contracts\TelegramServiceInterface;
@@ -31,7 +29,7 @@ abstract class GlobalKeyboardCommandEvent
     protected $telegramService;
 
     /**
-     * @var MessageRepository
+     * @var CommandRepository
      */
     protected $messageRepository;
 
@@ -39,6 +37,11 @@ abstract class GlobalKeyboardCommandEvent
      * @var CommandServiceInterface
      */
     protected $commandService;
+
+    /**
+     * @var string
+     */
+    protected $language;
 
     abstract function executeCommand();
 
@@ -51,8 +54,9 @@ abstract class GlobalKeyboardCommandEvent
         $this->telegramUserId = $telegramUserId;
         $this->subscriptionService = resolve(SubscriptionServiceInterface::class);
         $this->telegramService = resolve(TelegramServiceInterface::class);
-        $this->messageRepository = resolve(MessageRepository::class);
+        $this->messageRepository = resolve(CommandRepository::class);
         $this->commandService = resolve(CommandServiceInterface::class);
+        $this->language = \Telegram::getWebhookUpdates()['message']['from']['language_code'];
     }
 
     /**

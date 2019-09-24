@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Subscription;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\SentMessagesRepository;
+use App\Repositories\Contracts\SubscriptionRepository;
 use App\Repositories\Contracts\TelegramUserRepository;
 use App\Services\Contracts\MailingServiceInterface;
 use App\Services\Contracts\TelegramServiceInterface;
@@ -30,24 +31,31 @@ class MailingService implements MailingServiceInterface
      * @var TelegramServiceInterface
      */
     private $telegramService;
+    /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptionRepository;
 
     public function __construct(
         TelegramUserRepository $telegramUserRepository,
+        SubscriptionRepository $subscriptionRepository,
         SentMessagesRepository $sentMessagesRepository,
         TelegramServiceInterface $telegramService)
     {
         $this->telegramUserRepository = $telegramUserRepository;
         $this->sentMessagesRepository = $sentMessagesRepository;
         $this->telegramService = $telegramService;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
      * @param int $user
      * @return array
      */
-    private function getPostTwitter(TelegramUser $user)
+    private function getPostTwitter(TelegramUser $user, $frequency)
     {
-        $keywords = $this->getKeywords(Subscription::TWITTER_SERVICE, $user);
+        $keywords = $this->getKeywords(Subscription::TWITTER_SERVICE, $user, $frequency);
+
         $messages = [];
         $sentMessages = $user->sentMessages()
             ->where('service', Subscription::TWITTER_SERVICE)
@@ -69,7 +77,7 @@ class MailingService implements MailingServiceInterface
                     }
                     $messages[] = [
                         'chat_id' => $user->getKey(),
-                        'text' => $keyword . PHP_EOL . utf8_encode($status->text),
+                        'text' => $keyword . PHP_EOL . ($status->text),
                     ];
                     $this->sentMessagesRepository->create([
                         'post_id' => $status->id,
@@ -116,11 +124,11 @@ class MailingService implements MailingServiceInterface
      * @param int $user
      * @return array
      */
-    private function getPostTelegram(TelegramUser $user)
+    private function getPostTelegram(TelegramUser $user, $frequency)
     {
         $botId = Telegram::bot()->getMe()->id;
 
-        $keywords = $this->getKeywords(Subscription::TELEGRAM_SERVICE, $user);
+        $keywords = $this->getKeywords(Subscription::TELEGRAM_SERVICE, $user, $frequency);
 
         $sentMessages = $user->sentMessages()
             ->where('service', Subscription::TELEGRAM_SERVICE)
@@ -152,7 +160,7 @@ class MailingService implements MailingServiceInterface
                         'chat_id' => $user->getKey(),
                         'text' => $this->parseTgUser($tgUser) . PHP_EOL
                             . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
-                            . substr(utf8_encode($message['message']), 0, 500),
+                            . substr($message['message'], 0, 500),
                     ];
 
                     $this->sentMessagesRepository->create([
@@ -200,12 +208,13 @@ class MailingService implements MailingServiceInterface
     }
 
     /**
-     * @param int $user
+     * @param TelegramUser $user
+     * @param $frequency
      * @return array
      */
-    private function getPostFacebook(TelegramUser $user)
+    private function getPostFacebook(TelegramUser $user, $frequency)
     {
-        $keywords = $this->getKeywords(Subscription::FACEBOOK_SERVICE, $user);
+        $keywords = $this->getKeywords(Subscription::FACEBOOK_SERVICE, $user, $frequency);
 
         $messages = [];
 
@@ -215,10 +224,11 @@ class MailingService implements MailingServiceInterface
     /**
      * @param int $userId
      */
-    private function sendMessagesToUser(TelegramUser $user)
+    private function sendMessagesToUser(TelegramUser $user, $frequency)
     {
-        $telegramPostMessages = $this->getPostTelegram($user);
-        $twitterPostMessages = $this->getPostTwitter($user);
+        $telegramPostMessages = $this->getPostTelegram($user, $frequency);
+        $twitterPostMessages = $this->getPostTwitter($user, $frequency);
+
 
         $messages = array_merge($telegramPostMessages, $twitterPostMessages);
 
@@ -228,10 +238,16 @@ class MailingService implements MailingServiceInterface
         }
     }
 
-    private function getKeywords($service, TelegramUser $user)
+    private function getKeywords($service, TelegramUser $user, $frequency)
     {
         /** @var Subscription $subscription */
-        $subscription = $user->subscriptions()->where('service', $service)->first();
+        $subscription = $user->subscriptions()->byService($service);
+
+        if ($frequency) {
+            $subscription = $subscription->byFrequency($frequency);
+        }
+
+        $subscription = $subscription->first();
 
         if (!$subscription) {
             return [];
@@ -242,12 +258,13 @@ class MailingService implements MailingServiceInterface
         return $keywords;
     }
 
-    public function sendAllSubscription()
+    public function sendSubscription($frequency)
     {
+
         $users = $this->telegramUserRepository->all();
 
         foreach ($users as $user) {
-            $this->sendMessagesToUser($user);
+            $this->sendMessagesToUser($user, $frequency);
         }
     }
 }

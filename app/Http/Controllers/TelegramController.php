@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App;
-use App\Models\Message;
+use App\Models\Command;
 use App\Models\TelegramUser;
-use App\Repositories\Contracts\MessageRepository;
-use App\Repositories\Contracts\TelegramUserRepository;
+use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\TelegramServiceInterface;
 use App\Services\Telegram\Commands;
-use App\TelegramCommands\HelpCommand;
 use Illuminate\Http\Request;
 use Telegram;
 
@@ -27,14 +25,14 @@ class TelegramController extends Controller
         $this->telegramService = $telegramService;
     }
 
-    public function commands(Request $request, MessageRepository $messageRepository, TelegramServiceInterface $telegramService)
+    public function commands(Request $request, CommandRepository $messageRepository, TelegramServiceInterface $telegramService)
     {
-        //Telegram::commandsHandler(true);
         $telegram = Telegram::getWebhookUpdates();
 
         if (!isset($telegram['message'])) {
             return;
         }
+
         $message = $telegram['message'];
 
         /** @var TelegramUser $telegramUser */
@@ -45,15 +43,19 @@ class TelegramController extends Controller
 
         $telegramUser = $this->telegramService->findOrCreateUser($chatData);
 
+        Telegram::commandsHandler(true);
+
         if(false == $telegramUser->isSubscribed()){
             return;
         }
 
-        Telegram::commandsHandler(true);
-
-
-        /** @var Message $lastMessage */
+        /** @var Command $lastMessage */
         $lastMessage = $messageRepository->findByUserOrCreate($telegramUser->getKey());
+
+        if(isset($message['entities'])){
+            $lastMessage->delete();
+            return;
+        }
 
         if ($lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
 
@@ -64,6 +66,7 @@ class TelegramController extends Controller
             if (isset($message['text'])) {
                 $answer = $message['text'];
             }
+
             $parameters = [
                 'telegramUserId' => $telegramUser->getKey(),
                 'answer' => $answer,

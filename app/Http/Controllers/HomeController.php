@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use danog\MadelineProto\API;
-use danog\MadelineProto\MyTelegramOrgWrapper;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

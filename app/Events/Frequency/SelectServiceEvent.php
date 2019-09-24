@@ -2,14 +2,10 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
 
-/**
- * Class SubscriptionSelectServiceEvent
- *
- * @package App\Events
- */
-class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
+class SelectServiceEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
@@ -19,17 +15,11 @@ class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
-        $subscriptionData = [
-            'telegram_user_id' => $this->telegramUserId,
-            'service' => $this->answer,
-        ];
 
-        $this->subscriptionService->updateOrCreate($subscriptionData);
+        $this->sendMessage(trans('answers.input.frequency', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
 
         $subscription = $this->subscriptionService
             ->getByUserAndService($this->telegramUserId, $this->answer);
-
-        $this->sendMessage(trans('answers.enter_key_words', [], $this->language));
 
         $this->commandService->setCommandMessage(get_class($this), $this->lastCommand->getKey(), $subscription);
     }

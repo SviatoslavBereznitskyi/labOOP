@@ -4,16 +4,16 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\MessageRepository;
-use App\Models\Message;
+use App\Repositories\Contracts\CommandRepository;
+use App\Models\Command;
 use App\Validators\MessageValidator;
 
 /**
- * Class MessageRepositoryEloquent.
+ * Class CommandRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class MessageRepositoryEloquent extends BaseRepository implements MessageRepository
+class CommandRepositoryEloquent extends BaseRepository implements CommandRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class MessageRepositoryEloquent extends BaseRepository implements MessageReposit
      */
     public function model()
     {
-        return Message::class;
+        return Command::class;
     }
 
     
@@ -37,21 +37,21 @@ class MessageRepositoryEloquent extends BaseRepository implements MessageReposit
 
     /**
      * @param $userId
-     * @return Message
+     * @return Command
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function findByUserOrCreate($userId)
     {
-        /** @var Message $entity */
-        $entity = $this->findByField(Message::TELEGRAM_USER_ID_FIELD, $userId)->first();
+        /** @var Command $entity */
+        $entity = $this->findByField(Command::TELEGRAM_USER_ID_FIELD, $userId)->first();
 
         if($entity){
             return $entity;
         }
 
-        /** @var Message $entity */
+        /** @var Command $entity */
         $entity = $this->create([
-            Message::TELEGRAM_USER_ID_FIELD => $userId,
+            Command::TELEGRAM_USER_ID_FIELD => $userId,
         ]);
 
         return $entity;

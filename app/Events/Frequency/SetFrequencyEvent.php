@@ -2,24 +2,28 @@
 
 namespace App\Events;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Telegram;
+use App\Services\Telegram\Commands;
 
 class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $user = $this->telegramService->findOrCreateUser(['id' => $this->telegramUserId]);
-
         /** @var Subscription $model */
-        $model = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
+        $model = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
+
+        if ($this->answer === trans(Commands::CANCEL, [], $this->language)) {
+            $this->lastCommand->delete();
+            $this->sendMessage(trans('answers.canceled', [], $this->language), KeyboardHelper::commandsKeyboard());
+
+            return false;
+        }
+
+        if (false === in_array($this->answer, Subscription::getAvailableFrequencies())) {
+            $this->sendMessage(trans('answers.select_category', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
+            return false;
+        }
 
         if (false === is_numeric($this->answer)) {
             $this->rejectWithServices();
@@ -30,8 +34,8 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 
         $model->save();
 
-        $this->sendMessage($model->frequency);
+        $this->sendMessage(trans('answers.frequency_changed', [], $this->language), KeyboardHelper::commandsKeyboard());
 
-        $this->lastMessage->delete();
+        $this->lastCommand->delete();
     }
 }

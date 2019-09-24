@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\SettingRequest;
 use App\Models\Settings;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Telegram;
 
@@ -14,21 +14,24 @@ class SettingController extends Controller
         return view('admin.settings', Settings::getSettings()->toArray());
     }
 
-    public function store(Request $request)
+    public function store(SettingRequest $request)
     {
         Settings::query()->whereNotNull('key')->delete();
-        foreach ($request->except('_token') as $key => $value){
-            (new Settings(['key'=>$key, 'value'=>$value]))->save();
+
+        foreach ($request->except('_token') as $key => $value) {
+            (new Settings(['key' => $key, 'value' => $value]))->save();
         }
+
+        Telegram::setWebhook(['url'=>$request->get('url_callback_bot') . '/' . Telegram::getAccessToken()]);
 
         return redirect()->back();
     }
 
-    public function setWebhook(Request $request)
+    public function setWebhook(SettingRequest $request)
     {
         $uri = $request->get('uri');
-       $r = Telegram::setWebhook($uri . '/' . Telegram::getAccessToken());
-        return redirect()->back()->with('status', $r);
+        Telegram::setWebhook(['url'=>$uri . '/' . Telegram::getAccessToken()]);
+        return redirect()->back()->with('status', Telegram::getWebhookInfo());
     }
 
     public function sendTelegramData($route = '', $params = [], $method = 'POST')

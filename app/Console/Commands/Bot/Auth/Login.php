@@ -6,7 +6,7 @@ use App\Console\Commands\Bot\TelegramTrait;
 use Illuminate\Console\Command;
 
 /**
- * Class Message
+ * Class Command
  *
  * @package App\Console\Commands\Bot\Auth
  */

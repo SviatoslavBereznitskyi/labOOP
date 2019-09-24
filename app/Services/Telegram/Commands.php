@@ -2,7 +2,7 @@
 
 namespace App\Services\Telegram;
 
-use App\Events\ChangeFrequencyAnswerEvent;
+use App\Events\SelectServiceEvent;
 use App\Events\ChangeFrequencyEvent;
 use App\Events\SetFrequencyEvent;
 use App\Events\SubscriptionSelectServiceEvent;
@@ -25,6 +25,7 @@ class Commands
      */
     const DONE       = 'answers.done';
     const DELETE_ALL = 'answers.delete_all';
+    const CANCEL     = 'answers.cancel';
 
 
     const SUBSCRIBE_COMMAND             = SubscriptionEvent::class;
@@ -36,7 +37,7 @@ class Commands
     const UNSUBSCRIPTION_KEYWORDS_EVENT = UnsubscriptionKeywordsEvent::class;
 
     const CHANGE_FREQUENCY_COMMAND      = ChangeFrequencyEvent::class;
-    const CHANGE_FREQUENCY_EVENT        = ChangeFrequencyAnswerEvent::class;
+    const CHANGE_FREQUENCY_EVENT        = SelectServiceEvent::class;
     const SET_FREQUENCY_EVENT           = SetFrequencyEvent::class;
 
     public static function getCommandsByLang($lang)

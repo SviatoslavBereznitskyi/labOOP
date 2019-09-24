@@ -18,4 +18,6 @@ interface SubscriptionRepository extends RepositoryInterface
      * @return Subscription|null
      */
     public function getByUserService(int $userId, string $service);
+
+    public function whereFrequency(int $frequency);
 }

@@ -21,9 +21,8 @@ Route::middleware(['auth'])
     ->namespace('Admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/', DashboardController::class . '@index')->name('index');
         Route::post('/settings', SettingController::class . '@store')->name('settings.store');
-        Route::post('/settings/webhook', TelegramController::class . '@setWebhook')->name('setting.webhook');
+        Route::post('/settings/webhook', SettingController::class . '@setWebhook')->name('setting.webhook');
     });
 
 Route::post(Telegram::getAccessToken(), TelegramController::class . '@commands')->name('telegram.commands');

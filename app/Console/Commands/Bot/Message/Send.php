@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 
 /**
- * Class Message
+ * Class Command
  *
  * @package App\Console\Commands
  */
@@ -40,7 +40,7 @@ class Send extends Command
 
         $message = $this->argument('message');
         if (null === $message) {
-            $message = readline('Message: ');
+            $message = readline('Command: ');
         }
 
         $madeline->messages->sendMessage(['peer' => $peer, 'message' => $message]);

@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Helpers\Telegram\KeyboardHelper;
-use App\Models\Subscription;
 
 /**
  * Class SubscriptionEvent
@@ -14,6 +13,6 @@ class SubscriptionEvent extends GlobalKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $this->sendMessage(Subscription::getMessageAvailableServices(), KeyboardHelper::networkKeyboard());
+        $this->sendMessage(trans('answers.select_category', [], $this->language), KeyboardHelper::networkKeyboard($this->language));
     }
 }

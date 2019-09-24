@@ -106,7 +106,7 @@ class TelegramUser extends Model
 
     public function lastMessage()
     {
-        return $this->hasOne(Message::class);
+        return $this->hasOne(Command::class);
     }
 
     public function getLocale()

@@ -21,7 +21,7 @@
                         </ul>
                     </div>
                 </div>
-                <input type="url" class="form-control" id="url_callback_bot" name="url_callback_bot" value="{{isset($url_callback_bot) ? $url_callback_bot:''}}">
+                <input type="url" class="form-control" id="url_callback_bot" name="url_callback_bot" value="{{isset($url_callback_bot) ? $url_callback_bot:''}}" required>
             </div>
             <button class="btn btn-primary" type="submit">Save</button>
         </form>

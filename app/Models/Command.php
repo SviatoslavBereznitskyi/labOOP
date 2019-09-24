@@ -7,7 +7,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Message.
+ * Class Command.
  *
  * @property array message
  * @property string|null $keyboard_command
@@ -16,7 +16,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property string|null model
  * @package namespace App\Models;
  */
-class Message extends Model implements Transformable
+class Command extends Model implements Transformable
 {
     use TransformableTrait;
 
