@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Contracts\CommandRepository;
-use App\Models\Command;
+use App\Models\InlineCommand;
 use App\Validators\MessageValidator;
 
 /**
@@ -22,7 +22,7 @@ class CommandRepositoryEloquent extends BaseRepository implements CommandReposit
      */
     public function model()
     {
-        return Command::class;
+        return InlineCommand::class;
     }
 
     
@@ -37,21 +37,21 @@ class CommandRepositoryEloquent extends BaseRepository implements CommandReposit
 
     /**
      * @param $userId
-     * @return Command
+     * @return InlineCommand
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function findByUserOrCreate($userId)
     {
-        /** @var Command $entity */
-        $entity = $this->findByField(Command::TELEGRAM_USER_ID_FIELD, $userId)->first();
+        /** @var InlineCommand $entity */
+        $entity = $this->findByField(InlineCommand::TELEGRAM_USER_ID_FIELD, $userId)->first();
 
         if($entity){
             return $entity;
         }
 
-        /** @var Command $entity */
+        /** @var InlineCommand $entity */
         $entity = $this->create([
-            Command::TELEGRAM_USER_ID_FIELD => $userId,
+            InlineCommand::TELEGRAM_USER_ID_FIELD => $userId,
         ]);
 
         return $entity;

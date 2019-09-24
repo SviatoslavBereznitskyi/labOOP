@@ -16,7 +16,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property string|null model
  * @package namespace App\Models;
  */
-class Command extends Model implements Transformable
+class InlineCommand extends Model implements Transformable
 {
     use TransformableTrait;
 

@@ -4,7 +4,7 @@ namespace App\Helpers\Telegram;
 
 use App;
 use App\Models\Subscription;
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -23,7 +23,7 @@ class KeyboardHelper
     {
         if (null === $services) {
             $keyboard = Subscription::getAvailableServices();
-            array_push($keyboard, trans(Commands::CANCEL, [], $lang ?? App::getLocale()));
+            array_push($keyboard, trans(InlineCommands::CANCEL, [], $lang ?? App::getLocale()));
         } else {
             $keyboard = $services;
         }
@@ -43,7 +43,7 @@ class KeyboardHelper
     public static function commandsKeyboard($lang = null, $params = []): Keyboard
     {
         $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
-        $keyboard = Commands::getCommandsByLang($language);
+        $keyboard = InlineCommands::getCommandsByLang($language);
 
         $keyboard = array_chunk($keyboard, 3);
 
@@ -67,8 +67,8 @@ class KeyboardHelper
         $keyboard = $items;
         $keyboard = array_chunk($keyboard, 5);
         $keyboard[] = [
-            trans(Commands::DELETE_ALL, [], $language),
-            trans(Commands::DONE, [], $language),
+            trans(InlineCommands::DELETE_ALL, [], $language),
+            trans(InlineCommands::DONE, [], $language),
         ];
 
         return Keyboard::make([
@@ -103,7 +103,7 @@ class KeyboardHelper
         $keyboard = Subscription::getAvailableFrequencies();
         $keyboard = array_chunk($keyboard, 4);
 
-         array_push($keyboard, [trans(Commands::CANCEL, [], $language??App::getLocale())]);
+         array_push($keyboard, [trans(InlineCommands::CANCEL, [], $language??App::getLocale())]);
        // dd($keyboard);
 
         return Keyboard::make([

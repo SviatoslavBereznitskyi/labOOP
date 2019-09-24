@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 /**
  * Class CreateMessagesTable.
  */
-class CreateCommandsTable extends Migration
+class CreateInlineCommandsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -15,7 +15,7 @@ class CreateCommandsTable extends Migration
 	 */
 	public function up()
 	{
-        Schema::create('commands', function (Blueprint $table) {
+        Schema::create('inline_commands', function (Blueprint $table) {
             $table->increments('id');
             $table->string('keyboard_command')->nullable();
             $table->string('model')->nullable();

@@ -4,7 +4,7 @@ namespace App\Events;
 
 use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 
 class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 {
@@ -13,7 +13,7 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
         /** @var Subscription $model */
         $model = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
 
-        if ($this->answer === trans(Commands::CANCEL, [], $this->language)) {
+        if ($this->answer === trans(InlineCommands::CANCEL, [], $this->language)) {
             $this->lastCommand->delete();
             $this->sendMessage(trans('answers.canceled', [], $this->language), KeyboardHelper::commandsKeyboard());
 

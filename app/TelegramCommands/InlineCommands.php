@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Telegram;
+namespace App\TelegramCommands;
 
 use App\Events\SelectServiceEvent;
 use App\Events\ChangeFrequencyEvent;
@@ -17,7 +17,7 @@ use App\Events\UnsubscriptionKeywordsEvent;
  *
  * @package App\Services\Telegram
  */
-class Commands
+class InlineCommands
 {
 
     /**

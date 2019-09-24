@@ -1,9 +1,9 @@
 <?php
 
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 
 return[
-    Commands::SUBSCRIBE_COMMAND   => 'Подписаться',
-    Commands::UNSUBSCRIBE_COMMAND => 'Отписаться',
-    Commands::CHANGE_FREQUENCY_COMMAND => 'Частота сповіщень',
+    InlineCommands::SUBSCRIBE_COMMAND   => 'Подписаться',
+    InlineCommands::UNSUBSCRIBE_COMMAND => 'Отписаться',
+    InlineCommands::CHANGE_FREQUENCY_COMMAND => 'Частота сповіщень',
 ];

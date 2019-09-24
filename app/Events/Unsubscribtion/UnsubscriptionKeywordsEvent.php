@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Helpers\Telegram\KeyboardHelper;
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 
 /**
  * Class UnsubscriptionKeywordsEvent
@@ -22,10 +22,10 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
         $subscription = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
 
         switch ($this->answer) {
-            case trans(Commands::DONE, [], $this->language):
+            case trans(InlineCommands::DONE, [], $this->language):
                 $this->doneCommand($this->language);
                 return;
-            case $this->answer === trans(Commands::DELETE_ALL, [], $this->language):
+            case $this->answer === trans(InlineCommands::DELETE_ALL, [], $this->language):
                 $this->deleteAllCommand($subscription->getKey(), $this->language);
                 return;
         }
@@ -54,7 +54,7 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
     private function doneCommand($language)
     {
-        $this->sendMessage(trans(Commands::DONE, [], $language), KeyboardHelper::commandsKeyboard());
+        $this->sendMessage(trans(InlineCommands::DONE, [], $language), KeyboardHelper::commandsKeyboard());
         $this->lastCommand->delete();
     }
 

@@ -5,18 +5,18 @@ namespace App\Events;
 
 
 use App\Helpers\Telegram\KeyboardHelper;
-use App\Models\Command;
-use App\Services\Telegram\Commands;
+use App\Models\InlineCommand;
+use App\TelegramCommands\InlineCommands;
 
 abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
 {
     protected $answer;
     /**
-     * @var Command
+     * @var InlineCommand
      */
     protected $lastCommand;
 
-    public function __construct($telegramUserId, $answer, Command $lastMessage)
+    public function __construct($telegramUserId, $answer, InlineCommand $lastMessage)
     {
         parent::__construct($telegramUserId);
         $this->answer = $answer;
@@ -36,7 +36,7 @@ abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
      */
     protected function checkService(array $services)
     {
-        if ($this->answer === trans(Commands::CANCEL, [], $this->language)) {
+        if ($this->answer === trans(InlineCommands::CANCEL, [], $this->language)) {
             $this->lastCommand->delete();
             $this->sendMessage(trans('answers.canceled', [], $this->language), KeyboardHelper::commandsKeyboard());
 

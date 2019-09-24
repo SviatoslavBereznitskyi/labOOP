@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App;
-use App\Models\Command;
+use App\Models\InlineCommand;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\TelegramServiceInterface;
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 use Illuminate\Http\Request;
 use Telegram;
 
@@ -49,7 +49,7 @@ class TelegramController extends Controller
             return;
         }
 
-        /** @var Command $lastMessage */
+        /** @var InlineCommand $lastMessage */
         $lastMessage = $messageRepository->findByUserOrCreate($telegramUser->getKey());
 
         if(isset($message['entities'])){
@@ -59,7 +59,7 @@ class TelegramController extends Controller
 
         if ($lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
 
-            $eventName = Commands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
+            $eventName = InlineCommands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
 
             $answer = 'must be a text';
 
@@ -79,7 +79,7 @@ class TelegramController extends Controller
         }
 
         if (key_exists('text', $message) && !key_exists('entities', $message)) {
-            $keyboardCommand = Commands::findCommandByName($message['text'], $telegramUser->getLocale());
+            $keyboardCommand = InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale());
 
             if (!$keyboardCommand) {
                 Telegram::sendMessage([
