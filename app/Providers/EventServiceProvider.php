@@ -38,7 +38,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ChangeFrequencyEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
-        'App\Events\ChangeFrequencyAnswerEvent' => [
+        'App\Events\SelectServiceEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
         'App\Events\SetFrequencyEvent' => [

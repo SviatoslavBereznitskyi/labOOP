@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Subscription;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        foreach (Subscription::getAvailableFrequencies() as $frequency){
+            $schedule->command('send:messages ' . $frequency)->cron("*/$frequency * * * *")->between('8:00', '20:00');
+        }
     }
 
     /**

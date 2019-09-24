@@ -59,7 +59,7 @@ namespace App\Models{
  * @property int $subscription
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Message $lastMessage
+ * @property-read \App\Models\InlineCommand $lastMessage
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SentMessages[] $sentMessages
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Subscription[] $subscriptions
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\TelegramUser byType($type)
@@ -101,7 +101,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * Class Message.
+ * Class Command.
  *
  * @property array message
  * @property string|null $keyboard_command
@@ -116,16 +116,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TelegramUser $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereKeyboardCommand($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereModel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereTelegramUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereKeyboardCommand($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereTelegramUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InlineCommand whereUpdatedAt($value)
  */
 	class Message extends \Eloquent {}
 }

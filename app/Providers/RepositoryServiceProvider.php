@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Repositories\Contracts\MessageRepository;
+use App\Repositories\Contracts\CommandRepository;
 use App\Repositories\Contracts\TelegramUserRepository;
-use App\Repositories\MessageRepositoryEloquent;
+use App\Repositories\CommandRepositoryEloquent;
 use App\Repositories\TelegramUserRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 

@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Repositories\Contracts\MessageRepository;
+use App\Repositories\Contracts\CommandRepository;
 use App\Repositories\Contracts\SentMessagesRepository;
 use App\Repositories\Contracts\SubscriptionRepository;
 use App\Repositories\Contracts\TelegramUserRepository;
-use App\Repositories\MessageRepositoryEloquent;
+use App\Repositories\CommandRepositoryEloquent;
 use App\Repositories\SentMessagesRepositoryEloquent;
 use App\Repositories\SubscriptionRepositoryEloquent;
 use App\Repositories\TelegramUserRepositoryEloquent;
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(TelegramUserRepository::class, TelegramUserRepositoryEloquent::class);
-        $this->app->bind(MessageRepository::class, MessageRepositoryEloquent::class);
+        $this->app->bind(CommandRepository::class, CommandRepositoryEloquent::class);
         $this->app->bind(SubscriptionRepository::class, SubscriptionRepositoryEloquent::class);
         $this->app->bind(TelegramServiceInterface::class, TelegramService::class);
         $this->app->bind(SubscriptionServiceInterface::class, SubscriptionService::class);

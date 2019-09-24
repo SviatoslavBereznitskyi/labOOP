@@ -2,20 +2,12 @@
 
 namespace App\Events;
 
-use App\Models\Subscription;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Telegram;
+use App\Helpers\Telegram\KeyboardHelper;
 
 class ChangeFrequencyEvent extends GlobalKeyboardCommandEvent
 {
     public function executeCommand()
     {
-        $this->sendMessage(Subscription::getMessageAvailableServices());
+        $this->sendMessage(trans('answers.select_category', [], $this->language), KeyboardHelper::networkKeyboard($this->language));
     }
 }

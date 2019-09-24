@@ -2,8 +2,9 @@
 
 namespace App\Helpers\Telegram;
 
+use App;
 use App\Models\Subscription;
-use App\Services\Telegram\Commands;
+use App\TelegramCommands\InlineCommands;
 use Telegram\Bot\Keyboard\Keyboard;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -18,10 +19,11 @@ class KeyboardHelper
     /**
      * @return Keyboard
      */
-    public static function networkKeyboard($services = null)
+    public static function networkKeyboard($lang = null, $services = null)
     {
         if (null === $services) {
             $keyboard = Subscription::getAvailableServices();
+            array_push($keyboard, trans(InlineCommands::CANCEL, [], $lang ?? App::getLocale()));
         } else {
             $keyboard = $services;
         }
@@ -41,16 +43,16 @@ class KeyboardHelper
     public static function commandsKeyboard($lang = null, $params = []): Keyboard
     {
         $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
-        $keyboard = Commands::getCommandsByLang($language);
+        $keyboard = InlineCommands::getCommandsByLang($language);
 
         $keyboard = array_chunk($keyboard, 3);
 
-        $resizeKeyboard  = $params['resize_keyboard'] ?? true;
+        $resizeKeyboard = $params['resize_keyboard'] ?? true;
         $oneTimeKeyboard = $params['one_time_keyboard'] ?? true;
 
         return Keyboard::make([
-            'keyboard'          => $keyboard,
-            'resize_keyboard'   => $resizeKeyboard,
+            'keyboard' => $keyboard,
+            'resize_keyboard' => $resizeKeyboard,
             'one_time_keyboard' => $oneTimeKeyboard,
         ]);
     }
@@ -62,16 +64,16 @@ class KeyboardHelper
      */
     public static function itemKeyboard($items, $language): Keyboard
     {
-        $keyboard   = $items;
-        $keyboard   = array_chunk($keyboard, 5);
+        $keyboard = $items;
+        $keyboard = array_chunk($keyboard, 5);
         $keyboard[] = [
-            trans(Commands::DELETE_ALL, [], $language),
-            trans(Commands::DONE, [], $language),
+            trans(InlineCommands::DELETE_ALL, [], $language),
+            trans(InlineCommands::DONE, [], $language),
         ];
 
         return Keyboard::make([
-            'keyboard'          => $keyboard,
-            'resize_keyboard'   => true,
+            'keyboard' => $keyboard,
+            'resize_keyboard' => true,
             'one_time_keyboard' => false,
         ]);
     }
@@ -88,6 +90,21 @@ class KeyboardHelper
             ['1', '2', '3'],
             ['0']
         ];
+
+        return Keyboard::make([
+            'keyboard' => $keyboard,
+            'resize_keyboard' => true,
+            'one_time_keyboard' => false
+        ]);
+    }
+
+    public static function frequencyKeyboard($language = null)
+    {
+        $keyboard = Subscription::getAvailableFrequencies();
+        $keyboard = array_chunk($keyboard, 4);
+
+         array_push($keyboard, [trans(InlineCommands::CANCEL, [], $language??App::getLocale())]);
+       // dd($keyboard);
 
         return Keyboard::make([
             'keyboard' => $keyboard,

@@ -95,4 +95,9 @@ class SubscriptionService implements SubscriptionServiceInterface
 
         return $array;
     }
+
+    public function delete($id)
+    {
+        $this->subscriptionRepository->delete($id);
+    }
 }

@@ -5,11 +5,11 @@ namespace App\Repositories\Contracts;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface MessageRepository.
+ * Interface CommandRepository.
  *
  * @package namespace App\Repositories\Contracts;
  */
-interface MessageRepository extends RepositoryInterface
+interface CommandRepository extends RepositoryInterface
 {
     public function findByUserOrCreate($userId);
 }

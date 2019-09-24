@@ -19,6 +19,8 @@ interface SubscriptionServiceInterface
 
     public function update($params, $id);
 
+    public function delete($id);
+
     public function getKeywords(int $id);
 
     public function getKeywordsForKeyboard(int $id);

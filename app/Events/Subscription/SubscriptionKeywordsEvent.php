@@ -4,7 +4,6 @@ namespace App\Events;
 
 use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\Subscription;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
 /**
  * Class SubscriptionKeywordsEvent
@@ -16,10 +15,9 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
         $keywords = explode(',', $this->answer);
-        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
 
         /** @var Subscription $model */
-        $subscription = resolve($this->lastMessage->getModel())::query()->find($this->lastMessage->getModelId());
+        $subscription = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
 
         $keywords = array_merge($subscription->getKeywords(), $keywords);
 
@@ -29,8 +27,8 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
         $this->subscriptionService->update($subscriptionData, $subscription->getKey());
 
-        $this->lastMessage->delete();
+        $this->lastCommand->delete();
 
-        $this->sendMessage(trans('answers.saved_keywords', [], $language), KeyboardHelper::commandsKeyboard($language));
+        $this->sendMessage(trans('answers.saved_keywords', [], $this->language), KeyboardHelper::commandsKeyboard($this->language   ));
     }
 }

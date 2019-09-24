@@ -37,6 +37,19 @@ class Subscription extends Model implements Transformable
         ];
     }
 
+    public static function getAvailableFrequencies()
+    {
+        return[
+            '1',
+            '15',
+            '30',
+            '45',
+            '60',
+            '120',
+            '180',
+        ];
+    }
+
     /**
      *
      * @return array|\Illuminate\Contracts\Translation\Translator|string|null
@@ -86,5 +99,10 @@ class Subscription extends Model implements Transformable
     public function getKeywords()
     {
         return (array)$this->keywords;
+    }
+
+    public function scopeByFrequency(Builder $query, string $frequency)
+    {
+        return $query->where('frequency', $frequency);
     }
 }

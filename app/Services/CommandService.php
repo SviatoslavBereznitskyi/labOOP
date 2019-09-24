@@ -4,12 +4,22 @@
 namespace App\Services;
 
 use App\Models\Subscription;
-use App\Repositories\Contracts\MessageRepository;
+use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\CommandServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class CommandService implements CommandServiceInterface
 {
+
+    /**
+     * @var CommandRepository
+     */
+    private $commandRepository;
+
+    public function __construct(CommandRepository $commandRepository)
+    {
+        $this->commandRepository = $commandRepository;
+    }
 
     public function setCommandMessage( string $command, int $messageId, Model $model = null)
     {
@@ -28,8 +38,6 @@ class CommandService implements CommandServiceInterface
             ];
         }
 
-        $messageRepository = resolve(MessageRepository::class);
-
-        $messageRepository->update($data, $messageId);
+        $this->commandRepository->update($data, $messageId);
     }
 }

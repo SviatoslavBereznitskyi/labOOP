@@ -13,7 +13,7 @@ class SendMessages extends Command
      *
      * @var string
      */
-    protected $signature = 'send:messages';
+    protected $signature = 'send:messages {frequency?}';
 
     /**
      * The console command description.
@@ -40,9 +40,10 @@ class SendMessages extends Command
     public function handle()
     {
 
+        $frequency = $this->argument('frequency');
         /** @var MailingService $mailingService */
         $mailingService = resolve(MailingServiceInterface::class);
 
-        $mailingService->sendAllSubscription();
+        $mailingService->sendSubscription($frequency);
     }
 }
