@@ -1,3 +1,4 @@
 *
 !.gitignore
 !options-ssl-nginx.conf
+!ssl-dhparams.pem
