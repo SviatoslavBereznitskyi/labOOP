@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         foreach (Subscription::getAvailableFrequencies() as $frequency){
-            $schedule->command('send:messages ' . $frequency)->cron("*/$frequency * * * *")->between('8:00', '20:00');
+            $schedule->command("send:messages $frequency")->cron("*/$frequency * * * *")
+                ->between('8:00', '20:00');
         }
     }
 
