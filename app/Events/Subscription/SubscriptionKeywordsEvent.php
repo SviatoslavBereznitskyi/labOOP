@@ -19,6 +19,10 @@ class SubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
         /** @var Subscription $model */
         $subscription = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
 
+        array_walk($keywords, function (&$keyword){
+            $keyword = trim($keyword);
+        });
+
         $keywords = array_merge($subscription->getKeywords(), $keywords);
 
         $subscriptionData = [
