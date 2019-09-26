@@ -54,7 +54,7 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
 
     private function doneCommand($language)
     {
-        $this->sendMessage(trans(InlineCommands::DONE, [], $language), KeyboardHelper::commandsKeyboard());
+        $this->sendMessage(trans(InlineCommands::DONE, [], $language), KeyboardHelper::commandsKeyboard($this->language));
         $this->lastCommand->delete();
     }
 
@@ -62,7 +62,7 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
     {
         $this->subscriptionService->delete($subscriptionId);
 
-        $this->sendMessage(trans('answers.deleted_keywords', [], $language), KeyboardHelper::commandsKeyboard());
+        $this->sendMessage(trans('answers.deleted_keywords', [], $language), KeyboardHelper::commandsKeyboard($this->language));
 
         $this->lastCommand->delete();
     }

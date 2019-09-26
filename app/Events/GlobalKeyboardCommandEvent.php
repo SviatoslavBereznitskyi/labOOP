@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\TelegramUser;
 use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\CommandServiceInterface;
 use App\Services\Contracts\SubscriptionServiceInterface;
@@ -47,16 +48,16 @@ abstract class GlobalKeyboardCommandEvent
 
     /**
      * GlobalKeyboardCommandEvent constructor.
-     * @param $telegramUserId
+     * @param $telegramUser
      */
-    public function __construct($telegramUserId)
+    public function __construct(TelegramUser $telegramUser)
     {
-        $this->telegramUserId = $telegramUserId;
+        $this->telegramUserId = $telegramUser->getKey();
         $this->subscriptionService = resolve(SubscriptionServiceInterface::class);
         $this->telegramService = resolve(TelegramServiceInterface::class);
         $this->messageRepository = resolve(CommandRepository::class);
         $this->commandService = resolve(CommandServiceInterface::class);
-        $this->language = \Telegram::getWebhookUpdates()['message']['from']['language_code'];
+        $this->language = $telegramUser->getLocale();
     }
 
     /**

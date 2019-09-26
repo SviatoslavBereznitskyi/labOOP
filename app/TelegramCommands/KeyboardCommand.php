@@ -15,7 +15,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
  *
  * @package App\TelegramCommands
  */
-class KeyboardCommand extends Command
+class KeyboardCommand extends AbstractCommand
 {
     /**
      * @var string Command Name
@@ -32,6 +32,7 @@ class KeyboardCommand extends Command
      */
     public function handle(): void
     {
+        $this->init();
         $this->replyWithChatAction(['action'=> Actions::TYPING]);
 
         try{
@@ -44,7 +45,7 @@ class KeyboardCommand extends Command
             $user = $telegramUserRepository->find($userData['chat']['id']);
 
             $reply_markup = KeyboardHelper::commandsKeyboard(
-                $user->getLocale(),
+                $language = $this->locale,
                 [
                     'resize_keyboard' => true,
                     'one_time_keyboard' => true

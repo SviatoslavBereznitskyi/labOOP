@@ -9,7 +9,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 /**
  * Class HelpCommand.
  */
-class TestCommand extends Command
+class TestCommand extends AbstractCommand
 {
     /**
      * @var string Command Name
@@ -27,8 +27,9 @@ class TestCommand extends Command
      */
     public function handle(): void
     {
+
         $commands = $this->telegram->getCommands();
-        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
+        $language = $this->locale;
 
 
         $text = '';
@@ -37,7 +38,7 @@ class TestCommand extends Command
             $text .= sprintf('/%s - %s'.PHP_EOL, $name, trans($handler->getDescription(), [], $language));
         }
 
-        $reply_markup = KeyboardHelper::commandsKeyboard();
+        $reply_markup = KeyboardHelper::commandsKeyboard($language);
 
         $this->replyWithMessage(compact('text', 'reply_markup'));
     }

@@ -15,7 +15,7 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 
         if ($this->answer === trans(InlineCommands::CANCEL, [], $this->language)) {
             $this->lastCommand->delete();
-            $this->sendMessage(trans('answers.canceled', [], $this->language), KeyboardHelper::commandsKeyboard());
+            $this->sendMessage(trans('answers.canceled', [], $this->language), KeyboardHelper::commandsKeyboard($this->language));
 
             return false;
         }
@@ -34,7 +34,7 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
 
         $model->save();
 
-        $this->sendMessage(trans('answers.frequency_changed', [], $this->language), KeyboardHelper::commandsKeyboard());
+        $this->sendMessage(trans('answers.frequency_changed', [], $this->language), KeyboardHelper::commandsKeyboard($this->language));
 
         $this->lastCommand->delete();
     }

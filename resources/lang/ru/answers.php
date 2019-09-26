@@ -16,5 +16,5 @@ return [
     'select_category'                 => 'Выберите сервис',
     'cancel'                          => 'Cancel',
     'canceled'                        => 'Canceled',
-    'frequency_changed'               => 'Frequency changed',
+    'frequency_changed'               => 'Частоту изменено',
 ];

@@ -3,14 +3,16 @@
 namespace App\TelegramCommands;
 
 use App\Helpers\Telegram\KeyboardHelper;
+use App\Repositories\Contracts\TelegramUserRepository;
 use Telegram\Bot\Commands\Command;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 /**
  * Class HelpCommand.
  */
-class HelpCommand extends Command
+class HelpCommand extends AbstractCommand
 {
+
     /**
      * @var string Command Name
      */
@@ -27,9 +29,10 @@ class HelpCommand extends Command
      */
     public function handle(): void
     {
+        $this->init();
         $commands = $this->telegram->getCommands();
-        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
 
+        $language = $this->locale;
 
         $text = '';
         foreach ($commands as $name => $handler) {
@@ -37,7 +40,7 @@ class HelpCommand extends Command
             $text .= sprintf('/%s - %s'.PHP_EOL, $name, trans($handler->getDescription(), [], $language));
         }
 
-        $reply_markup = KeyboardHelper::commandsKeyboard();
+        $reply_markup = KeyboardHelper::commandsKeyboard($language);
 
         $this->replyWithMessage(compact('text', 'reply_markup'));
     }

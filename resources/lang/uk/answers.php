@@ -16,5 +16,5 @@ return [
     'select_category'                 => 'Виберіть сервіс',
     'cancel'                          => 'Відмінити',
     'canceled'                        => 'Відмінено',
-    'frequency_changed'               => 'Frequency changed',
+    'frequency_changed'               => 'Частоту сповіщень змінено',
 ];
