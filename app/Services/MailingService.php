@@ -94,22 +94,34 @@ class MailingService implements MailingServiceInterface
      * @param int $user
      * @return array
      */
-    private function getPostUpwork(TelegramUser $user)
+    private function getPostUpwork(TelegramUser $user, $frequency)
     {
-        $keywords = $this->getKeywords(Subscription::UPWORK_SERVICE, $user);
+
+        $client = $this->getUpworkClient(config('upwork.client'));
+
+
+        $keywords = $this->getKeywords(Subscription::UPWORK_SERVICE, $user, $frequency);
+
         $sentMessages = $user->sentMessages()
             ->where('service', Subscription::UPWORK_SERVICE)
             ->get();
 
-        $config = config('upwork');
-
-        $client = new \Upwork\API\Client($config);
-
-        $jobs = new \Upwork\API\Routers\Jobs\Search($client);
-
         foreach ($keywords as $keyword) {
             $params = ["q" => $keyword, "title" => "Developer"];
-            $jobs->find($params);
+            $jobs = $this->searchUpworkJobs($client, $params);
+            foreach ($jobs as $job){
+                if ($sentMessages->where('post_id', $job->id)->first() !== null) {
+                    continue;
+                }
+                $messages[] = [
+                    'message_id' => $job->id,
+                    'service' => Subscription::UPWORK_SERVICE,
+                    'message' => [
+                        'chat_id' => $user->getKey(),
+                        'text' => $keyword . PHP_EOL . ($job->client) . PHP_EOL . $jobs->snippet,
+                    ]
+                ];
+            }
         }
 
 
@@ -118,6 +130,21 @@ class MailingService implements MailingServiceInterface
         return $messages;
     }
 
+
+    private function getUpworkClient($config)
+    {
+        $client = new \Upwork\API\Client($config);
+        $client->auth();
+
+        return $client;
+    }
+
+    private function searchUpworkJobs($client, array $params)
+    {
+        $jobs = new \Upwork\API\Routers\Jobs\Search($client);
+
+        return $jobs->find($params);
+    }
 
     /**
      * @param int $user
@@ -225,8 +252,8 @@ class MailingService implements MailingServiceInterface
     {
         $telegramPostMessages = $this->getPostTelegram($user, $frequency);
         $twitterPostMessages = $this->getPostTwitter($user, $frequency);
-
-        $messages = array_merge($telegramPostMessages, $twitterPostMessages);
+        $upworkPostMessages = [];//$this->getPostUpwork($user, $frequency);
+        $messages = array_merge($telegramPostMessages, $twitterPostMessages, $upworkPostMessages);
 
         foreach ($messages as $key => $message) {
 
