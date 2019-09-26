@@ -143,13 +143,4 @@ class TelegramUser extends Model
     {
         return $this->subscription;
     }
-
-    public static function register()
-    {
-        return new self(
-            [
-
-            ]
-        );
-    }
 }

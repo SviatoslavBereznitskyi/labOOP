@@ -73,7 +73,7 @@ class Users extends Section
         $form->addBody([
             AdminFormElement::text('name', trans('user.name'))->required(),
             AdminFormElement::text('email', trans('user.email'))->required(),
-            AdminFormElement::password('password', trans('user.password'))->allowEmptyValue(),
+            AdminFormElement::password('password', trans('user.password')),
 
         ]);
 

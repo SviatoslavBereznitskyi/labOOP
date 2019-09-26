@@ -19,3 +19,4 @@ yarn-error.log
 ngrok
 session.madeline
 session.madeline.lock
+/docker/nginx/default.conf
