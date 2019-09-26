@@ -80,7 +80,7 @@ class TelegramController extends Controller
         if (key_exists('text', $message) && !key_exists('entities', $message)) {
             $keyboardCommand = InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale());
 
-            if(isset($message['from']['language_code'])){
+            if(isset($message['from']['language_code']) && $message['from']['language_code'] != $telegramUser->getLocale()){
                 $this->telegramService->changeLanguage($telegramUser->getKey(), $message['from']['language_code']);
             }
 
