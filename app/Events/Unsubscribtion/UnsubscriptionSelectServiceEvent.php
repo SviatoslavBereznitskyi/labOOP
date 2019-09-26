@@ -27,7 +27,7 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 
             $this->sendMessage(
                 trans('answers.no_words', [], $this->language),
-                KeyboardHelper::commandsKeyboard()
+                KeyboardHelper::commandsKeyboard($this->language)
             );
 
             $this->lastCommand->delete();

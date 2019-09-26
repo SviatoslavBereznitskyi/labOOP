@@ -42,7 +42,7 @@ class KeyboardHelper
      */
     public static function commandsKeyboard($lang = null, $params = []): Keyboard
     {
-        $language = Telegram::getWebhookUpdates()['message']['from']['language_code'];
+        $language = $lang ?? App::getLocale();
         $keyboard = InlineCommands::getCommandsByLang($language);
 
         $keyboard = array_chunk($keyboard, 3);

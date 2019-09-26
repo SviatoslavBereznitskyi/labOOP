@@ -11,4 +11,6 @@ interface TelegramServiceInterface
     public function findOrCreateUser(array $parameters = []);
 
     public function getSearch(array $query);
+
+    public function changeLanguage($userId, $lang);
 }

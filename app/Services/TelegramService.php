@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App;
 use App\Console\Commands\Bot\TelegramTrait;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\TelegramUserRepository;
@@ -41,27 +42,36 @@ class TelegramService implements TelegramServiceInterface
         /** @var TelegramUser $user */
         $user = $this->telegramUserRepository->find($parameters['id']);
 
-        if(!$user){
+        if (!$user) {
+            if (null === $parameters['language_code']) {
+                $parameters['language_code'] = App::getLocale();
+            }
             $this->telegramUserRepository->create($parameters);
             /** @var TelegramUser $user */
             return $this->telegramUserRepository->find($parameters['id']);
         }
-
-        isset($parameters['language_code'])
-            ? $user->setLocale($parameters['language_code'])->save()
-            : 0;
 
         return $user;
     }
 
     public function getSearch(array $query)
     {
-        if(null === $this->madeline){
+        if (null === $this->madeline) {
             $this->madeline = $this->getMadelineInstance();
         }
 
         $messages = $this->madeline->messages->searchGlobal($query);
         return $messages;
+    }
+
+    public function changeLanguage($userId, $lang)
+    {
+        /** @var TelegramUser $user */
+        $user = $this->telegramUserRepository->findOrFail($userId);
+
+        $user->setLocale($lang)->save();
+
+        return $user;
     }
 
 

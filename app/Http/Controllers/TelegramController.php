@@ -39,7 +39,7 @@ class TelegramController extends Controller
         $chatData = $message['chat'];
         $chatData['language_code'] = isset($message['from']['language_code'])
             ? $message['from']['language_code']
-            : App::getLocale();
+            : null;
 
         $telegramUser = $this->telegramService->findOrCreateUser($chatData);
 
@@ -68,7 +68,7 @@ class TelegramController extends Controller
             }
 
             $parameters = [
-                'telegramUserId' => $telegramUser->getKey(),
+                'telegramUser' => $telegramUser,
                 'answer' => $answer,
                 'lastMessage' => $lastMessage,
             ];
@@ -80,6 +80,10 @@ class TelegramController extends Controller
 
         if (key_exists('text', $message) && !key_exists('entities', $message)) {
             $keyboardCommand = InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale());
+
+            if(isset($message['from']['language_code'])){
+                $this->telegramService->changeLanguage($telegramUser->getKey(), $message['from']['language_code']);
+            }
 
             if (!$keyboardCommand) {
                 Telegram::sendMessage([
