@@ -40,7 +40,6 @@ class Subscription extends Model implements Transformable
     public static function getAvailableFrequencies()
     {
         return[
-            '1',
             '15',
             '30',
             '45',
