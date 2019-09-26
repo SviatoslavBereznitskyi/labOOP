@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App;
 use App\Models\InlineCommand;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\CommandRepository;
@@ -98,7 +97,7 @@ class TelegramController extends Controller
 
             $messageRepository->update($command, $lastMessage->getKey());
 
-            event($telegramService->getEventInstance($keyboardCommand, ['telegramUserId' => $telegramUser->getKey()]));
+            event($telegramService->getEventInstance($keyboardCommand, ['telegramUser' => $telegramUser]));
         }
     }
 }
