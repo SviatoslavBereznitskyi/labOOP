@@ -37,6 +37,11 @@ class TelegramUsers extends Section
      */
     protected $alias;
 
+    public function getTitle()
+    {
+        return trans('admin.tgUsers.title');
+    }
+
     /**
      * @return DisplayInterface
      */
@@ -50,11 +55,11 @@ class TelegramUsers extends Section
             $columns = [];
             foreach ($type['fields'] as $field) {
                 $columns[] = AdminColumn::text($field)
-                    ->setLabel(trans('user.' . $field))
+                    ->setLabel(trans('admin.tgUsers.' . $field))
                     ->setWidth('400px');
             }
             $columns[] = AdminColumnEditable::checkbox('subscription')
-                ->setLabel(trans('user.subscription'));
+                ->setLabel(trans('admin.tgUsers.subscription'));
 
             $tab->setColumns($columns);
 

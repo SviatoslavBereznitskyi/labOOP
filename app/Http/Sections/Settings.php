@@ -35,6 +35,11 @@ class Settings extends Section
      */
     protected $alias;
 
+    public function getTitle()
+    {
+        return trans('admin.settings.title');
+    }
+
     /**
      * @return DisplayInterface
      */
