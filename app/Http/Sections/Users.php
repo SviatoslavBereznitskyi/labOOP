@@ -38,20 +38,26 @@ class Users extends Section
      */
     protected $alias;
 
+    public function getTitle()
+    {
+        return trans('admin.admins.title');
+    }
+
     /**
      * @return DisplayInterface
      */
     public function onDisplay()
     {
-        $display = AdminDisplay::datatablesAsync();
+        $display = AdminDisplay::datatablesAsync()
+            ->setHtmlAttribute('class', 'table-primary');
 
 
         $display->setColumns([
             AdminColumn::text('name')
-                ->setLabel(trans('user.name'))
+                ->setLabel(trans('admin.admins.name'))
                 ->setWidth('400px'),
             AdminColumn::text('email')
-                ->setLabel(trans('user.email'))
+                ->setLabel(trans('admin.admins.email'))
                 ->setWidth('400px'),
         ]);
 
@@ -71,10 +77,9 @@ class Users extends Section
     {
         $form = AdminForm::panel();
         $form->addBody([
-            AdminFormElement::text('name', trans('user.name'))->required(),
-            AdminFormElement::text('email', trans('user.email'))->required(),
-            AdminFormElement::password('password', trans('user.password')),
-
+            AdminFormElement::text('name', trans('admin.admins.name'))->required(),
+            AdminFormElement::text('email', trans('admin.admins.email'))->required(),
+            AdminFormElement::password('password', trans('admin.admins.password')),
         ]);
 
         return $form;

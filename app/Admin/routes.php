@@ -1,11 +1,5 @@
 <?php
 
-Route::get('', ['as' => 'admin.dashboard', function () {
-	$content = 'Define your dashboard here.';
-	return AdminSection::view($content, 'Dashboard');
-}]);
+Route::get('', ['as' => 'admin.dashboard', 'uses' => \App\Http\Controllers\Admin\DashboardController::class . '@index']);
 
-Route::get('information', ['as' => 'admin.information', function () {
-	$content = 'Define your information here.';
-	return AdminSection::view($content, 'Information');
-}]);
+Route::post('', ['as' => 'admin.dashboard.send', 'uses' => \App\Http\Controllers\Admin\DashboardController::class . '@sendMessages']);

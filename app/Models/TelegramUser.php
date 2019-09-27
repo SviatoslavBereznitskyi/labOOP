@@ -23,7 +23,7 @@ class TelegramUser extends Model
     {
         return [
             self::TYPE_PRIVATE => [
-                'name' => trans('telegram.users.' . self::TYPE_PRIVATE),
+                'name' => trans('admin.tgUsers.' . self::TYPE_PRIVATE),
                 'fields' => [
                     'first_name',
                     'last_name',
@@ -33,7 +33,7 @@ class TelegramUser extends Model
                 ]
             ],
             self::TYPE_GROUP => [
-                'name' => trans('telegram.users.' . self::TYPE_GROUP),
+                'name' => trans('admin.tgUsers.' . self::TYPE_GROUP),
                 'fields' => [
                     'title',
                     'language_code',

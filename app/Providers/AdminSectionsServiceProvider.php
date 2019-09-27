@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Settings;
+use App\Models\Subscription;
+use App\Models\TelegramUser;
+use App\Models\User;
 use SleepingOwl\Admin\Providers\AdminSectionsServiceProvider as ServiceProvider;
 
 class AdminSectionsServiceProvider extends ServiceProvider
@@ -11,9 +15,10 @@ class AdminSectionsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $sections = [
-        \App\Models\User::class => 'App\Http\Sections\Users',
-        \App\Models\TelegramUser::class => 'App\Http\Sections\TelegramUsers',
-        \App\Models\Settings::class => 'App\Http\Sections\Settings',
+        User::class => 'App\Http\Sections\Users',
+        TelegramUser::class => 'App\Http\Sections\TelegramUsers',
+        Settings::class => 'App\Http\Sections\Settings',
+        Subscription::class => 'App\Http\Sections\Subscription'
     ];
 
     /**
