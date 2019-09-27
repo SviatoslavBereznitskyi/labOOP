@@ -43,6 +43,6 @@ class Clear extends Command
      */
     public function handle()
     {
-        $this->sentMessagesRepository->deleteAll();
+        $this->sentMessagesRepository->deleteOld();
     }
 }

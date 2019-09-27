@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
             $schedule->command("send:messages $frequency")->cron("*/$frequency * * * *")
                 ->between('8:00', '20:00');
         }
-        $schedule->command("bot:history:clear")->cron('0 1 * * sun');
+        $schedule->command("bot:history:clear")->cron('0 1 * * 7');
     }
 
     /**

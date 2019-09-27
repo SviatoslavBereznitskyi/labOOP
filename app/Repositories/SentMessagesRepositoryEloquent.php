@@ -35,7 +35,7 @@ class SentMessagesRepositoryEloquent extends BaseRepository implements SentMessa
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function deleteAll()
+    public function deleteOld()
     {
         \DB::beginTransaction();
 
