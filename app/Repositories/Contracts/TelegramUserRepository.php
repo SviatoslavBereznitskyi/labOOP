@@ -12,4 +12,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface TelegramUserRepository extends RepositoryInterface
 {
     public function findOrFail($id, $columns = ['*']);
+
+    public function getActiveUsers();
 }

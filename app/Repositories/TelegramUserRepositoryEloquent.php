@@ -55,4 +55,9 @@ class TelegramUserRepositoryEloquent extends BaseRepository implements TelegramU
 
         return $this->parserResult($model);
     }
+
+    public function getActiveUsers()
+    {
+        return TelegramUser::query()->where('subscription', true)->get();
+    }
 }

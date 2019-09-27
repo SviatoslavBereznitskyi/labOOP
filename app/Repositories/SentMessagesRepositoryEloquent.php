@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Contracts\SentMessagesRepository;
@@ -25,7 +26,6 @@ class SentMessagesRepositoryEloquent extends BaseRepository implements SentMessa
         return SentMessages::class;
     }
 
-    
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +34,13 @@ class SentMessagesRepositoryEloquent extends BaseRepository implements SentMessa
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function deleteAll()
+    {
+        \DB::beginTransaction();
+
+        SentMessages::query()->whereDate('created_at', '<', Carbon::now()->subWeek())->delete();
+
+        \DB::commit();
+    }
 }

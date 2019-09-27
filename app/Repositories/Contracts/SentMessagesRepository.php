@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface SentMessagesRepository extends RepositoryInterface
 {
-    //
+    public function deleteAll();
 }

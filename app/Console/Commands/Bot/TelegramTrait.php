@@ -17,7 +17,7 @@ trait TelegramTrait
      */
     public function getMadelineInstance(): API
     {
-        $session = getenv('TELEGRAM_SESSION_FILE');
+        $session = config('telegram.session');
 
         if (file_exists(__DIR__ . '/../../../../' . $session)) {
             $madeline = new API($session);
