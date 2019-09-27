@@ -167,7 +167,7 @@ class MailingService implements MailingServiceInterface
                 'q' => $keyword,
                 'offset_rate' => 0,
                 'offset_id' => 0,
-                'limit' => 99,
+                'limit' => 199,
             ]);
 
             $searchMessages = $result['messages'];
@@ -207,14 +207,18 @@ class MailingService implements MailingServiceInterface
     private function transformMessages(array &$users, $botId, $searchMessages)
     {
         array_walk($users, function (&$user) use ($botId, $searchMessages) {
-
             $user['messages'] = [];
             if ($botId !== $user['id']) {
                 $user['messages'] = array_filter($searchMessages, function ($message) use ($user) {
-                    //  dump($message);
+
+                    if($message['date'] < Carbon::now()->subWeek()->timestamp){
+                        return false;
+                    }
+
                     if (array_key_exists('from_id', $message)) {
                         return $message['from_id'] == $user['id'];
                     }
+
                     return false;
                 });
             }
@@ -289,8 +293,7 @@ class MailingService implements MailingServiceInterface
 
     public function sendSubscription($frequency)
     {
-
-        $users = $this->telegramUserRepository->all();
+        $users = $this->telegramUserRepository->getActiveUsers();
 
         foreach ($users as $user) {
             $this->sendMessagesToUser($user, $frequency);

@@ -202,4 +202,6 @@ return [
         // 'stop' => Acme\Project\Commands\StopCommand::class,
         // 'status' => Acme\Project\Commands\StatusCommand::class,
     ],
+
+    'session' => env('TELEGRAM_SESSION_FILE', 'session.madeline'),
 ];
