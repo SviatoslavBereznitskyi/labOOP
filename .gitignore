@@ -20,3 +20,4 @@ ngrok
 session.madeline
 session.madeline.lock
 /docker/nginx/default.conf
+/public/MadelineProto.log
