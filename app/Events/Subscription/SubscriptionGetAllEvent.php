@@ -10,7 +10,7 @@ class SubscriptionGetAllEvent extends GlobalKeyboardCommandEvent
 
     public function executeCommand()
     {
-        $text = $this->subscriptionService->getUserKeywordsList($this->telegramUserId);
+        $text = $this->subscriptionService->getUserKeywordsList($this->telegramUserId, $this->language);
 
         $this->sendMessage($text, KeyboardHelper::commandsKeyboard($this->language));
     }
