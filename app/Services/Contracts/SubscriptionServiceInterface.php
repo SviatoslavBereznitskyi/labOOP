@@ -24,7 +24,7 @@ interface SubscriptionServiceInterface
 
     public function getKeywords(int $id);
 
-    public function getUserKeywordsList(int $telegramUserId);
+    public function getUserKeywordsList(int $telegramUserId, $language);
 
     public function getKeywordsForKeyboard(int $id);
 }

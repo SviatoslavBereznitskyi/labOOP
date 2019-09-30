@@ -76,7 +76,7 @@ class SubscriptionService implements SubscriptionServiceInterface
         return $text;
     }
 
-    public function getUserKeywordsList(int $userId)
+    public function getUserKeywordsList(int $userId, $language)
     {
         $subscriptions = $this->subscriptionRepository->getByUser($userId);
 
@@ -87,9 +87,9 @@ class SubscriptionService implements SubscriptionServiceInterface
         foreach ($subscriptions as $subscription) {
             $text = $text
                 . PHP_EOL
-                . trans('answers.subscriptions', ['service' => $subscription->getService()])
+                . trans('answers.subscriptions', ['service' => $subscription->getService()], $language)
                 . PHP_EOL
-                . trans('answers.frequency', ['value' => $subscription->getFrequency()]);
+                . trans('answers.frequency', ['value' => $subscription->getFrequency()], $language);
 
             foreach ($subscription->getKeywords() as $item) {
                 $text = $text . PHP_EOL  . '- ' . $item;
