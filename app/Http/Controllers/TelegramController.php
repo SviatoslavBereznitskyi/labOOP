@@ -49,14 +49,14 @@ class TelegramController extends Controller
         }
 
         /** @var InlineCommand $lastMessage */
-        $lastMessage = $messageRepository->findByUserOrCreate($telegramUser->getKey());
+        $lastMessage = $messageRepository->findOrCreateByUser($telegramUser->getKey());
 
         if(isset($message['entities'])){
             $lastMessage->delete();
             return;
         }
 
-        if ($lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
+        if (null != $lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
 
             $eventName = InlineCommands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
 
@@ -95,7 +95,12 @@ class TelegramController extends Controller
                 'keyboard_command' => $keyboardCommand,
             ];
 
-            $messageRepository->update($command, $lastMessage->getKey());
+            if(array_key_exists($keyboardCommand, InlineCommands::getAnswersEvents())){
+                $messageRepository->update($command, $lastMessage->getKey());
+            }else{
+                $messageRepository->delete($lastMessage->getKey());
+            }
+
 
             event($telegramService->getEventInstance($keyboardCommand, ['telegramUser' => $telegramUser]));
         }

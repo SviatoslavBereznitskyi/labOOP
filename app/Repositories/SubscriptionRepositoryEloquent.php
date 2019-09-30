@@ -44,6 +44,19 @@ class SubscriptionRepositoryEloquent extends BaseRepository implements Subscript
         return Subscription::query()->byUser($userId)->byService($service)->first();
     }
 
+    /**
+     * @param int $userId
+     * @return Subscription[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|mixed
+     */
+    public function getByUser(int $userId)
+    {
+        return Subscription::query()->byUser($userId)->get();
+    }
+
+    /**
+     * @param int $frequency
+     * @return mixed
+     */
     public function whereFrequency(int $frequency)
     {
         return Subscription::query()->byFrequency($frequency)->get();

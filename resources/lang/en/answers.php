@@ -17,4 +17,6 @@ return [
     'cancel'                          => 'Cancel',
     'canceled'                        => 'Canceled',
     'frequency_changed'               => 'Frequency changed',
+    'subscriptions'                   => '<b>:service subscriptions:</b>',
+    'noSubscriptions'                 => 'You don\'t have an any subscriptions!',
 ];

@@ -68,7 +68,8 @@ abstract class GlobalKeyboardCommandEvent
         Telegram::sendMessage([
             'chat_id'      => $this->telegramUserId,
             'text'         => $message,
-            'reply_markup' => $keyboard
+            'reply_markup' => $keyboard,
+            'parse_mode'   => 'HTML',
         ]);
     }
 }

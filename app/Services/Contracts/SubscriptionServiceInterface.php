@@ -5,6 +5,7 @@ namespace App\Services\Contracts;
 
 
 use App\Models\Subscription;
+use Illuminate\Database\Eloquent\Collection;
 
 interface SubscriptionServiceInterface
 {
@@ -22,6 +23,8 @@ interface SubscriptionServiceInterface
     public function delete($id);
 
     public function getKeywords(int $id);
+
+    public function getUserKeywordsList(int $telegramUserId);
 
     public function getKeywordsForKeyboard(int $id);
 }

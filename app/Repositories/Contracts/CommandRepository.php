@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CommandRepository extends RepositoryInterface
 {
-    public function findByUserOrCreate($userId);
+    public function findOrCreateByUser($userId);
 }

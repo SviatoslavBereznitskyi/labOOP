@@ -5,6 +5,7 @@ namespace App\TelegramCommands;
 use App\Events\SelectServiceEvent;
 use App\Events\ChangeFrequencyEvent;
 use App\Events\SetFrequencyEvent;
+use App\Events\SubscriptionGetAllEvent;
 use App\Events\SubscriptionSelectServiceEvent;
 use App\Events\SubscriptionEvent;
 use App\Events\SubscriptionKeywordsEvent;
@@ -31,6 +32,7 @@ class InlineCommands
     const SUBSCRIBE_COMMAND             = SubscriptionEvent::class;
     const SUBSCRIPTION_KEYWORDS_EVENT   = SubscriptionKeywordsEvent::class;
     const SUBSCRIBE_ANSWER_EVENT        = SubscriptionSelectServiceEvent::class;
+    const SUBSCRIPTIONS_GET_ALL         = SubscriptionGetAllEvent::class;
 
     const UNSUBSCRIBE_COMMAND           = UnsubscriptionEvent::class;
     const UNSUBSCRIBE_ANSWER_EVENT      = UnsubscriptionSelectServiceEvent::class;
@@ -43,9 +45,10 @@ class InlineCommands
     public static function getCommandsByLang($lang)
     {
         return [
-            self::SUBSCRIBE_COMMAND        => trans('commands.' . self::SUBSCRIBE_COMMAND, [], $lang ),
-            self::UNSUBSCRIBE_COMMAND      => trans('commands.' . self::UNSUBSCRIBE_COMMAND, [], $lang ),
-            self::CHANGE_FREQUENCY_COMMAND => trans('commands.' . self::CHANGE_FREQUENCY_COMMAND, [], $lang ),
+            self::SUBSCRIBE_COMMAND        => trans('commands.' . self::SUBSCRIBE_COMMAND, [], $lang),
+            self::UNSUBSCRIBE_COMMAND      => trans('commands.' . self::UNSUBSCRIBE_COMMAND, [], $lang),
+            self::CHANGE_FREQUENCY_COMMAND => trans('commands.' . self::CHANGE_FREQUENCY_COMMAND, [], $lang),
+            self::SUBSCRIPTIONS_GET_ALL    => trans('commands.' . self::SUBSCRIPTIONS_GET_ALL, [], $lang),
         ];
     }
 
@@ -70,6 +73,7 @@ class InlineCommands
      */
     public static function findCommandByName($name, $locale = 'en')
     {
+
         $commands = self::getCommandsByLang($locale);
 
         return array_search($name, $commands);
