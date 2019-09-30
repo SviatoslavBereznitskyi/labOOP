@@ -98,4 +98,9 @@ class Subscription extends Section implements Initializable
         return false;
     }
 
+    public function isDeletable(Model $model)
+    {
+        return true;
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use AdminSection;
 use App\Http\Controllers\Controller;
+use App\Services\Contracts\MailingServiceInterface;
 
 class DashboardController extends Controller
 {
@@ -12,9 +13,10 @@ class DashboardController extends Controller
         return AdminSection::view(view('admin.dashboard'), trans('admin.dashboard.title'));
     }
 
-    public function sendMessages()
+    public function sendMessages(MailingServiceInterface $mailingService)
     {
-        \Artisan::call('send:messages');
+        $mailingService->sendSubscription();
+
         return redirect()->back();
     }
 }
