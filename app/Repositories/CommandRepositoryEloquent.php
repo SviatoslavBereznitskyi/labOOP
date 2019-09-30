@@ -40,7 +40,7 @@ class CommandRepositoryEloquent extends BaseRepository implements CommandReposit
      * @return InlineCommand
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function findByUserOrCreate($userId)
+    public function findOrCreateByUser($userId)
     {
         /** @var InlineCommand $entity */
         $entity = $this->findByField(InlineCommand::TELEGRAM_USER_ID_FIELD, $userId)->first();

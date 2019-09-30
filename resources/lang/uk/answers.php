@@ -17,4 +17,6 @@ return [
     'cancel'                          => 'Відмінити',
     'canceled'                        => 'Відмінено',
     'frequency_changed'               => 'Частоту сповіщень змінено',
+    'subscriptions'                   => '<b>Підписки :service:</b>',
+    'noSubscriptions'                 => 'У вас немає підписки!',
 ];

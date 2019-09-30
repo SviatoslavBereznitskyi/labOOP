@@ -19,5 +19,15 @@ interface SubscriptionRepository extends RepositoryInterface
      */
     public function getByUserService(int $userId, string $service);
 
+    /**
+     * @param int $frequency
+     * @return mixed
+     */
     public function whereFrequency(int $frequency);
+
+    /**
+     * @param int $userId
+     * @return mixed
+     */
+    public function getByUser(int $userId);
 }

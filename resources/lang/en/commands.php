@@ -6,4 +6,5 @@ return[
     InlineCommands::SUBSCRIBE_COMMAND           => 'Subscribe',
     InlineCommands::UNSUBSCRIBE_COMMAND         => 'Unsubscribe',
     InlineCommands::CHANGE_FREQUENCY_COMMAND    => 'Frequency',
+    InlineCommands::SUBSCRIPTIONS_GET_ALL       => 'My subscriptions',
 ];

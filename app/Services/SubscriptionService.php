@@ -28,7 +28,7 @@ class SubscriptionService implements SubscriptionServiceInterface
     {
         $subscription = $this->subscriptionRepository->getByUserService($params['telegram_user_id'], $params['service']);
 
-        if(!$subscription){
+        if (!$subscription) {
             $this->subscriptionRepository->create($params);
             return $this->subscriptionRepository->getByUserService($params['telegram_user_id'], $params['service']);
         }
@@ -71,6 +71,25 @@ class SubscriptionService implements SubscriptionServiceInterface
 
         foreach ($subscription->getKeywords() as $key => $item) {
             $text = $text . PHP_EOL . ($key + 1) . '. ' . $item;
+        }
+
+        return $text;
+    }
+
+    public function getUserKeywordsList(int $userId)
+    {
+        $subscriptions = $this->subscriptionRepository->getByUser($userId);
+
+        if($subscriptions->isEmpty()){
+            return trans('answers.noSubscriptions');
+        }
+        $text = '';
+        foreach ($subscriptions as $subscription) {
+            $text = $text . PHP_EOL  . trans('answers.subscriptions', ['service' => $subscription->getService()]);
+
+            foreach ($subscription->getKeywords() as $item) {
+                $text = $text . PHP_EOL  . '- ' . $item;
+            }
         }
 
         return $text;

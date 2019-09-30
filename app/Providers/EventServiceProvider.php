@@ -47,6 +47,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UnsubscriptionKeywordsEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
+        'App\Events\SubscriptionGetAllEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
     ];
 
     /**

@@ -104,4 +104,9 @@ class Subscription extends Model implements Transformable
     {
         return $query->where('frequency', $frequency);
     }
+
+    public function getService()
+    {
+        return $this->service;
+    }
 }
