@@ -85,7 +85,11 @@ class SubscriptionService implements SubscriptionServiceInterface
         }
         $text = '';
         foreach ($subscriptions as $subscription) {
-            $text = $text . PHP_EOL  . trans('answers.subscriptions', ['service' => $subscription->getService()]);
+            $text = $text
+                . PHP_EOL
+                . trans('answers.subscriptions', ['service' => $subscription->getService()])
+                . PHP_EOL
+                . trans('answers.frequency', ['value' => $subscription->getFrequency]);
 
             foreach ($subscription->getKeywords() as $item) {
                 $text = $text . PHP_EOL  . '- ' . $item;

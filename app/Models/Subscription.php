@@ -109,4 +109,9 @@ class Subscription extends Model implements Transformable
     {
         return $this->service;
     }
+
+    public function getFrequency()
+    {
+        return $this->frequency;
+    }
 }

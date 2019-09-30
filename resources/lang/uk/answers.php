@@ -19,4 +19,5 @@ return [
     'frequency_changed'               => 'Частоту сповіщень змінено',
     'subscriptions'                   => '<b>Підписки :service:</b>',
     'noSubscriptions'                 => 'У вас немає підписки!',
+    'frequency'                       => 'Частота сповіщень: кожні :value хвилин',
 ];
