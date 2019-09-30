@@ -291,7 +291,7 @@ class MailingService implements MailingServiceInterface
         return $keywords;
     }
 
-    public function sendSubscription($frequency)
+    public function sendSubscription($frequency = null)
     {
         $users = $this->telegramUserRepository->getActiveUsers();
 

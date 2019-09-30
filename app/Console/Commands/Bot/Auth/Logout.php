@@ -22,7 +22,7 @@ class Logout extends Command
     /**
      * @var string
      */
-    protected $description = 'Send message';
+    protected $description = 'Telegram logout';
 
 
     /**

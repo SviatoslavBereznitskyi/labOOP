@@ -19,13 +19,18 @@ trait TelegramTrait
     {
         $session = config('telegram.session');
 
-        if (file_exists(__DIR__ . '/../../../../' . $session)) {
+        $sessionPath = $_SERVER['PHP_SELF']=='artisan'?__DIR__ . '/../../../../' . $session:__DIR__.'/../../../../public/'.$session;
+
+       // dd($_SERVER['PHP_SELF']);
+
+        if (file_exists($sessionPath)) {
             $madeline = new API($session);
         } else {
             $madeline = new API($session, config('mdproto'));
         }
 
-        $madeline->serialize();
+        $madeline->serialize(__DIR__ . '/../../../../' . $session);
+        $madeline->serialize(__DIR__.'/../../../../public/'.$session);
 
         return $madeline;
     }
