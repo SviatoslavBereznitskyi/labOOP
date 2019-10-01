@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Subscription;
 use App\Repositories\Contracts\SubscriptionRepository;
 use App\Services\Contracts\SubscriptionServiceInterface;
+use App\Services\Subscriptions\AbstractSubscriptionsService;
 
 class SubscriptionService implements SubscriptionServiceInterface
 {
@@ -122,5 +123,10 @@ class SubscriptionService implements SubscriptionServiceInterface
     public function delete($id)
     {
         $this->subscriptionRepository->delete($id);
+    }
+
+    public function sendFromService(AbstractSubscriptionsService $service)
+    {
+
     }
 }

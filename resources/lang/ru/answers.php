@@ -20,4 +20,5 @@ return [
     'subscriptions'                   => '<b>Подписки :service</b>',
     'noSubscriptions'                 => 'У вас нет подписок!',
     'frequency'                       => 'Частота оповещения: каждые :value минут',
+    'notUnderstand'                   => 'Не понятная команда',
 ];

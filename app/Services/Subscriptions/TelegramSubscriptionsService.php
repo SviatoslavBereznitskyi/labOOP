@@ -1,0 +1,131 @@
+<?php
+
+
+namespace App\Services\Subscriptions;
+
+
+use App\Models\Subscription;
+use App\Services\Contracts\TelegramServiceInterface;
+use Carbon\Carbon;
+use Telegram;
+
+class TelegramSubscriptionsService extends AbstractSubscriptionsService
+{
+    /**
+     * @return array
+     * @throws Telegram\Bot\Exceptions\TelegramSDKException
+     */
+    public function getPosts(): array
+    {
+        $botId = Telegram::bot()->getMe()->id;
+
+        $keywords = $this->getKeywords(Subscription::TELEGRAM_SERVICE, $this->user, $this->frequency);
+
+        $sentMessages = $this->user->sentMessages()
+            ->where('service', Subscription::TELEGRAM_SERVICE)
+            ->get();
+
+        $messages = [];
+        $telegramService = resolve(TelegramServiceInterface::class);
+        foreach ($keywords as $keyword) {
+            $result = $telegramService->getSearch([
+                'q' => $keyword,
+                'offset_rate' => 0,
+                'offset_id' => 0,
+                'limit' => 199,
+            ]);
+            //dd($result['messages'][95]);
+            $searchMessages = $result['messages'];
+
+
+            $users = $this->transformMessages($result, $botId, $searchMessages);
+
+            foreach ($users as $tgUser) {
+                foreach ($tgUser['messages'] as $message) {
+                    if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
+                        continue;
+                    }
+                    $text = $this->getMessageText($message, $tgUser);
+
+                    $messages[] = [
+                        'message_id' => $message['id'],
+                        'service' => Subscription::TELEGRAM_SERVICE,
+                        'message' => [
+                            'chat_id' => $this->user->getKey(),
+                            'text' => $text,
+                        ],
+
+                    ];
+                }
+            }
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @param array $result
+     * @param $botId
+     * @param $searchMessages
+     */
+    private function transformMessages(array $result, $botId, $searchMessages)
+    {
+        $users = $result['users'];
+        $users = array_merge($users, $result['chats']);
+
+        array_walk($users, function (&$user) use ($botId, $searchMessages) {
+            $user['messages'] = [];
+            if ($botId !== $user['id']) {
+                $user['messages'] = array_filter($searchMessages, function ($message) use ($user) {
+
+                    if ($message['date'] < Carbon::now()->subWeek()->timestamp) {
+                        return false;
+                    }
+
+                    if (array_key_exists('from_id', $message)) {
+                        return $message['from_id'] == $user['id'];
+                    } elseif (array_key_exists('to_id', $message)) {
+                        return $message['to_id']['channel_id'] == $user['id'];
+                    }
+
+                    return false;
+                });
+            }
+        });
+
+        return $users;
+    }
+
+    /**
+     * @param array $user
+     * @return string
+     */
+    private function parseTgUser(array $user)
+    {
+        $firstName = key_exists('first_name', $user) ? $user['first_name'] : ' ';
+        $username = key_exists('username', $user) ? $user['username'] : ' ';
+        $lastName = key_exists('last_name', $user) ? $user['last_name'] : ' ';
+        $phone = key_exists('phone', $user) ? $user['phone'] : ' ';
+
+        return "$firstName $lastName\n@$username\n$phone";
+    }
+
+    private function getMessageText($message, $tgUser)
+    {
+
+        $text = $this->parseTgUser($tgUser) . PHP_EOL
+            . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
+            . substr($message['message'], 0, 500);
+
+        if (key_exists('entities', $message)) {
+            foreach ($message['entities'] as $entity) {
+                $url = key_exists('url', $entity) ? $entity['url'] : '';
+                $text .= PHP_EOL . $url;
+            }
+        }
+
+        $text = mb_check_encoding($text, 'UTF-8') ? $text : mb_convert_encoding($text, 'UTF-8');
+
+        return $text;
+    }
+}
