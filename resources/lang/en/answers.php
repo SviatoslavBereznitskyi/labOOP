@@ -20,4 +20,5 @@ return [
     'subscriptions'                   => '<b>:service subscriptions:</b>',
     'noSubscriptions'                 => 'You don\'t have an any subscriptions!',
     'frequency'                       => 'Frequency: every :value minutes',
+    'notUnderstand'                   => 'I don\'t understand You',
 ];

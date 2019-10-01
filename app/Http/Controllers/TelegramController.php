@@ -87,7 +87,7 @@ class TelegramController extends Controller
             if (!$keyboardCommand) {
                 Telegram::sendMessage([
                     'chat_id' => $telegramUser->getKey(),
-                    'text' => 'not understand']);
+                    'text' => trans('answers.notUnderstand')]);
                 return;
             }
 

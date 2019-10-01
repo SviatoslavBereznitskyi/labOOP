@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\Subscriptions\TelegramSubscriptionsService;
+use App\Services\Subscriptions\TwitterSubscriptionsService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -27,6 +29,10 @@ class Subscription extends Model implements Transformable
         'keywords' => 'array'
     ];
 
+    /**
+     * return array with names of services
+     * @return array
+     */
     public static function getAvailableServices()
     {
         return [
@@ -34,6 +40,20 @@ class Subscription extends Model implements Transformable
             self::FACEBOOK_SERVICE,
             self::UPWORK_SERVICE,
             self::TELEGRAM_SERVICE,
+        ];
+    }
+
+    /**
+     * return array of instances subscription services
+     * @param TelegramUser $user
+     * @param int $frequency
+     * @return array
+     */
+    public static function getServiceInstances(TelegramUser $user, $frequency)
+    {
+        return [
+            new TelegramSubscriptionsService($user, $frequency),
+            new TwitterSubscriptionsService($user, $frequency),
         ];
     }
 
