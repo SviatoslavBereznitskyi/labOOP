@@ -34,7 +34,7 @@ return [
         'save' => 'Save',
     ],
     'dashboard' => [
-        'title'         => 'Dashboard',
+        'title'         => 'Панель инструментов',
         'send_label'    => 'Send ALL subscriptions messages to ALL users',
         'send'          => 'GO!',
     ],

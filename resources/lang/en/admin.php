@@ -24,6 +24,7 @@ return [
         'is_bot'                    => 'Is bot',
         'language_code'             => 'Language',
         'subscription'              => 'Active subs.',
+        'phone'                     => 'Phone',
         TelegramUser::TYPE_GROUP    => 'Groups',
         TelegramUser::TYPE_PRIVATE  => 'Users',
     ],

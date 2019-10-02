@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Bot;
 
 use danog\MadelineProto\API;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class TelegramTrait
@@ -19,18 +20,15 @@ trait TelegramTrait
     {
         $session = config('telegram.session');
 
-        $sessionPath = $_SERVER['PHP_SELF']=='artisan'?__DIR__ . '/../../../../' . $session:__DIR__.'/../../../../public/'.$session;
-
-       // dd($_SERVER['PHP_SELF']);
+        $sessionPath = Storage::path($session);
 
         if (file_exists($sessionPath)) {
-            $madeline = new API($session);
+            $madeline = new API($sessionPath);
         } else {
-            $madeline = new API($session, config('mdproto'));
+            $madeline = new API($sessionPath, config('mdproto'));
         }
 
-        $madeline->serialize(__DIR__ . '/../../../../' . $session);
-        $madeline->serialize(__DIR__.'/../../../../public/'.$session);
+        $madeline->serialize($sessionPath);
 
         return $madeline;
     }

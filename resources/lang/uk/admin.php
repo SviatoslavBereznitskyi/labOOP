@@ -36,7 +36,7 @@ return [
         'save' => 'Зберегти',
     ],
     'dashboard' => [
-        'title'         => 'Dashboard',
+        'title'         => 'Панель приладів',
         'send_label'    => 'Send ALL subscriptions messages to ALL users',
         'send'          => 'GO!',
     ],
