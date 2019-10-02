@@ -19,8 +19,6 @@ class DashboardController extends Controller
 
         if($madeline->get_self())
         {
-            $madeline->channels->joinChannel(['channel' => 'https://telegram.me/jobsinkenya', ]);
-            dd($madeline->messages->getAllChats(['offset' => 0, ]));
             $user = $this->parseUser($madeline->get_self());
         }
 
