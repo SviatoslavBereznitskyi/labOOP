@@ -57,7 +57,7 @@ class Subscription extends Model implements Transformable
         ];
     }
 
-    public static function getAvailableFrequencies()
+    protected static function getAvailableFrequencies()
     {
         return[
             '15',
@@ -67,6 +67,16 @@ class Subscription extends Model implements Transformable
             '120',
             '180',
         ];
+    }
+
+    public static function getAvailableFrequenciesForHuman($lang)
+    {
+        $frequencies = self::getAvailableFrequencies();
+        $frequenciesForHuman = [];
+        foreach ($frequencies as $frequency){
+            $frequenciesForHuman[$frequency] = trans('answers.frequencyForHuman',['value' => $frequency], $lang??app()->getLocale());
+        }
+         return $frequenciesForHuman;
     }
 
     /**

@@ -22,4 +22,7 @@ return [
     'frequency'                       => 'Frequency: every :value minutes',
     'notUnderstand'                   => 'I don\'t understand You',
     'languageChanged'                 => 'Language changed to :code',
+    'frequencyForHuman'               => 'Every :value min',
+    'selectFrequency'                 => 'Select frequency',
+    'noSubscription'                  => 'You don\'t have subscription on :service',
 ];

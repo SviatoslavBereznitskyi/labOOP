@@ -22,4 +22,7 @@ return [
     'frequency'                       => 'Частота сповіщень: кожні :value хвилин',
     'notUnderstand'                   => 'Не зрозуміла команда',
     'languageChanged'                 => 'Мову змінено на :code',
+    'frequencyForHuman'               => 'Кожні :value хв',
+    'selectFrequency'                 => 'Select frequency',
+    'noSubscription'                  => 'Ви не підписані на :service',
 ];

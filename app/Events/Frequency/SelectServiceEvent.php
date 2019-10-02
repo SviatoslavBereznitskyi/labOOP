@@ -15,11 +15,17 @@ class SelectServiceEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
+        $subscription = $this->subscriptionService
+            ->getByUserAndService($this->telegramUserId, $this->answer);
+
+        if(null === $subscription){
+            $this->lastCommand->delete();
+            $this->sendMessage(trans('answers.noSubscription', ['service' => $this->answer], $this->language), KeyboardHelper::commandsKeyboard($this->language));
+            return;
+        }
 
         $this->sendMessage(trans('answers.input.frequency', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
 
-        $subscription = $this->subscriptionService
-            ->getByUserAndService($this->telegramUserId, $this->answer);
 
         $this->commandService->setCommandMessage(get_class($this), $this->lastCommand->getKey(), $subscription);
     }
