@@ -24,6 +24,9 @@
                     </ul>
                 </div>
             </div>
+            @error('url_callback_bot')
+            Пoвинен бути URL
+            @enderror
             <input type="url" class="form-control" id="url_callback_bot" name="url_callback_bot"
                    value="{{isset($url_callback_bot) ? $url_callback_bot:''}}" required>
         </div>
