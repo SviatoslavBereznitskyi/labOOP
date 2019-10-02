@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Telegram\KeyboardHelper;
 use App\Models\InlineCommand;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\CommandRepository;
@@ -81,7 +82,11 @@ class TelegramController extends Controller
             $keyboardCommand = InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale());
 
             if(isset($message['from']['language_code']) && $message['from']['language_code'] != $telegramUser->getLocale()){
-                $this->telegramService->changeLanguage($telegramUser->getKey(), $message['from']['language_code']);
+                $telegramUser = $this->telegramService->changeLanguage($telegramUser->getKey(), $message['from']['language_code']);
+                Telegram::sendMessage([
+                    'chat_id' => $telegramUser->getKey(),
+                    'text' => trans('answers.languageChanged', ['code' => $message['from']['language_code']], $telegramUser->getLocale()),
+                ]);
             }
 
             if (!$keyboardCommand) {

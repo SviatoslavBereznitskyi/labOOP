@@ -21,4 +21,5 @@ return [
     'noSubscriptions'                 => 'You don\'t have an any subscriptions!',
     'frequency'                       => 'Frequency: every :value minutes',
     'notUnderstand'                   => 'I don\'t understand You',
+    'languageChanged'                 => 'Language changed to :code',
 ];

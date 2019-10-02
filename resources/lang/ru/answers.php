@@ -21,4 +21,5 @@ return [
     'noSubscriptions'                 => 'У вас нет подписок!',
     'frequency'                       => 'Частота оповещения: каждые :value минут',
     'notUnderstand'                   => 'Не понятная команда',
+    'languageChanged'                 => 'Язык изменен на :code',
 ];

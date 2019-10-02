@@ -4,6 +4,7 @@
 namespace App\Services\Subscriptions;
 
 
+use App\Models\Subscription;
 use App\Models\TelegramUser;
 
 abstract class AbstractSubscriptionsService
@@ -19,7 +20,6 @@ abstract class AbstractSubscriptionsService
 
     public function __construct(TelegramUser $user, $frequency)
     {
-
         $this->user = $user;
         $this->frequency = $frequency;
     }
