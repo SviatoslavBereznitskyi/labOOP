@@ -2,7 +2,7 @@
 return [
     'input' => [
         'key_words' => 'Введіть ключові слова',
-        'frequency' => 'Enter the frequency',
+        'frequency' => 'Виберіть частоту сповіщень',
     ],
     'deleted_keyword'                 => 'Ключове слово видалено',
     'deleted_keywords'                => 'Ключові слова видалено',
