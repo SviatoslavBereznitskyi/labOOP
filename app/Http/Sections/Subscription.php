@@ -65,7 +65,8 @@ class Subscription extends Section implements Initializable
                 AdminColumn::text('telegramUser.first_name', trans('admin.subscriptions.firstName')),
                 AdminColumn::text('telegramUser.username', trans('admin.subscriptions.username')),
                 AdminColumn::lists('keywords', trans('admin.subscriptions.keywords'))->setWidth('50%'),
-                AdminColumn::text('service', trans('admin.subscriptions.service'))
+                AdminColumn::text('service', trans('admin.subscriptions.service')),
+                AdminColumn::text('frequency', trans('admin.subscriptions.frequency'))
             )
             ->setOrder([1, 'ASC'])
             ->paginate(20)
