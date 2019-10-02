@@ -9,6 +9,7 @@ return [
         'service'   => 'Сервіс',
         'firstName' => 'Ім\'я користувача',
         'username'  => 'Username',
+        'frequency' => 'Частота',
     ],
     'admins' => [
         'title' => 'Адміністратори',

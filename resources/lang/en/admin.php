@@ -9,6 +9,7 @@ return [
         'service'   => 'Service',
         'firstName' => 'User first name',
         'username'  => 'Username',
+        'frequency' => 'Frequency',
     ],
     'admins' => [
         'title' => 'Admins',

@@ -37,8 +37,8 @@ class Subscription extends Model implements Transformable
     {
         return [
             self::TWITTER_SERVICE,
-            self::FACEBOOK_SERVICE,
-            self::UPWORK_SERVICE,
+//            self::FACEBOOK_SERVICE,
+//            self::UPWORK_SERVICE,
             self::TELEGRAM_SERVICE,
         ];
     }
