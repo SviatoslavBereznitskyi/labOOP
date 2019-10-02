@@ -14,7 +14,7 @@ class SettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'url_callback_bot' => 'required|url',
+            'url_callback_bot' => 'required',
         ];
     }
 }

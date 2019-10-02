@@ -20,17 +20,14 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
             return false;
         }
 
-        if (false === in_array($this->answer, Subscription::getAvailableFrequencies())) {
-            $this->sendMessage(trans('answers.select_category', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
+        $frequency = array_search($this->answer, Subscription::getAvailableFrequenciesForHuman($this->language));
+
+        if (false === $frequency) {
+            $this->sendMessage(trans('answers.selectFrequency', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
             return false;
         }
 
-        if (false === is_numeric($this->answer)) {
-            $this->rejectWithServices();
-
-            return;
-        }
-        $model->frequency = $this->answer;
+        $model->frequency = $frequency;
 
         $model->save();
 

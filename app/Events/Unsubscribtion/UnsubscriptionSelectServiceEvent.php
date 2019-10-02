@@ -26,7 +26,7 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
         if (!$subscription) {
 
             $this->sendMessage(
-                trans('answers.no_words', [], $this->language),
+                trans('answers.noSubscription', ['service' => $this->answer], $this->language),
                 KeyboardHelper::commandsKeyboard($this->language)
             );
 

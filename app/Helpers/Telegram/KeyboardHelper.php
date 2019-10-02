@@ -100,11 +100,10 @@ class KeyboardHelper
 
     public static function frequencyKeyboard($language = null)
     {
-        $keyboard = Subscription::getAvailableFrequencies();
-        $keyboard = array_chunk($keyboard, 4);
+        $keyboard = Subscription::getAvailableFrequenciesForHuman($language);
+        $keyboard = array_chunk($keyboard, 3);
 
-         array_push($keyboard, [trans(InlineCommands::CANCEL, [], $language??App::getLocale())]);
-       // dd($keyboard);
+         array_push($keyboard, [trans(InlineCommands::CANCEL, [], $language??app()->getLocale())]);
 
         return Keyboard::make([
             'keyboard' => $keyboard,
