@@ -18,4 +18,6 @@ Route::namespace('\App\Http\Controllers\Admin\\')
         Route::post('telegram/logout', TelegramController::class . '@logout')->name('dashboard.telegram.logout');
         Route::post('telegram/complete', TelegramController::class . '@completePhoneLogin')->name('dashboard.telegram.completePhoneLogin');
 
+        Route::post('/sync', TelegramGroupController::class.'@sync')->name('telegramGroups.sync');
+
     });
