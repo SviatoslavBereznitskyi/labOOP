@@ -20,10 +20,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        SubscriptionEvent::class => [
+        'App\Events\SubscriptionEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
-        UnsubscriptionEvent::class => [
+        'App\Events\UnsubscriptionEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
         'App\Events\UnsubscriptionSelectServiceEvent' => [
@@ -48,6 +48,24 @@ class EventServiceProvider extends ServiceProvider
             'App\Handlers\GlobalEventHandler'
         ],
         'App\Events\SubscriptionGetAllEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelSelectEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelServiceSelectEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelActionSelectEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelAddEvent' => [
+            'App\Handlers\GlobalEventHandler'
+        ],
+        'App\Events\Channel\ChannelDeleteEvent' => [
             'App\Handlers\GlobalEventHandler'
         ],
     ];

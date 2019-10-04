@@ -31,6 +31,6 @@ class SubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
 
         $this->sendMessage(trans('answers.enter_key_words', [], $this->language));
 
-        $this->commandService->setCommandMessage(get_class($this), $this->lastCommand->getKey(), $subscription);
+        $this->setCommand($subscription);
     }
 }

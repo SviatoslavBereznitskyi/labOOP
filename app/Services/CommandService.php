@@ -27,7 +27,7 @@ class CommandService implements CommandServiceInterface
         $data = [
             'model' => null,
             'model_id' => null,
-            'keyboard_command' => null,
+            'keyboard_command' => $command,
         ];
 
         if ($model) {

@@ -32,9 +32,9 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
                 'q' => $keyword,
                 'offset_rate' => 0,
                 'offset_id' => 0,
-                'limit' => 199,
+                'limit' => 500,
             ]);
-            //dd($result['messages'][95]);
+
             $searchMessages = $result['messages'];
 
 
@@ -45,7 +45,7 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
                     if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
                         continue;
                     }
-                    $text = $this->getMessageText($message, $tgUser);
+                    $text = $this->getMessageText($message, $tgUser, $users);
 
                     $messages[] = [
                         'message_id' => $message['id'],
@@ -106,15 +106,21 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
         $username = key_exists('username', $user) ? $user['username'] : ' ';
         $lastName = key_exists('last_name', $user) ? $user['last_name'] : ' ';
         $phone = key_exists('phone', $user) ? $user['phone'] : ' ';
+        $title = key_exists('title', $user) ? $user['title'] : ' ';
 
-        return "$firstName $lastName\n@$username\n$phone";
+        return "$firstName $lastName\n@$username\n$phone\n$title";
     }
 
-    private function getMessageText($message, $tgUser)
+    private function getMessageText($message, $tgUser, $users)
     {
+        $text = $this->parseTgUser($tgUser) . PHP_EOL;
 
-        $text = $this->parseTgUser($tgUser) . PHP_EOL
-            . Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
+        if (array_key_exists('to_id', $message) && $message['to_id']['_'] == 'peerChannel') {
+            $channel = $users[array_search($message['to_id']['channel_id'], array_column($users, 'id'))];
+            $text .= $this->parseTgUser($channel) . PHP_EOL;
+        }
+
+        $text .= Carbon::createFromTimestamp($message['date'])->toDateTimeString() . PHP_EOL
             . substr($message['message'], 0, 500);
 
         if (key_exists('entities', $message)) {

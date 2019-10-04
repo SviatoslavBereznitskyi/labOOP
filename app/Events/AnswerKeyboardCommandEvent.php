@@ -52,4 +52,18 @@ abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
 
         return true;
     }
+
+    protected function getModel()
+    {
+       return resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
+    }
+
+    protected function setCommand($model = null)
+    {
+        $this->commandService
+            ->setCommandMessage(InlineCommands::getAnswerEvent($this->lastCommand->getKeyboardCommand(), $this->answer, $this->language),
+                $this->lastCommand->getKey(),
+                $model
+            );
+    }
 }

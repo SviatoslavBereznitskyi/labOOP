@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\ChannelsRepository;
-use App\Models\Channels;
+use App\Repositories\Contracts\ChannelRepository;
+use App\Models\Channel;
 use App\Validators\ChannelsValidator;
 
 /**
@@ -13,7 +13,7 @@ use App\Validators\ChannelsValidator;
  *
  * @package namespace App\Repositories;
  */
-class ChannelsRepositoryEloquent extends BaseRepository implements ChannelsRepository
+class ChannelRepositoryEloquent extends BaseRepository implements ChannelRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class ChannelsRepositoryEloquent extends BaseRepository implements ChannelsRepos
      */
     public function model()
     {
-        return Channels::class;
+        return Channel::class;
     }
 
     

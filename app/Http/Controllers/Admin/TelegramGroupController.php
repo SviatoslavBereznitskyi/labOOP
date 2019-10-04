@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use AdminSection;
 use App\Console\Commands\Bot\TelegramTrait;
 use App\Models\Subscription;
-use App\Repositories\Contracts\ChannelsRepository;
+use App\Repositories\Contracts\ChannelRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +13,7 @@ class TelegramGroupController extends Controller
 {
     use TelegramTrait;
 
-    public function sync(Request $request, ChannelsRepository $channelsRepository)
+    public function sync(Request $request, ChannelRepository $channelsRepository)
     {
         set_time_limit(120);
 

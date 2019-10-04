@@ -9,7 +9,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  *
  * @package namespace App\Repositories\Contracts;
  */
-interface ChannelsRepository extends RepositoryInterface
+interface ChannelRepository extends RepositoryInterface
 {
     //
 }

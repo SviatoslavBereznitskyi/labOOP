@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Console\Commands\Bot\TelegramTrait;
-use App\Models\Channels;
+use App\Models\Channel;
 
 class ChannelObserver
 {
@@ -11,10 +11,10 @@ class ChannelObserver
     /**
      * Handle the channels "created" event.
      *
-     * @param Channels $channels
+     * @param Channel $channels
      * @return void
      */
-    public function creating(Channels $channels)
+    public function creating(Channel $channels)
     {
         $madeline = $this->getMadelineInstance();
 
@@ -36,7 +36,7 @@ class ChannelObserver
      * @param  \App\Channels  $channels
      * @return void
      */
-    public function updated(Channels $channels)
+    public function updated(Channel $channels)
     {
         //
     }
@@ -47,7 +47,7 @@ class ChannelObserver
      * @param  \App\Channels  $channels
      * @return void
      */
-    public function deleted(Channels $channels)
+    public function deleted(Channel $channels)
     {
         $madeline = $this->getMadelineInstance();
 
@@ -60,7 +60,7 @@ class ChannelObserver
      * @param  \App\Channels  $channels
      * @return void
      */
-    public function restored(Channels $channels)
+    public function restored(Channel $channels)
     {
         //
     }
@@ -71,7 +71,7 @@ class ChannelObserver
      * @param  \App\Channels  $channels
      * @return void
      */
-    public function forceDeleted(Channels $channels)
+    public function forceDeleted(Channel $channels)
     {
         //
     }

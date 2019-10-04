@@ -21,7 +21,7 @@ return [
     (new Page(\App\Models\Subscription::class))
         ->setIcon('fa fa-envelope')
         ->setPriority(3),
-    (new Page(\App\Models\Channels::class))
+    (new Page(\App\Models\Channel::class))
         ->setIcon('fa fa-envelope')
         ->setPriority(5),
 

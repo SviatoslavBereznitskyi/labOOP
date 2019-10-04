@@ -43,6 +43,10 @@ abstract class GlobalKeyboardCommandEvent
      * @var string
      */
     protected $language;
+    /**
+     * @var TelegramUser
+     */
+    protected $telegramUser;
 
     abstract function executeCommand();
 
@@ -58,6 +62,7 @@ abstract class GlobalKeyboardCommandEvent
         $this->messageRepository = resolve(CommandRepository::class);
         $this->commandService = resolve(CommandServiceInterface::class);
         $this->language = $telegramUser->getLocale();
+        $this->telegramUser = $telegramUser;
     }
 
     /**

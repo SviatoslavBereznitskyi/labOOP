@@ -15,7 +15,7 @@ use SleepingOwl\Admin\Contracts\Display\DisplayInterface;
 /**
  * Class Channels
  *
- * @property \App\Models\Channels $model
+ * @property \App\Models\Channel $model
  *
  * @see https://sleepingowladmin.ru/#/ru/model_configuration_section
  */
@@ -76,7 +76,7 @@ class Channels extends Section implements Initializable
     {
         return AdminForm::panel()->addBody([
             AdminFormElement::text('username', 'Channel name')->required(),
-            AdminFormElement::select('service', 'Channel name')->setEnum(\App\Models\Subscription::getAvailableServices())->required(),
+            AdminFormElement::select('service', 'Service')->setEnum(\App\Models\Subscription::getGroupServices())->required(),
         ]);
     }
 

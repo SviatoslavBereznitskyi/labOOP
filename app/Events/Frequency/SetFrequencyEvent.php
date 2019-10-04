@@ -11,7 +11,7 @@ class SetFrequencyEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
         /** @var Subscription $model */
-        $model = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
+        $model = $this->getModel();
 
         if ($this->answer === trans(InlineCommands::CANCEL, [], $this->language)) {
             $this->lastCommand->delete();

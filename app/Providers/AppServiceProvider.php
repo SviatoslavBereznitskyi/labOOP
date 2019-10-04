@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Channels;
+use App\Models\Channel;
 use App\Observers\ChannelObserver;
-use App\Repositories\ChannelsRepositoryEloquent;
-use App\Repositories\Contracts\ChannelsRepository;
+use App\Repositories\ChannelRepositoryEloquent;
+use App\Repositories\Contracts\ChannelRepository;
 use App\Repositories\Contracts\CommandRepository;
 use App\Repositories\Contracts\SentMessagesRepository;
 use App\Repositories\Contracts\SubscriptionRepository;
@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CommandServiceInterface::class, CommandService::class);
         $this->app->bind(MailingServiceInterface::class, MailingService::class);
         $this->app->bind(SentMessagesRepository::class, SentMessagesRepositoryEloquent::class);
-        $this->app->bind(ChannelsRepository::class, ChannelsRepositoryEloquent::class);
+        $this->app->bind(ChannelRepository::class, ChannelRepositoryEloquent::class);
     }
 
     /**
@@ -51,6 +51,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Channels::observe(ChannelObserver::class);
+        Channel::observe(ChannelObserver::class);
     }
 }

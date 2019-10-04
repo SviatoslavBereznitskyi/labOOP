@@ -13,7 +13,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  * @property string|null username
  * @package namespace App\Models;
  */
-class Channels extends Model implements Transformable
+class Channel extends Model implements Transformable
 {
     use TransformableTrait;
 
