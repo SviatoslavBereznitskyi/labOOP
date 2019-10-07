@@ -15,8 +15,8 @@ class CreateChannelTelegramUserTable extends Migration
     {
         Schema::create('channel_telegram_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('telegram_user_id');
-            $table->unsignedInteger('channel_id');
+            $table->bigInteger('telegram_user_id');
+            $table->bigInteger('channel_id');
             $table->timestamps();
         });
     }
