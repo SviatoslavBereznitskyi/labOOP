@@ -18,18 +18,9 @@ class ChannelServiceSelectEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
-        $subscription = $this->subscriptionService
-            ->getByUserAndService($this->telegramUserId, $this->answer);
-
-        if(null === $subscription){
-            $this->lastCommand->delete();
-            $this->sendMessage(trans('answers.noSubscription', ['service' => $this->answer], $this->language), KeyboardHelper::commandsKeyboard($this->language));
-            return;
-        }
-
         $this->commandRepository->addCommand($this->lastCommand, $this->answer, 'service');
 
-        $this->sendMessage(trans('answers.input.frequency', [], $this->language), KeyboardHelper::actionKeyboard($this->language));
+        $this->sendMessage(trans('answers.selectOption', [], $this->language), KeyboardHelper::actionKeyboard($this->language));
 
         $this->setCommand();
     }
