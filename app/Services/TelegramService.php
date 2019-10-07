@@ -50,7 +50,7 @@ class TelegramService implements TelegramServiceInterface
             $this->telegramUserRepository->create($parameters);
             $user = ($this->telegramUserRepository->find($parameters['id']));
 
-            $user->channels()->attach(Channel::all());
+            $user->channels()->attach(Channel::query()->where('is_personal', false));
             /** @var TelegramUser $user */
             return $user;
         }

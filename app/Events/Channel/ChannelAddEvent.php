@@ -28,6 +28,7 @@ class ChannelAddEvent extends AbstractChannelEvent
             $channel = $this->channelRepository->firstOrCreate([
                 'username' => $this->answer,
                 'service' => $service,
+                'is_personal' => true,
             ]);
 
             $this->channelRepository->attachUser($channel, $this->telegramUserId);
