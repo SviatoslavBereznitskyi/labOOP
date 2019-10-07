@@ -38,6 +38,6 @@ class CreateInlineCommandsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('messages');
+		Schema::drop('inline_commands');
 	}
 }

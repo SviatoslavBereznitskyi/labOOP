@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App;
 use App\Console\Commands\Bot\TelegramTrait;
+use App\Models\Channel;
 use App\Models\TelegramUser;
 use App\Repositories\Contracts\TelegramUserRepository;
 use App\Services\Contracts\TelegramServiceInterface;
@@ -47,8 +48,11 @@ class TelegramService implements TelegramServiceInterface
                 $parameters['language_code'] = App::getLocale();
             }
             $this->telegramUserRepository->create($parameters);
+            $user = ($this->telegramUserRepository->find($parameters['id']));
+
+            $user->channels()->attach(Channel::all());
             /** @var TelegramUser $user */
-            return $this->telegramUserRepository->find($parameters['id']);
+            return $user;
         }
 
         return $user;
