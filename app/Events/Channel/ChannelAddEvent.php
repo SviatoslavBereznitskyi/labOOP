@@ -5,10 +5,13 @@ namespace App\Events\Channel;
 
 use App\Events\AnswerKeyboardCommandEvent;
 use App\Helpers\Telegram\KeyboardHelper;
+use App\Models\Channel;
+use App\Models\InlineCommand;
 use App\Models\Subscription;
 use App\TelegramCommands\InlineCommands;
+use Exception;
 
-class ChannelAddEvent extends AnswerKeyboardCommandEvent
+class ChannelAddEvent extends AbstractChannelEvent
 {
     public function executeCommand()
     {
@@ -20,17 +23,21 @@ class ChannelAddEvent extends AnswerKeyboardCommandEvent
             return false;
         }
 
+        $service = $this->lastCommand->getCommandsChain()['service'];
+        try {
+            $channel = $this->channelRepository->firstOrCreate([
+                'username' => $this->answer,
+                'service' => $service,
+            ]);
 
-        $subscription = $this->subscriptionService
-            ->getByUserAndService($this->telegramUserId, $this->answer);
-
-        if(null === $subscription){
-            $this->lastCommand->delete();
-            $this->sendMessage(trans('answers.noSubscription', ['service' => $this->answer], $this->language), KeyboardHelper::commandsKeyboard($this->language));
+            $this->channelRepository->attachUser($channel, $this->telegramUserId);
+        } catch (Exception $exception) {
+            $this->sendMessage($exception->getMessage());
             return;
         }
 
-        $this->sendMessage(trans('answers.input.frequency', [], $this->language), KeyboardHelper::frequencyKeyboard($this->language));
+
+        $this->sendMessage(trans('answers.added', [], $this->language));
 
 
     }

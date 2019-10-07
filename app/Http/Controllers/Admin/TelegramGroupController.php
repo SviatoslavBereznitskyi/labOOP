@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use AdminSection;
 use App\Console\Commands\Bot\TelegramTrait;
 use App\Models\Subscription;
+use App\Models\TelegramUser;
 use App\Repositories\Contracts\ChannelRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,12 +27,12 @@ class TelegramGroupController extends Controller
         });
 
         foreach ($chats as $chat){
-            $channelsRepository->updateOrCreate([
+            $channelsRepository->createAndSubscribe([
                 'channel_id' => $chat['id'],
                 'title' => $chat['title'],
                 'service' => Subscription::TELEGRAM_SERVICE,
                 'username' => $chat['username'],
-            ]);
+            ], TelegramUser::class);
         }
 
          return redirect()->back();

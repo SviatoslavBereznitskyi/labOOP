@@ -10,10 +10,11 @@ use Prettus\Repository\Traits\TransformableTrait;
  * Class Command.
  *
  * @property array message
- * @property string|null $keyboard_command
+ * @property string|null $keyboard_event
  * @property string|null model_value
  * @property integer|null model_id
  * @property string|null model
+ * @property array commands_chain
  * @package namespace App\Models;
  */
 class InlineCommand extends Model implements Transformable
@@ -22,7 +23,9 @@ class InlineCommand extends Model implements Transformable
 
     //fields list
     const TELEGRAM_USER_ID_FIELD = 'telegram_user_id';
-    const MESSAGE_FIELD = 'message';
+    const KEYBOARD_EVENT_FIELD = 'keyboard_event';
+    const MODEL_FIELD = 'model';
+    const MODEL_ID_FIELD = 'model_id';
 
     /**
      * @var array
@@ -33,7 +36,7 @@ class InlineCommand extends Model implements Transformable
      * @var array
      */
     protected $casts = [
-        'message' => 'array'
+        'commands_chain' => 'array',
     ];
 
     /**
@@ -64,9 +67,9 @@ class InlineCommand extends Model implements Transformable
      * @param string|null $command
      * @return $this
      */
-    public function setKeyboardCommand(string $command = null)
+    public function setKeyboardEvent(string $command = null)
     {
-        $this->keyboard_command = $command;
+        $this->keyboard_event = $command;
 
         return $this;
     }
@@ -74,8 +77,29 @@ class InlineCommand extends Model implements Transformable
     /**
      * @return string|null
      */
-    public function getKeyboardCommand()
+    public function getKeyboardEvent()
     {
-        return $this->keyboard_command;
+        return $this->keyboard_event;
+    }
+
+    /**
+     * @param $command
+     */
+    public function addToCommandsChain($command, $key)
+    {
+        $commands = $this->commands_cain;
+        $commands[$key] = $command;
+
+        $this->commands_chain = $commands;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommandsChain()
+    {
+        return (array)$this->commands_chain;
     }
 }

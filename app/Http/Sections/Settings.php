@@ -2,6 +2,7 @@
 
 namespace App\Http\Sections;
 
+use AdminColumn;
 use AdminDisplay;
 use AdminForm;
 use AdminFormElement;

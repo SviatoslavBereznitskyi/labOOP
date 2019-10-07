@@ -9,7 +9,7 @@ use App\Models\Subscription;
 use App\Repositories\Contracts\ChannelRepository;
 use App\TelegramCommands\InlineCommands;
 
-class ChannelActionSelectEvent extends AnswerKeyboardCommandEvent
+class ChannelActionSelectEvent extends AbstractChannelEvent
 {
     public function executeCommand()
     {
@@ -20,22 +20,25 @@ class ChannelActionSelectEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
-        /** @var ChannelRepository $channelsRepository */
-        $channelsRepository = resolve(ChannelRepository::class);
+        $usersChannels = $this->telegramUser->channels()->pluck('title')->toArray();
+        $channels = array_values($this->channelRepository->pluck('title')->toArray());
+        $notSubscribedChannels = array_diff($channels, $usersChannels);
 
         switch ($this->answer) {
             case trans('commands.action.' . InlineCommands::ADD_ACTION, [], $this->language):
+                $items = [];
                 $text = trans('answers.input.channels', [], $this->language);
                 break;
             case trans('commands.action.' . InlineCommands::UNSUBSCRIBE_ACTION, [], $this->language):
-                $items = $this->telegramUser->channels()->pluck('title')->toArray();
+                $items = $usersChannels;
                 $text = trans('answers.selectService', [], $this->language);
                 break;
             case trans('commands.action.' . InlineCommands::SUBSCRIBE_ACTION, [], $this->language):
-                $items = array_values($channelsRepository->pluck('title')->toArray());
+                $items = $notSubscribedChannels;
                 $text = trans('answers.selectService', [], $this->language);
                 break;
             default:
+                $items = [];
                 $text = ' ';
         }
 

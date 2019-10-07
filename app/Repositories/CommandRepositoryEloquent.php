@@ -56,4 +56,8 @@ class CommandRepositoryEloquent extends BaseRepository implements CommandReposit
 
         return $entity;
     }
+
+    public function addCommand(InlineCommand $inlineCommand, $command, $key){
+        $inlineCommand->addToCommandsChain($command, $key)->save();
+    }
 }

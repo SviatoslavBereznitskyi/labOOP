@@ -32,7 +32,7 @@ abstract class GlobalKeyboardCommandEvent
     /**
      * @var CommandRepository
      */
-    protected $messageRepository;
+    protected $commandRepository;
 
     /**
      * @var CommandServiceInterface
@@ -59,7 +59,7 @@ abstract class GlobalKeyboardCommandEvent
         $this->telegramUserId = $telegramUser->getKey();
         $this->subscriptionService = resolve(SubscriptionServiceInterface::class);
         $this->telegramService = resolve(TelegramServiceInterface::class);
-        $this->messageRepository = resolve(CommandRepository::class);
+        $this->commandRepository = resolve(CommandRepository::class);
         $this->commandService = resolve(CommandServiceInterface::class);
         $this->language = $telegramUser->getLocale();
         $this->telegramUser = $telegramUser;

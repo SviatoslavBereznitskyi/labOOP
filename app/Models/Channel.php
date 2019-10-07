@@ -11,11 +11,17 @@ use Prettus\Repository\Traits\TransformableTrait;
  * Class Channels.
  *
  * @property string|null username
+ * @property string service
+ * @property string title
  * @package namespace App\Models;
  */
 class Channel extends Model implements Transformable
 {
     use TransformableTrait;
+
+    const TWITTER_SERVICE  = 'Twitter';
+    const FACEBOOK_SERVICE = 'Facebook';
+    const TELEGRAM_SERVICE = 'Telegram';
 
     protected $guarded = [];
 
@@ -44,5 +50,15 @@ class Channel extends Model implements Transformable
         }
 
         return $this;
+    }
+
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

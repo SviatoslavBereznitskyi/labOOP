@@ -25,6 +25,9 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
             ->where('service', Subscription::TELEGRAM_SERVICE)
             ->get();
 
+        $channelsIds = $this->user->channels()->pluck('channels.channel_id')->toArray();
+
+
         $messages = [];
         $telegramService = resolve(TelegramServiceInterface::class);
         foreach ($keywords as $keyword) {
@@ -38,7 +41,8 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
             $searchMessages = $result['messages'];
 
 
-            $users = $this->transformMessages($result, $botId, $searchMessages);
+            $users = $this->transformMessages($result, $botId, $searchMessages, $channelsIds);
+
 
             foreach ($users as $tgUser) {
                 foreach ($tgUser['messages'] as $message) {
@@ -67,11 +71,20 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
      * @param array $result
      * @param $botId
      * @param $searchMessages
+     * @param $channelIds
+     * @return array|mixed
      */
-    private function transformMessages(array $result, $botId, $searchMessages)
+    private function transformMessages(array $result, $botId, $searchMessages, $channelIds)
     {
         $users = $result['users'];
-        $users = array_merge($users, $result['chats']);
+
+        $chats = array_filter($result['chats'],function ($chat) use ($channelIds)
+        {
+            return array_search($chat['id'], $channelIds);
+        });
+
+        $users = array_merge($users, $chats);
+
 
         array_walk($users, function (&$user) use ($botId, $searchMessages) {
             $user['messages'] = [];

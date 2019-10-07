@@ -27,6 +27,8 @@ class ChannelServiceSelectEvent extends AnswerKeyboardCommandEvent
             return;
         }
 
+        $this->commandRepository->addCommand($this->lastCommand, $this->answer, 'service');
+
         $this->sendMessage(trans('answers.input.frequency', [], $this->language), KeyboardHelper::actionKeyboard($this->language));
 
         $this->setCommand();

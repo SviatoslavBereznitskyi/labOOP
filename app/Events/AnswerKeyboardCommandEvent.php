@@ -61,7 +61,7 @@ abstract class AnswerKeyboardCommandEvent extends GlobalKeyboardCommandEvent
     protected function setCommand($model = null)
     {
         $this->commandService
-            ->setCommandMessage(InlineCommands::getAnswerEvent($this->lastCommand->getKeyboardCommand(), $this->answer, $this->language),
+            ->setCommandMessage(InlineCommands::getAnswerEvent($this->lastCommand->getKeyboardEvent(), $this->answer, $this->language),
                 $this->lastCommand->getKey(),
                 $model
             );

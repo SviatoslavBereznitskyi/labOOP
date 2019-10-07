@@ -25,7 +25,6 @@ class ChannelRepositoryEloquent extends BaseRepository implements ChannelReposit
         return Channel::class;
     }
 
-    
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,5 +33,38 @@ class ChannelRepositoryEloquent extends BaseRepository implements ChannelReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function attachUser(Channel $channel, $userId)
+    {
+        $channel->telegramUsers()->attach($userId);
+    }
+
+    public function detachUser(Channel $channel, $userId)
+    {
+        $channel->telegramUsers()->detach($userId);
+    }
+
+    public function findByTitle($title, $service)
+    {
+        return Channel::query()->where('service', $service)->where('title', 'like', $title . '%')->latest()->first();
+    }
+
+    public function findWhereInTitle($titles, $service)
+    {
+        return Channel::query()
+            ->where('service', $service)
+            ->where(function ($query) use ($titles) {
+                foreach ($titles as $title) {
+                    $query->orWhere('title', 'like', $title . '%');
+                }
+            })
+            ->get();
+    }
+
+    public function createAndSubscribe($params, $model){
+        /** @var Channel $channel */
+        $channel = $this->updateOrCreate($params);
+        $channel->telegramUsers()->attach(resolve($model)::all());
+    }
+
 }
