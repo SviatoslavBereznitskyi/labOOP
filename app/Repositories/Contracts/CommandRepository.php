@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\InlineCommand;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -12,4 +13,6 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 interface CommandRepository extends RepositoryInterface
 {
     public function findOrCreateByUser($userId);
+
+    public function addCommand(InlineCommand $inlineCommand, $command, $key);
 }

@@ -146,6 +146,6 @@ class TelegramUser extends Model
 
     public function channels()
     {
-        return $this->belongsToMany(Channels::class);
+        return $this->belongsToMany(Channel::class);
     }
 }

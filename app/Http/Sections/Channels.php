@@ -6,6 +6,8 @@ use AdminColumn;
 use AdminDisplay;
 use AdminForm;
 use AdminFormElement;
+use App\Models\Channel;
+use App\Models\TelegramUser;
 use Illuminate\Database\Eloquent\Model;
 use SleepingOwl\Admin\Section;
 use SleepingOwl\Admin\Contracts\Initializable;
@@ -15,7 +17,7 @@ use SleepingOwl\Admin\Contracts\Display\DisplayInterface;
 /**
  * Class Channels
  *
- * @property \App\Models\Channels $model
+ * @property Channel $model
  *
  * @see https://sleepingowladmin.ru/#/ru/model_configuration_section
  */
@@ -37,6 +39,11 @@ class Channels extends Section implements Initializable
      * @var string
      */
     protected $alias;
+
+    public function getTitle()
+    {
+        return trans('admin.channels.title');
+    }
 
     /**
      * Initialize class.
@@ -74,10 +81,16 @@ class Channels extends Section implements Initializable
      */
     public function onEdit($id = null, $payload = [])
     {
+        $this->model->created(function ($model) {
+            $model->telegramUsers()->attach(TelegramUser::all());
+        });
+
         return AdminForm::panel()->addBody([
             AdminFormElement::text('username', 'Channel name')->required(),
-            AdminFormElement::select('service', 'Channel name')->setEnum(\App\Models\Subscription::getAvailableServices())->required(),
+            AdminFormElement::select('service', 'Service')->setEnum(\App\Models\Subscription::getGroupServices())->required(),
         ]);
+
+
     }
 
     /**

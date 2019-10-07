@@ -19,7 +19,7 @@ class UnsubscriptionKeywordsEvent extends AnswerKeyboardCommandEvent
     public function executeCommand()
     {
 
-        $subscription = resolve($this->lastCommand->getModel())::query()->find($this->lastCommand->getModelId());
+        $subscription = $this->getModel();
 
         switch ($this->answer) {
             case trans(InlineCommands::DONE, [], $this->language):

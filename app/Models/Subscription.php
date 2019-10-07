@@ -43,6 +43,13 @@ class Subscription extends Model implements Transformable
         ];
     }
 
+    public static function getGroupServices()
+    {
+        return [
+            self::TELEGRAM_SERVICE,
+        ];
+    }
+
     /**
      * return array of instances subscription services
      * @param TelegramUser $user
@@ -59,7 +66,7 @@ class Subscription extends Model implements Transformable
 
     protected static function getAvailableFrequencies()
     {
-        return[
+        return [
             '15',
             '30',
             '45',
@@ -73,10 +80,12 @@ class Subscription extends Model implements Transformable
     {
         $frequencies = self::getAvailableFrequencies();
         $frequenciesForHuman = [];
-        foreach ($frequencies as $frequency){
-            $frequenciesForHuman[$frequency] = trans('answers.frequencyForHuman',['value' => $frequency], $lang??app()->getLocale());
+
+        foreach ($frequencies as $frequency) {
+            $frequenciesForHuman[$frequency] = trans('answers.frequencyForHuman', ['value' => $frequency], $lang ?? app()->getLocale());
         }
-         return $frequenciesForHuman;
+
+        return $frequenciesForHuman;
     }
 
     /**
@@ -87,14 +96,12 @@ class Subscription extends Model implements Transformable
     {
         $text = trans('answers.input.select_category');
 
-        foreach (self::getAvailableServices() as $key => $item)
-        {
-            $text = $text . PHP_EOL . ($key+1) . '. ' . $item;
+        foreach (self::getAvailableServices() as $key => $item) {
+            $text = $text . PHP_EOL . ($key + 1) . '. ' . $item;
         }
 
         return $text;
     }
-
 
 
     /**

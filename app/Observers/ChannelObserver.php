@@ -3,40 +3,61 @@
 namespace App\Observers;
 
 use App\Console\Commands\Bot\TelegramTrait;
-use App\Models\Channels;
+use App\Models\Channel;
+use App\Models\TelegramUser;
+use App\Repositories\Contracts\ChannelRepository;
 
 class ChannelObserver
 {
     use TelegramTrait;
+
     /**
      * Handle the channels "created" event.
      *
-     * @param Channels $channels
+     * @param Channel $channels
      * @return void
      */
-    public function creating(Channels $channels)
+    public function creating(Channel $channels)
     {
-        $madeline = $this->getMadelineInstance();
+        if ($channels->getService() == Channel::TELEGRAM_SERVICE) {
+            $madeline = $this->getMadelineInstance();
 
-        $madeline->channels->joinChannel(['channel'=>'https://t.me/' . $channels->getUsername()]);
+            $madeline->channels->joinChannel(['channel' => 'https://t.me/' . $channels->getUsername()]);
 
-        $channel = $madeline->channels->getChannels(['id' => [ $channels->getUsername()],]);
-        $channel = $channel['chats'][0];
+            $tgChannel = $madeline->channels->getChannels(['id' => [$channels->getUsername()],]);
+            $tgChannel = $tgChannel['chats'][0];
 
-        $channels->change([
-            'channel_id' => $channel['id'],
-            'title' => $channel['title'],
-            'username' => $channel['username'],
-        ]);
+
+            /** @var ChannelRepository $channelRepository */
+            $channelRepository = resolve(ChannelRepository::class);
+            $title = $tgChannel['title'];
+            $channel = $channelRepository->findByTitle($title, $channels->getService());
+
+            if($channel){
+                preg_match("/#\d+/", $channel->getTitle(), $matches);
+                $number = 0;
+                if(!empty($matches)){
+                   $number = str_replace('#','', $matches[0]);
+                }
+
+                $title .= '#'. ++$number;
+            }
+
+            $channels->change([
+                'channel_id' => $tgChannel['id'],
+                'title' => $title,
+                'username' => $tgChannel['username'],
+            ]);
+        }
     }
 
     /**
      * Handle the channels "updated" event.
      *
-     * @param  \App\Channels  $channels
+     * @param \App\Channels $channels
      * @return void
      */
-    public function updated(Channels $channels)
+    public function updated(Channel $channels)
     {
         //
     }
@@ -44,23 +65,23 @@ class ChannelObserver
     /**
      * Handle the channels "deleted" event.
      *
-     * @param  \App\Channels  $channels
+     * @param \App\Channels $channels
      * @return void
      */
-    public function deleted(Channels $channels)
+    public function deleted(Channel $channels)
     {
         $madeline = $this->getMadelineInstance();
 
-        $madeline->channels->leaveChannel(['channel' => $channels->getUsername(), ]);
+        $madeline->channels->leaveChannel(['channel' => $channels->getUsername(),]);
     }
 
     /**
      * Handle the channels "restored" event.
      *
-     * @param  \App\Channels  $channels
+     * @param \App\Channels $channels
      * @return void
      */
-    public function restored(Channels $channels)
+    public function restored(Channel $channels)
     {
         //
     }
@@ -68,10 +89,10 @@ class ChannelObserver
     /**
      * Handle the channels "force deleted" event.
      *
-     * @param  \App\Channels  $channels
+     * @param \App\Channels $channels
      * @return void
      */
-    public function forceDeleted(Channels $channels)
+    public function forceDeleted(Channel $channels)
     {
         //
     }

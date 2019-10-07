@@ -25,4 +25,5 @@ return [
     'frequencyForHuman'               => 'Каждые :value мин.',
     'selectFrequency'                 => 'Select frequency',
     'noSubscription'                  => 'Вы не подписаны на :service',
+    'selectAll'                       => 'Выбрать все',
 ];

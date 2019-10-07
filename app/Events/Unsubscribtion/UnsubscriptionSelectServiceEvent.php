@@ -42,6 +42,6 @@ class UnsubscriptionSelectServiceEvent extends AnswerKeyboardCommandEvent
             KeyboardHelper::itemKeyboard($items, $this->language)
         );
 
-        $this->commandService->setCommandMessage(get_class($this), $this->lastCommand->getKey(), $subscription);
+        $this->setCommand($subscription);
     }
 }

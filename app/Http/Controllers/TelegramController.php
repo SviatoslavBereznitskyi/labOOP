@@ -57,9 +57,9 @@ class TelegramController extends Controller
             return;
         }
 
-        if (null != $lastMessage->getKeyboardCommand() && !isset($message['entities'])) {
+        if (null != $lastMessage->getKeyboardEvent() && !isset($message['entities'])) {
 
-            $eventName = InlineCommands::getAnswersEvents()[$lastMessage->getKeyboardCommand()];
+            $eventName = $lastMessage->getKeyboardEvent();
 
             $answer = 'must be a text';
 
@@ -79,6 +79,7 @@ class TelegramController extends Controller
         }
 
         if (key_exists('text', $message) && !key_exists('entities', $message)) {
+
             $keyboardCommand = InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale());
 
             if(isset($message['from']['language_code']) && $message['from']['language_code'] != $telegramUser->getLocale()){
@@ -97,7 +98,11 @@ class TelegramController extends Controller
             }
 
             $command = [
-                'keyboard_command' => $keyboardCommand,
+                InlineCommand::KEYBOARD_EVENT_FIELD => InlineCommands::getAnswerEvent(
+                    InlineCommands::findCommandByName($message['text'], $telegramUser->getLocale()),
+                    $message['text'],
+                    $telegramUser->getLocale()
+                ),
             ];
 
             if(array_key_exists($keyboardCommand, InlineCommands::getAnswersEvents())){

@@ -25,4 +25,5 @@ return [
     'frequencyForHuman'               => 'Кожні :value хв',
     'selectFrequency'                 => 'Select frequency',
     'noSubscription'                  => 'Ви не підписані на :service',
+    'selectAll'                       => 'Вибрати всі',
 ];

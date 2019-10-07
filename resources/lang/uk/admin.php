@@ -40,4 +40,7 @@ return [
         'send_label'    => 'Send ALL subscriptions messages to ALL users',
         'send'          => 'GO!',
     ],
+    'channels' => [
+        'title'         => 'Групи',
+    ],
 ];

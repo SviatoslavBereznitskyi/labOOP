@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\InlineCommand;
 use App\Models\Subscription;
 use App\Repositories\Contracts\CommandRepository;
 use App\Services\Contracts\CommandServiceInterface;
@@ -25,16 +26,16 @@ class CommandService implements CommandServiceInterface
     {
 
         $data = [
-            'model' => null,
-            'model_id' => null,
-            'keyboard_command' => null,
+            InlineCommand::MODEL_FIELD          => null,
+            InlineCommand::MODEL_ID_FIELD       => null,
+            InlineCommand::KEYBOARD_EVENT_FIELD => $command,
         ];
 
         if ($model) {
             $data = [
-                'model' => get_class($model),
-                'model_id' => $model->getKey(),
-                'keyboard_command' => $command,
+                InlineCommand::MODEL_FIELD          => get_class($model),
+                InlineCommand::MODEL_ID_FIELD       => $model->getKey(),
+                InlineCommand::KEYBOARD_EVENT_FIELD => $command,
             ];
         }
 

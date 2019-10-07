@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Channels;
+use App\Models\Channel;
 use App\Models\Settings;
 use App\Models\Subscription;
 use App\Models\TelegramUser;
@@ -20,7 +20,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         TelegramUser::class => 'App\Http\Sections\TelegramUsers',
         Settings::class => 'App\Http\Sections\Settings',
         Subscription::class => 'App\Http\Sections\Subscription',
-        Channels::class => 'App\Http\Sections\Channels',
+        Channel::class => 'App\Http\Sections\Channels',
     ];
 
     /**
