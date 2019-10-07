@@ -25,6 +25,9 @@ class ChangeKeyqboardCommandFieldInlineCommandsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('inline_commands', function (Blueprint $table) {
+            $table->renameColumn('keyboard_event', 'keyboard_command');
+            $table->dropColumn('commands_chain');
+        });
     }
 }
