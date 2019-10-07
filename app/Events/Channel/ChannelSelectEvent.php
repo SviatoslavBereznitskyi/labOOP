@@ -41,7 +41,7 @@ class ChannelSelectEvent extends AbstractChannelEvent
         }
 
         $this->sendMessage(
-            trans('answers.selectService', [], $this->language),
+            trans('answers.selectOption', [], $this->language),
             KeyboardHelper::channelsKeyboard($notSubscribedChannels, $this->language, trans('commands.action.' . InlineCommands::SUBSCRIBE_ACTION, [], $this->language))
         );
 

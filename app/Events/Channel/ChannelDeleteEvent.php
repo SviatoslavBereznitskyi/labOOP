@@ -22,7 +22,7 @@ class ChannelDeleteEvent extends AbstractChannelEvent
         if ($this->answer == trans(InlineCommands::DELETE_ALL, [], $this->language)) {
             $channel = $this->channelRepository->findWhereInTitle($usersChannels, $service);
             $this->telegramUser->channels()->detach($channel->pluck('id')->toArray());
-            $notSubscribedChannels = [];
+            $usersChannels = [];
         } elseif (false === $this->checkService($services)) {
             return;
         } else{
@@ -39,7 +39,7 @@ class ChannelDeleteEvent extends AbstractChannelEvent
         }
 
         $this->sendMessage(
-            trans('answers.selectService', [], $this->language),
+            trans('answers.selectOption', [], $this->language),
             KeyboardHelper::channelsKeyboard($usersChannels, $this->language, trans('commands.action.' . InlineCommands::UNSUBSCRIBE_ACTION, [], $this->language))
         );
 

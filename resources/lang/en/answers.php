@@ -25,5 +25,6 @@ return [
     'frequencyForHuman'               => 'Every :value min',
     'selectFrequency'                 => 'Select frequency',
     'noSubscription'                  => 'You don\'t have subscription on :service',
-    'selectAll'                       => 'Select all'
+    'selectAll'                       => 'Select all',
+    'selectOption'                    => 'Select option',
 ];

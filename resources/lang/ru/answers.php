@@ -26,4 +26,5 @@ return [
     'selectFrequency'                 => 'Select frequency',
     'noSubscription'                  => 'Вы не подписаны на :service',
     'selectAll'                       => 'Выбрать все',
+    'selectOption'                    => 'Выберете',
 ];
