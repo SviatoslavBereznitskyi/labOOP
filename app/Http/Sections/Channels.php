@@ -66,7 +66,8 @@ class Channels extends Section implements Initializable
                 AdminColumn::text('id', '#')->setWidth('30px'),
                 AdminColumn::text('title', 'Name'),
                 AdminColumn::text('username', 'Username'),
-                AdminColumn::text('service', 'Service')
+                AdminColumn::text('service', 'Service'),
+                AdminColumn::text('is_personal', 'Is personal')
             )
             ->setOrder([1, 'ASC'])
             ->paginate(20)
