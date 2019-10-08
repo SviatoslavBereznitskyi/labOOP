@@ -3,6 +3,7 @@ return [
     'input' => [
         'key_words' => 'Введіть ключові слова',
         'frequency' => 'Select the frequency (min)',
+        'channels'  => 'Input channel',
     ],
     'deleted_keywords'                => 'Keywords deleted',
     'deleted_keyword'                 => 'Keyword deleted',

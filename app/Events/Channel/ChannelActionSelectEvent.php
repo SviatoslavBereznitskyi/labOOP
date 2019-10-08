@@ -31,7 +31,7 @@ class ChannelActionSelectEvent extends AbstractChannelEvent
                 break;
             case trans('commands.action.' . InlineCommands::UNSUBSCRIBE_ACTION, [], $this->language):
                 $items = $usersChannels;
-                $text = trans('answers.selectService', [], $this->language);
+                $text = trans('answers.selectOption', [], $this->language);
                 break;
             case trans('commands.action.' . InlineCommands::SUBSCRIBE_ACTION, [], $this->language):
                 $items = $notSubscribedChannels;
