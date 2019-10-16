@@ -5,6 +5,9 @@ namespace App\Services\Subscriptions;
 
 
 use App\Models\Subscription;
+use Upwork\API\Client;
+use Upwork\API\Config;
+use Upwork\API\Routers\Jobs\Search;
 
 class UpworkSubscriptionsService extends AbstractSubscriptionsService
 {
@@ -13,7 +16,7 @@ class UpworkSubscriptionsService extends AbstractSubscriptionsService
      */
     public function getPosts():array
     {
-        $client = $this->getUpworkClient(config('upwork.client'));
+        $client = $this->getUpworkClient(new Config(config('upwork.client')));
 
         $keywords = $this->getKeywords(Subscription::UPWORK_SERVICE, $this->user, $this->frequency);
 
@@ -49,15 +52,17 @@ class UpworkSubscriptionsService extends AbstractSubscriptionsService
 
     private function getUpworkClient($config)
     {
-        $client = new \Upwork\API\Client($config);
+        $client = new Client($config);
+
         $client->auth();
 
         return $client;
     }
 
-    private function searchUpworkJobs($client, array $params)
+    private function searchUpworkJobs(Client $client, array $params)
     {
-        $jobs = new \Upwork\API\Routers\Jobs\Search($client);
+        $jobs = new Search($client);
+        $jobs->find($params);
 
         return $jobs->find($params);
     }

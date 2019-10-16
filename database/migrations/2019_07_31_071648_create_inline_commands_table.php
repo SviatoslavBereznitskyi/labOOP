@@ -38,6 +38,9 @@ class CreateInlineCommandsTable extends Migration
 	 */
 	public function down()
 	{
+	    Schema::table('inline_commands', function (Blueprint $table) {
+            $table->dropForeign('inline_commands_telegram_user_id_foreign');
+        });
 		Schema::drop('inline_commands');
 	}
 }
