@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Subscriptions\TelegramSubscriptionsService;
 use App\Services\Subscriptions\TwitterSubscriptionsService;
+use App\Services\Subscriptions\UpworkSubscriptionsService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
@@ -61,6 +62,7 @@ class Subscription extends Model implements Transformable
         return [
             new TelegramSubscriptionsService($user, $frequency),
             new TwitterSubscriptionsService($user, $frequency),
+          //  new UpworkSubscriptionsService($user, $frequency),
         ];
     }
 

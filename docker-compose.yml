@@ -22,7 +22,9 @@ services:
       - php
       - mysqldb
   php:
-    image: nanoninja/php-fpm:${PHP_VERSION}
+    build:
+      context: ./docker/php
+#    image: nanoninja/php-fpm:${PHP_VERSION}
     restart: always
     volumes:
       - "./docker/php/php.ini:/usr/local/etc/php/php.ini"

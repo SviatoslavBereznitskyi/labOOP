@@ -37,6 +37,9 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
+        Schema::table('inline_commands', function (Blueprint $table) {
+            $table->dropForeign('subscriptions_telegram_user_id_foreign');
+        });
         Schema::drop('subscriptions');
     }
 }
