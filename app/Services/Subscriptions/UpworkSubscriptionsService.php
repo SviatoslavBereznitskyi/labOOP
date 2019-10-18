@@ -16,7 +16,7 @@ class UpworkSubscriptionsService extends AbstractSubscriptionsService
      */
     public function getPosts():array
     {
-        $client = $this->getUpworkClient(new Config(config('upwork.client')));
+        $client = $this->getUpworkClient(config('upwork.client'));
 
         $keywords = $this->getKeywords(Subscription::UPWORK_SERVICE, $this->user, $this->frequency);
 
@@ -50,10 +50,11 @@ class UpworkSubscriptionsService extends AbstractSubscriptionsService
         return $messages;
     }
 
-    private function getUpworkClient($config)
+    private function getUpworkClient(array $config)
     {
-        $client = new Client($config);
+        $client = new Client(new Config($config));
 
+        dd($client->getRequestToken());
         $client->auth();
 
         return $client;

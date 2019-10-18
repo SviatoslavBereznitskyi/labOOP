@@ -39,7 +39,7 @@ class Subscription extends Model implements Transformable
         return [
             self::TWITTER_SERVICE,
 //            self::FACEBOOK_SERVICE,
-            self::UPWORK_SERVICE,
+//            self::UPWORK_SERVICE,
             self::TELEGRAM_SERVICE,
         ];
     }
@@ -62,7 +62,7 @@ class Subscription extends Model implements Transformable
         return [
             new TelegramSubscriptionsService($user, $frequency),
             new TwitterSubscriptionsService($user, $frequency),
-            new UpworkSubscriptionsService($user, $frequency),
+          //  new UpworkSubscriptionsService($user, $frequency),
         ];
     }
 
