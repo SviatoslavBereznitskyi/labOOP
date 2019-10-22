@@ -28,4 +28,6 @@ return [
     'noSubscription'                  => 'You don\'t have subscription on :service',
     'selectAll'                       => 'Select all',
     'selectOption'                    => 'Select option',
+    'noSearchForKeyword'              => 'No results for ":keyword"',
+    'searchForKeyword'                => 'Results for ":keyword"',
 ];

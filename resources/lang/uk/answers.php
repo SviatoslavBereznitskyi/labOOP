@@ -28,4 +28,6 @@ return [
     'noSubscription'                  => 'Ви не підписані на :service',
     'selectAll'                       => 'Вибрати всі',
     'selectOption'                    => 'Виберіть',
+    'noSearchForKeyword'              => 'Нічого не знайдено для ":keyword"',
+    'searchForKeyword'                => 'Результати для ":keyword"',
 ];

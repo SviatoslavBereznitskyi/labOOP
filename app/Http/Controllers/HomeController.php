@@ -3,13 +3,6 @@
 namespace App\Http\Controllers;
 
 
-use App\Console\Commands\Bot\TelegramTrait;
-use App\Models\InlineCommand;
-use App\Models\TelegramUser;
-use App\Services\Subscriptions\UpworkSubscriptionsService;
-use App\TelegramCommands\InlineCommands;
-use Upwork\API\Utils as ApiUtils;
-
 class HomeController extends Controller
 {
      /**
