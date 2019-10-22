@@ -72,7 +72,7 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
 
             if($isEmpty)
             {
-                $messages[$keyword]['message']['text'] = '<b>'.trans('answers.noSearchForKeyword', ['keyword' => $keyword]).'</b>';
+                unset($messages[$keyword]);
             }
         }
 
