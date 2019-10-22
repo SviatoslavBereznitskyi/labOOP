@@ -41,14 +41,21 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
             $searchMessages = $result['messages'];
 
 
-            $users = $this->transformMessages($result, $botId, $searchMessages, $channelsIds);
+            $users = $this->transformMessages($result, $botId, $searchMessages, $channelsIds, $sentMessages);
 
+            $messages[$keyword]=[
+                'message' => [
+                    'chat_id'       => $this->user->getKey(),
+                    'text'          => '<b>' . trans('answers.searchForKeyword', ['keyword' => $keyword]) . '</b>',
+                    'parse_mode'    => 'HTML',
+                ],
+            ];
+
+            $isEmpty = true;
 
             foreach ($users as $tgUser) {
                 foreach ($tgUser['messages'] as $message) {
-                    if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
-                        continue;
-                    }
+                    $isEmpty = false;
                     $text = $this->getMessageText($message, $tgUser, $users);
 
                     $messages[] = [
@@ -62,6 +69,11 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
                     ];
                 }
             }
+
+            if($isEmpty)
+            {
+                $messages[$keyword]['message']['text'] = '<b>'.trans('answers.noSearchForKeyword', ['keyword' => $keyword]).'</b>';
+            }
         }
 
         return $messages;
@@ -74,7 +86,7 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
      * @param $channelIds
      * @return array|mixed
      */
-    private function transformMessages(array $result, $botId, $searchMessages, $channelIds)
+    private function transformMessages(array $result, $botId, $searchMessages, $channelIds, $sentMessages)
     {
         $users = $result['users'];
 
@@ -86,10 +98,14 @@ class TelegramSubscriptionsService extends AbstractSubscriptionsService
         $users = array_merge($users, $chats);
 
 
-        array_walk($users, function (&$user) use ($botId, $searchMessages) {
+        array_walk($users, function (&$user) use ($botId, $searchMessages, $sentMessages) {
             $user['messages'] = [];
             if ($botId !== $user['id']) {
-                $user['messages'] = array_filter($searchMessages, function ($message) use ($user) {
+                $user['messages'] = array_filter($searchMessages, function ($message) use ($user, $sentMessages) {
+
+                    if ($sentMessages->where('post_id', $message['id'])->first() !== null) {
+                        return false;
+                    }
 
                     if ($message['date'] < Carbon::now()->subWeek()->timestamp) {
                         return false;

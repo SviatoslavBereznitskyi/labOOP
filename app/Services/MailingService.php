@@ -73,11 +73,14 @@ class MailingService implements MailingServiceInterface
         $messages = $service->getPosts();
         foreach ($messages as $key => $message) {
 
-            $this->sentMessagesRepository->create([
-                'post_id' => $message['message_id'],
-                'telegram_user_id' => $user->getKey(),
-                'service' => $message['service'],
-            ]);
+            if(isset($message['message_id'])){
+                $this->sentMessagesRepository->create([
+                    'post_id' => $message['message_id'],
+                    'telegram_user_id' => $user->getKey(),
+                    'service' => $message['service'],
+                ]);
+            }
+
 
             Telegram::sendMessage($message['message']);
         }
