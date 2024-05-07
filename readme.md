@@ -14,4 +14,3 @@ public function handle(GlobalKeyboardCommandEvent $event)
     $event->executeCommand();
 }
 ```
- 
